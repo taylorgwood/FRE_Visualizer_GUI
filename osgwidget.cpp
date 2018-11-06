@@ -32,7 +32,7 @@ osg::Camera *OSGWidget::create_camera(float aspectRatio, int pixelRatio)
     int viewportOriginX{0};
     int viewportOriginY{0};
     camera->setViewport(viewportOriginX, viewportOriginY, this->width() * pixelRatio, this->height() * pixelRatio);
-    osg::Vec4 clearColorRGBA{0.2f,0.2f,0.2f,0.1f};
+    osg::Vec4 clearColorRGBA{0.95f,0.95f,0.95f,0.1f};
     camera->setClearColor(clearColorRGBA);
 
     float viewingAngle{45};
@@ -49,7 +49,7 @@ void OSGWidget::create_manipulator_and_viewer()
     osg::ref_ptr<osgGA::TrackballManipulator> manipulator = new osgGA::TrackballManipulator;
     manipulator->setAllowThrow(false);
 
-    osg::Vec3d cameraHomePosition{0.0,-20.0,3.0};
+    osg::Vec3d cameraHomePosition{20.0,-20.0,10.0};
     osg::Vec3d cameraHomeViewDirection{0,0,0};
     osg::Vec3d cameraHomeUpPosition{0,0,1};
     manipulator->setHomePosition(cameraHomePosition,cameraHomeViewDirection,cameraHomeUpPosition);
@@ -89,13 +89,9 @@ int OSGWidget::set_up_timer()
     return timerID;
 }
 
-osg::ShapeDrawable *OSGWidget::create_graphic_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Vec4 shapeRGBA)
+osg::ShapeDrawable *OSGWidget::create_graphic_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA)
 {
     osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
-    double angleInDegrees = 15;
-    double angleInRadians = osg::DegreesToRadians(angleInDegrees);
-    osg::Vec3 rotationaxis{1,0,0};
-    osg::Quat rotation{angleInRadians,rotationaxis};
     cylinder->setRotation(rotation);
     osg::ShapeDrawable* newShape = new osg::ShapeDrawable(cylinder);
     newShape->setColor(shapeRGBA);
@@ -139,10 +135,10 @@ void OSGWidget::animate_object(osg::Geode *geode, osg::Vec3 shapePosition, float
 }
 
 
-void OSGWidget::create_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Vec4 shapeRGBA)
+void OSGWidget::create_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA)
 {
     osg::Vec3 origin{0,0,0};
-    osg::ShapeDrawable *newShape = create_graphic_cylinder(origin, radius, height, shapeRGBA);
+    osg::ShapeDrawable *newShape = create_graphic_cylinder(origin, radius, height, rotation, shapeRGBA);
     osg::Geode *geode = create_geometry_node(newShape);
     animate_object(geode, shapePosition, radius);
 }
@@ -176,12 +172,18 @@ void OSGWidget::populate_spheres(int numberOfSpheres)
 {
     for(int i=0; i<1; i++)
     {
-        float radius{1.0};
-        float height{8.0};
+        float radius{0.26};
+        float height{10};
         osg::Vec3 shapePosition{0,0,0};
-        osg::Vec4 shapeRGBA = {1,0,0,1};
+        osg::Vec3 centeredAtZeroCompensation{5,0,5};
+        shapePosition = shapePosition-centeredAtZeroCompensation;
+        osg::Vec4 shapeRGBA = {1.0,1.0,0,1};
 
-        create_cylinder(shapePosition, radius, height, shapeRGBA);
+        double angleInDegrees = 90;
+        double angleInRadians = osg::DegreesToRadians(angleInDegrees);
+        osg::Vec3 rotationaxis{1,0,0};
+        osg::Quat rotation{angleInRadians,rotationaxis};
+        create_cylinder(shapePosition, radius, height, rotation, shapeRGBA);
     }
     update();
 }
