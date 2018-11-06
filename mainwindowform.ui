@@ -189,7 +189,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QPushButton" name="gravityButton">
+       <widget class="QPushButton" name="objectSizeButton">
         <property name="text">
          <string>Reset Object Size</string>
         </property>

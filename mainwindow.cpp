@@ -141,3 +141,12 @@ void MainWindow::on_needleGauge_valueChanged(int arg1)
     MainWindow::mOSGWidget->set_needle_diameter(needleDiameter);
     MainWindow::mOSGWidget->update();
 }
+
+
+void MainWindow::on_objectSizeButton_clicked()
+{
+    double objectWidth  = mMainWindowUI->objectWidth->text().toDouble();
+    double objectLength = mMainWindowUI->objectLength->text().toDouble();
+    double objectHeight = mMainWindowUI->objectHeight->text().toDouble();
+    MainWindow::mOSGWidget->set_object_size(objectWidth,objectLength,objectHeight);
+}

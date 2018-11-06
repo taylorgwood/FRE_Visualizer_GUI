@@ -43,6 +43,7 @@ public:
     void figure_out_math();
     double*** create_center_of_cylinder_array(double numberOfLayers, double numberOfCylindersPerLayer);
     void create_all_cylinders(double ***centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers);
+    void set_object_size(const double objectWidth, const double objectLength, const double objectHeight);
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
@@ -94,7 +95,7 @@ private:
     float  mLayerHeight{0.26};
     float  mShapeWidth{10};
     float  mShapeHeight{10};
-    float  mShapeLength{4};
+    float  mShapeLength{10};
 
     bool   mSimulationOn{false};
     //    std::vector<PhysicsObject*> *mObjectList;

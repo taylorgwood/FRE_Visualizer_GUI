@@ -38,6 +38,8 @@ private slots:
 
     void on_needleGauge_valueChanged(int arg1);
 
+    void on_objectSizeButton_clicked();
+
 private:
     Ui::MainWindowForm *mMainWindowUI;
     OSGWidget *mOSGWidget{nullptr};

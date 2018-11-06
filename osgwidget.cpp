@@ -236,6 +236,14 @@ void OSGWidget::set_diameter_of_print(const double diameterOfPrint)
     mDiameterOfPrint = diameterOfPrint;
 }
 
+void OSGWidget::set_object_size(const double objectWidth, const double objectLength, const double objectHeight)
+{
+    mShapeWidth  = objectWidth;
+    mShapeLength = objectLength;
+    mShapeHeight = objectHeight;
+    update();
+}
+
 void OSGWidget::figure_out_math()
 {
     double volumePrintPerLayer = mShapeWidth*mShapeLength*mLayerHeight*mInfillPercentage*mExtrusionMultiplier;
