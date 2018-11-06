@@ -49,7 +49,7 @@ void OSGWidget::create_manipulator_and_viewer()
     osg::ref_ptr<osgGA::TrackballManipulator> manipulator = new osgGA::TrackballManipulator;
     manipulator->setAllowThrow(false);
 
-    osg::Vec3d cameraHomePosition{20.0,-20.0,10.0};
+    osg::Vec3d cameraHomePosition{20.0,20.0,10.0};
     osg::Vec3d cameraHomeViewDirection{0,0,0};
     osg::Vec3d cameraHomeUpPosition{0,0,1};
     manipulator->setHomePosition(cameraHomePosition,cameraHomeViewDirection,cameraHomeUpPosition);
@@ -111,10 +111,10 @@ osg::Geode *OSGWidget::create_geometry_node(osg::ShapeDrawable* newShape)
     return geode;
 }
 
-void OSGWidget::create_new_wireframe()
+void OSGWidget::create_new_wireframe(float wireframeSize)
 {
     osg::Vec4 wireframeColorRGBA{0.2f,0.5f,1.f,0.1f};
-    osg::Vec3d scaleFactor{5.f,5.f,5.f};
+    osg::Vec3d scaleFactor = {wireframeSize,wireframeSize,wireframeSize};
     osg::Node* wireFrame = create_wireframe(wireframeColorRGBA, scaleFactor);
     mRoot->addChild(wireFrame);
 }
@@ -122,12 +122,12 @@ void OSGWidget::create_new_wireframe()
 void OSGWidget::animate_object(osg::Geode *geode, osg::Vec3 shapePosition, float sphereRadius)
 {
     osg::MatrixTransform *transform = new osg::MatrixTransform;
-//    Vector3 shapePositionVector3{0,0,0};
-//    shapePositionVector3.set_x(shapePosition.x());
-//    shapePositionVector3.set_y(shapePosition.y());
-//    shapePositionVector3.set_z(shapePosition.z());
+    //    Vector3 shapePositionVector3{0,0,0};
+    //    shapePositionVector3.set_x(shapePosition.x());
+    //    shapePositionVector3.set_y(shapePosition.y());
+    //    shapePositionVector3.set_z(shapePosition.z());
 
-//    PhysicsObject* sphere = new PhysicsObject(shapePositionVector3, initialVelocity, mGravity);
+    //    PhysicsObject* sphere = new PhysicsObject(shapePositionVector3, initialVelocity, mGravity);
     transform->setMatrix(osg::Matrix::translate(shapePosition));
     transform->setUpdateCallback(new SphereUpdateCallback(mSimulationOn, sphereRadius));
     transform->addChild(geode);
@@ -188,6 +188,35 @@ void OSGWidget::populate_spheres(int numberOfSpheres)
     update();
 }
 
+void OSGWidget::create_axes(float wireframeSize)
+{
+    float radius{0.1};
+    float height{1};
+    osg::Vec3 shapePosition1{height/2,0,0};
+    osg::Vec3 shapePosition2{0,height/2,0};
+    osg::Vec3 shapePosition3{0,0,height/2};
+    shapePosition1 += {wireframeSize,0,0};
+    shapePosition2 += {0,wireframeSize,0};
+    shapePosition3 += {0,0,wireframeSize};
+    osg::Vec4 shapeRGBA1 = {1.0,0,0,1};
+    osg::Vec4 shapeRGBA2 = {0,1.0,0,1};
+    osg::Vec4 shapeRGBA3 = {0,0,1.0,1};
+
+    double angleInDegrees = 90;
+    double angleInRadians = osg::DegreesToRadians(angleInDegrees);
+    osg::Vec3 rotationaxis1{0,1,0};
+    osg::Vec3 rotationaxis2{1,0,0};
+    osg::Vec3 rotationaxis3{0,0,1};
+    osg::Quat rotation1{angleInRadians,rotationaxis1};
+    osg::Quat rotation2{angleInRadians,rotationaxis2};
+    osg::Quat rotation3{angleInRadians,rotationaxis3};
+    create_cylinder(shapePosition1, radius, height, rotation1, shapeRGBA1);
+    create_cylinder(shapePosition2, radius, height, rotation2, shapeRGBA2);
+    create_cylinder(shapePosition3, radius, height, rotation3, shapeRGBA3);
+
+    update();
+}
+
 void OSGWidget::toggle_start(bool on)
 {
     mSimulationOn = on;
@@ -205,9 +234,11 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
 {
     mRoot = new osg::Group;
     set_up_environment();
-    create_new_wireframe();
+    float wireframeSize = 5;
+    create_new_wireframe(wireframeSize);
     set_up_min_graphics_window();
-//    populate_spheres(1);
+    create_axes(wireframeSize);
+    //    populate_spheres(1);
 
 
 

@@ -58,8 +58,9 @@ private:
     osgViewer::View *create_scene(float aspectRatio, int pixelRatio);
     osg::ShapeDrawable *create_graphic_cylinder(osg::Vec3 shapeLocation, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
     osg::Geode *create_geometry_node(osg::ShapeDrawable* newShape);
+    void create_axes(float wireframeSize);
     void create_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
-    void create_new_wireframe();
+    void create_new_wireframe(float wireframeSize);
     void animate_object(osg::Geode *geode, osg::Vec3 shapeLocation, float sphereRadius);
     void set_up_min_graphics_window();
     int  set_up_timer();
