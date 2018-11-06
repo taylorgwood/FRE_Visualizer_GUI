@@ -89,12 +89,12 @@ int OSGWidget::set_up_timer()
     return timerID;
 }
 
-osg::ShapeDrawable *OSGWidget::create_graphic_sphere(osg::Vec3 shapePosition, float sphereRadius, osg::Vec4 shapeRGBA)
+osg::ShapeDrawable *OSGWidget::create_graphic_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Vec4 shapeRGBA)
 {
-    osg::Sphere* sphere = new osg::Sphere(shapePosition, sphereRadius);
-    osg::ShapeDrawable* newShape = new osg::ShapeDrawable(sphere);
+    osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
+    osg::ShapeDrawable* newShape = new osg::ShapeDrawable(cylinder);
     newShape->setColor(shapeRGBA);
-    newShape->setName("Sphere");
+    newShape->setName("Cylinder");
     return newShape;
 }
 
@@ -134,12 +134,12 @@ void OSGWidget::animate_object(osg::Geode *geode, osg::Vec3 shapePosition, float
 }
 
 
-void OSGWidget::create_sphere(osg::Vec3 shapePosition, float sphereRadius, osg::Vec4 shapeRGBA)
+void OSGWidget::create_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Vec4 shapeRGBA)
 {
     osg::Vec3 origin{0,0,0};
-    osg::ShapeDrawable *newShape = create_graphic_sphere(origin, sphereRadius, shapeRGBA);
+    osg::ShapeDrawable *newShape = create_graphic_cylinder(origin, radius, height, shapeRGBA);
     osg::Geode *geode = create_geometry_node(newShape);
-    animate_object(geode, shapePosition, sphereRadius);
+    animate_object(geode, shapePosition, radius);
 }
 
 //void OSGWidget::populate_spheres(int numberOfSpheres)
@@ -171,11 +171,12 @@ void OSGWidget::populate_spheres(int numberOfSpheres)
 {
     for(int i=0; i<1; i++)
     {
-        float sphereRadius{1.0};
+        float radius{1.0};
+        float height{1.0};
         osg::Vec3 shapePosition{0,0,0};
         osg::Vec4 shapeRGBA = {1,0,0,1};
 
-        create_sphere(shapePosition, sphereRadius, shapeRGBA);
+        create_cylinder(shapePosition, radius, height, shapeRGBA);
     }
     update();
 }
