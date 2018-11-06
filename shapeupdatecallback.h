@@ -1,15 +1,15 @@
-#ifndef SPHEREUPDATECALLBACK_H
-#define SPHEREUPDATECALLBACK_H
+#ifndef SHAPEUPDATECALLBACK_H
+#define SHAPEUPDATECALLBACK_H
 
 #include <osg/MatrixTransform>
 #include <osg/Matrix>
 class Vector3;
 class PhysicsObject;
 
-class SphereUpdateCallback: public osg::NodeCallback
+class ShapeUpdateCallback: public osg::NodeCallback
 {
 public:
-    SphereUpdateCallback(bool& update, float radius);
+    ShapeUpdateCallback(bool& update, float radius);
     virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
 
 //    void update_physics();
@@ -33,4 +33,4 @@ protected:
 
 };
 
-#endif // SPHEREUPDATECALLBACK_H
+#endif // SHAPEUPDATECALLBACK_H

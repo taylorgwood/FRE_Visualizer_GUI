@@ -3,7 +3,7 @@
 #include "wireframe.h"
 //#include "vector3d.h"
 //#include "physicsObject.h"
-#include "sphereupdatecallback.h"
+#include "shapeupdatecallback.h"
 
 #include <osg/Camera>
 #include <osg/Geode>
@@ -50,6 +50,7 @@ void OSGWidget::create_manipulator_and_viewer()
     osg::ref_ptr<osgGA::TrackballManipulator> manipulator = new osgGA::TrackballManipulator;
     manipulator->setAllowThrow(false);
 
+
     osg::Vec3d cameraHomePosition{20.0,20.0,10.0};
     osg::Vec3d cameraHomeViewDirection{0,0,0};
     osg::Vec3d cameraHomeUpPosition{0,0,1};
@@ -60,6 +61,31 @@ void OSGWidget::create_manipulator_and_viewer()
     mViewer->setThreadingModel(osgViewer::CompositeViewer::SingleThreaded);
     mViewer->realize();
     mView->home();
+}
+
+void OSGWidget::set_view_along_x_axis()
+{
+//    osg::ref_ptr<osgGA::TrackballManipulator> manipulatorXView = new osgGA::TrackballManipulator;
+//    manipulatorXView->setAllowThrow(false);
+    osg::Vec3d eye{0,0,0};
+    osg::Vec3d center{0,0,0};
+    osg::Vec3d up{0,0,1};
+
+//    osg::Matrix mat = osg::Matrix::lookAt(cameraXPosition, cameraXViewDirection, cameraXUpPosition);
+    osg::Matrix mat;
+    mat.makeLookAt(eye, center, up);
+//    mView->getCameraManipulator()->setByMatrix(mat);
+//    mView->getCamera()->setProjectionMatrix(mat);
+//    osg::Camera *camera = new osg::Camera;
+//    camera = mView->getCamera();
+//    camera->setViewMatrixAsLookAt(eye,center,up);
+    osg::ref_ptr<osgGA::CameraManipulator> manipulator = mView->getCameraManipulator();
+    manipulator->setByMatrix(mat);
+//    camera->setViewMatrix(mat);
+//    mView->getCameraManipulator()->setByInverseMatrix(mat);
+    //mViewer->getCameraWithFocus()->setViewMatrixAsLookAt(cameraXPosition, cameraXViewDirection, cameraXUpPosition);
+    //mView->getCamera()->setViewMatrixAsLookAt(cameraXPosition, cameraXViewDirection, cameraXUpPosition);
+    update();
 }
 
 void OSGWidget::set_up_min_graphics_window()
@@ -145,7 +171,7 @@ void OSGWidget::animate_object(osg::Geode *geode, osg::Vec3 shapePosition, float
 
     //    PhysicsObject* sphere = new PhysicsObject(shapePositionVector3, initialVelocity, mGravity);
     transform->setMatrix(osg::Matrix::translate(shapePosition));
-    transform->setUpdateCallback(new SphereUpdateCallback(mSimulationOn, sphereRadius));
+    transform->setUpdateCallback(new ShapeUpdateCallback(mSimulationOn, sphereRadius));
     transform->addChild(geode);
     mRoot->addChild(transform);
 }
@@ -244,7 +270,7 @@ void OSGWidget::set_object_size(const double objectWidth, const double objectLen
     update();
 }
 
-void OSGWidget::figure_out_math()
+void OSGWidget::calculate_layer_properties()
 {
     double volumePrintPerLayer = mShapeWidth*mShapeLength*mLayerHeight*mInfillPercentage*mExtrusionMultiplier;
     double volumeSyringePerLayer = volumePrintPerLayer;
@@ -259,7 +285,6 @@ void OSGWidget::figure_out_math()
     double numberOfCylindersPerLayer = floor(mShapeWidth/mExtrusionWidthCalculated);
     double*** centerOfCylinderArray = create_center_of_cylinder_array(numberOfLayers, numberOfCylindersPerLayer);
     create_all_cylinders(centerOfCylinderArray, numberOfCylindersPerLayer, numberOfLayers);
-
 }
 
 double*** OSGWidget::create_center_of_cylinder_array(double numberOfLayers, double numberOfCylindersPerLayer)
@@ -325,11 +350,6 @@ void OSGWidget::create_all_cylinders(double ***centerOfCylinderArray, double num
     update();
 }
 
-//void OSGWidget::create_shape_location_vector(double numberOf)
-//{
-
-//}
-
 void OSGWidget::create_cylinder_in_x_direction(int numberOfCylinders)
 {
     for(int i=0; i<numberOfCylinders; i++)
@@ -340,8 +360,6 @@ void OSGWidget::create_cylinder_in_x_direction(int numberOfCylinders)
         osg::Vec4 shapeRGBA = {1.0,1.0,0,0.2};
 
         osg::Quat rotation = rotate_about_y_axis();
-        //        osg::Vec3 centeredAtZeroCompensation = {0,0,0};
-        //        shapePosition = shapePosition-centeredAtZeroCompensation;
         create_cylinder(shapePosition, diameterOfPrint, length, rotation, shapeRGBA);
     }
     update();
@@ -439,6 +457,12 @@ void OSGWidget::keyPressEvent(QKeyEvent* event)
         mView->home();
         return;
     }
+    if(event->key() == Qt::Key_X)
+    {
+        set_view_along_x_axis();
+        return;
+    }
+
     this->getEventQueue()->keyPress(osgGA::GUIEventAdapter::KeySymbol(*keyData) );
 }
 

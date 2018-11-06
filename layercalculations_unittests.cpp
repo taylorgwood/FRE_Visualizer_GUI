@@ -7,7 +7,7 @@
 //    EXPECT_DOUBLE_EQ(firstObject.get_imaginary(), secondObject.get_imaginary());
 //}
 
-//TEST(ComplexConstructor, whenGivenTwoNumbers_getComplexNumber)
+//TEST(VolumePrintPerLayer, whenGivenTwoNumbers_getComplexNumber)
 //{
 //    double expectedReal{1};
 //    double expectedImaginary{2};

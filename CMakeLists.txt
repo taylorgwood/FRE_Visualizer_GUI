@@ -23,8 +23,8 @@ SET(MYSOURCE
     osgwidget.cpp
     wireframe.cpp
     wireframe.h
-    sphereupdatecallback.cpp
-    sphereupdatecallback.h
+    shapeupdatecallback.cpp
+    shapeupdatecallback.h
     )
 
 add_executable(${PROJECT_NAME} ${MYSOURCE})

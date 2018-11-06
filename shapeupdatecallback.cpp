@@ -1,11 +1,15 @@
 //#include "vector3d.h"
 #include "osgwidget.h"
-#include "sphereupdatecallback.h"
+#include "shapeupdatecallback.h"
 //#include "physicsworld.h"
 
-SphereUpdateCallback::SphereUpdateCallback(bool &update, float radius) :
+ShapeUpdateCallback::ShapeUpdateCallback(bool &update, float radius) :
     mUpdate {update}
 {
+//    mPosition = cylinder->get_position();
+//    mLength   = cylinder->get_length();
+//    mColor    = cylinder->get_color();
+//    mDiameter = cylinder->get_diameter();
 //    mPosition = sphere->get_position();
 //    mVelocity = sphere->get_velocity();
 //    mAcceleration = sphere->get_acceleration();
@@ -14,7 +18,7 @@ SphereUpdateCallback::SphereUpdateCallback(bool &update, float radius) :
 //    mObjectList->push_back(mObject);
 }
 
-void SphereUpdateCallback::operator()(osg::Node* node, osg::NodeVisitor* nv)
+void ShapeUpdateCallback::operator()(osg::Node* node, osg::NodeVisitor* nv)
 {
     if (mUpdate)
     {
@@ -58,7 +62,7 @@ void SphereUpdateCallback::operator()(osg::Node* node, osg::NodeVisitor* nv)
 //    return shapeLocationVector3;
 //}
 
-double SphereUpdateCallback::get_timestep() const
+double ShapeUpdateCallback::get_timestep() const
 {
     return mTimeStep;
 }

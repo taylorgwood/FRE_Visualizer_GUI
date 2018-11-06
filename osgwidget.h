@@ -25,7 +25,6 @@ public:
     void create_cylinder_in_x_direction(int numberOfCylinders);
     void toggle_start(bool on);
     void toggle_stop(bool off);
-    //    bool check_sphere_location(Vector3 shapePositionVector3, float sphereRadius);
     osg::Quat rotate_about_x_axis();
     osg::Quat rotate_about_y_axis();
     float get_diameter_of_print() const;
@@ -40,10 +39,11 @@ public:
     void set_layer_height(const float layerHeight);
     float get_layer_height() const;
     void set_diameter_of_print(const double diameterOfPrint);
-    void figure_out_math();
+    void calculate_layer_properties();
     double*** create_center_of_cylinder_array(double numberOfLayers, double numberOfCylindersPerLayer);
     void create_all_cylinders(double ***centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers);
     void set_object_size(const double objectWidth, const double objectLength, const double objectHeight);
+    void set_view_along_x_axis();
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
@@ -67,6 +67,8 @@ private:
     osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> mGraphicsWindow;
     osg::ref_ptr<osgViewer::CompositeViewer> mViewer;
     osg::ref_ptr<osgViewer::View> mView;
+    osg::ref_ptr<osgViewer::CompositeViewer> mViewerX;
+    osg::ref_ptr<osgViewer::View> mViewX;
     osg::ref_ptr<osg::Group> mRoot;
     int mTimerId{0};
 
@@ -83,7 +85,6 @@ private:
     void set_up_min_graphics_window();
     int  set_up_timer();
 
-    //    PhysicsObject mObject;
     double pi{3.14159}; const
     double mDiameterOfSyringe{14.9};
     float  mDiameterOfPrint{0.26};
@@ -98,7 +99,7 @@ private:
     float  mShapeLength{10};
 
     bool   mSimulationOn{false};
-    //    std::vector<PhysicsObject*> *mObjectList;
+//    std::vector<PhysicsObject*> *mObjectList;
 
 };
 
