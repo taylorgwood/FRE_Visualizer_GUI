@@ -37,10 +37,12 @@ public:
     double get_infill_percentage() const;
     void set_extrusion_width(const double extrusionWidth);
     double get_extrusion_width() const;
-    void set_layer_height(const double layerHeight);
-    double get_layer_height() const;
+    void set_layer_height(const float layerHeight);
+    float get_layer_height() const;
     void set_diameter_of_print(const double diameterOfPrint);
     void figure_out_math();
+    double*** create_center_of_cylinder_array(double numberOfLayers, double numberOfCylindersPerLayer);
+    void create_all_cylinders(double ***centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers);
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
@@ -88,7 +90,8 @@ private:
     double mExtrusionMultiplier{1.0};
     double mInfillPercentage{100};
     double mExtrusionWidth{1.0};
-    double mLayerHeight{0.26};
+    double mExtrusionWidthCalculated{mExtrusionWidth};
+    float  mLayerHeight{0.26};
     float  mShapeWidth{10};
     float  mShapeHeight{10};
     float  mShapeLength{4};

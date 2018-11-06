@@ -66,17 +66,17 @@ void MainWindow::on_actionStop_triggered()
 //    MainWindow::mOSGWidget->create_cylinder_in_x_direction(numberOfSpheres);
 //}
 
-void MainWindow::on_runSimulationButton_clicked()
-{
-    bool On{1};
-    MainWindow::mOSGWidget->toggle_start(On);
-}
+//void MainWindow::on_runSimulationButton_clicked()
+//{
+//    bool On{1};
+//    MainWindow::mOSGWidget->toggle_start(On);
+//}
 
-void MainWindow::on_stopSimulationButton_clicked()
-{
-    bool Off{0};
-    MainWindow::mOSGWidget->toggle_start(Off);
-}
+//void MainWindow::on_stopSimulationButton_clicked()
+//{
+//    bool Off{0};
+//    MainWindow::mOSGWidget->toggle_start(Off);
+//}
 
 void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
 {

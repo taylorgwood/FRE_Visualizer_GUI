@@ -221,12 +221,12 @@ double OSGWidget::get_extrusion_width() const
     return mExtrusionWidth;
 }
 
-void OSGWidget::set_layer_height(const double layerHeight)
+void OSGWidget::set_layer_height(const float layerHeight)
 {
     mLayerHeight = layerHeight;
 }
 
-double OSGWidget::get_layer_height() const
+float OSGWidget::get_layer_height() const
 {
     return mLayerHeight;
 }
@@ -238,19 +238,24 @@ void OSGWidget::set_diameter_of_print(const double diameterOfPrint)
 
 void OSGWidget::figure_out_math()
 {
-
     double volumePrintPerLayer = mShapeWidth*mShapeLength*mLayerHeight*mInfillPercentage*mExtrusionMultiplier;
     double volumeSyringePerLayer = volumePrintPerLayer;
     double areaOfSyringe = pi/4*mDiameterOfSyringe*mDiameterOfSyringe;
     double syringeExtrusionHeightPerLayer = volumeSyringePerLayer/areaOfSyringe;
-    double extrusionWidthCalculated = mExtrusionMultiplier/mInfillPercentage;
-    double diameterOfPrint = sqrt(volumePrintPerLayer*4*extrusionWidthCalculated/(mShapeWidth*mShapeLength*pi));
+    double mExtrusionWidthCalculated = mExtrusionMultiplier/mInfillPercentage;
+    double diameterOfPrint = sqrt(volumePrintPerLayer*4*mExtrusionWidthCalculated/(mShapeWidth*mShapeLength*pi));
     set_diameter_of_print(diameterOfPrint);
+    //    create_shape_location_vector();
 
     double numberOfLayers = floor(mShapeHeight/mLayerHeight);
-    double numberOfCylindersPerLayer = floor(mShapeWidth/extrusionWidthCalculated);
+    double numberOfCylindersPerLayer = floor(mShapeWidth/mExtrusionWidthCalculated);
+    double*** centerOfCylinderArray = create_center_of_cylinder_array(numberOfLayers, numberOfCylindersPerLayer);
+    create_all_cylinders(centerOfCylinderArray, numberOfCylindersPerLayer, numberOfLayers);
 
-    //    create_shape_location_vector();
+}
+
+double*** OSGWidget::create_center_of_cylinder_array(double numberOfLayers, double numberOfCylindersPerLayer)
+{
     unsigned int numberOfOrthogonalDirections{3};
     double ***centerOfCylinderArray{nullptr};
     centerOfCylinderArray = new double**[numberOfCylindersPerLayer];
@@ -269,26 +274,47 @@ void OSGWidget::figure_out_math()
         {
             unsigned int cylinderCount{r};
             unsigned int layerCount{c};
-            double xLocation{0};
-            double yLocation{0};
-            double zLocation{c*mLayerHeight};
+            float xLocation{0};
+            float yLocation{0};
+            float zLocation{c*mLayerHeight};
             if ((layerCount%2) == 0)
             {
-                xLocation = cylinderCount*extrusionWidthCalculated;
+                xLocation = cylinderCount*mExtrusionWidthCalculated;
                 yLocation = -mShapeWidth/2;
             }
             else
             {
                 xLocation = -mShapeLength/2;
-                yLocation = cylinderCount*extrusionWidthCalculated;
+                yLocation = cylinderCount*mExtrusionWidthCalculated;
             }
             centerOfCylinderArray[r][c][1] = xLocation;
             centerOfCylinderArray[r][c][2] = yLocation;
             centerOfCylinderArray[r][c][3] = zLocation;
         }
     }
+    return centerOfCylinderArray;
+}
 
+void OSGWidget::create_all_cylinders(double ***centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers)
+{
+    for (unsigned int r{0}; r<numberOfCylindersPerLayer; r++)
+    {
+        for(unsigned int c{0}; c<numberOfLayers; c++)
+        {
+            float diameterOfPrint = get_diameter_of_print();
+            float length{mShapeLength};
+            float positionX = centerOfCylinderArray[r][c][1];
+            float positionY = centerOfCylinderArray[r][c][2];
+            float positionZ = centerOfCylinderArray[r][c][3];
 
+            osg::Vec3 shapePosition{positionX,positionY,positionZ};
+            osg::Vec4 shapeRGBA = {1.0,1.0,0,0.2};
+
+            osg::Quat rotation = rotate_about_y_axis();
+            create_cylinder(shapePosition, diameterOfPrint, length, rotation, shapeRGBA);
+        }
+    }
+    update();
 }
 
 //void OSGWidget::create_shape_location_vector(double numberOf)
