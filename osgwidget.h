@@ -22,12 +22,15 @@ public:
               Qt::WindowFlags f = 0);
 
     virtual ~OSGWidget();
-    void populate_spheres(int numberOfSpheres);
+    void create_cylinder_in_x_direction(int numberOfCylinders);
     void toggle_start(bool on);
     void toggle_stop(bool off);
 //    bool check_sphere_location(Vector3 shapePositionVector3, float sphereRadius);
     osg::Quat rotate_about_x_axis();
     osg::Quat rotate_about_y_axis();
+    float get_diameter_of_print() const;
+    void set_needle_diameter(const double needleDiameter);
+    double get_needle_diameter() const;
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
@@ -60,14 +63,19 @@ private:
     osgViewer::View *create_scene(float aspectRatio, int pixelRatio);
     osg::ShapeDrawable *create_graphic_cylinder(osg::Vec3 shapeLocation, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
     osg::Geode *create_geometry_node(osg::ShapeDrawable* newShape);
-    void create_axes(float wireframeSize);
+    void create_axes();
     void create_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
-    void create_new_wireframe(float wireframeSize);
+    void create_new_wireframe();
     void animate_object(osg::Geode *geode, osg::Vec3 shapeLocation, float sphereRadius);
     void set_up_min_graphics_window();
     int  set_up_timer();
 
     //    PhysicsObject mObject;
+    float mDiameterOfPrint{0.26};
+    double mNeedleDiameter{0.26};
+    float mShapeWidth{10};
+    float mShapeHeight{10};
+    float mShapeLength{4};
 
     bool   mSimulationOn{false};
     //    std::vector<PhysicsObject*> *mObjectList;

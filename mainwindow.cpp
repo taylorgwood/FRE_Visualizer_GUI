@@ -60,11 +60,11 @@ void MainWindow::on_actionStop_triggered()
 //    MainWindow::mOSGWidget->set_random_ranges(radiusMin,radiusMax,massMin,massMax,cOfRMin,cOfRMax,velocityMin,velocityMax);
 //}
 
-void MainWindow::on_populateSpheres_clicked()
-{
-    int numberOfSpheres = mMainWindowUI->numberOfSpheres->text().toInt();
-    MainWindow::mOSGWidget->populate_spheres(numberOfSpheres);
-}
+//void MainWindow::on_populateSpheres_clicked()
+//{
+//    int numberOfSpheres = mMainWindowUI->numberOfSpheres->text().toInt();
+//    MainWindow::mOSGWidget->create_cylinder_in_x_direction(numberOfSpheres);
+//}
 
 void MainWindow::on_runSimulationButton_clicked()
 {

@@ -111,10 +111,13 @@ osg::Geode *OSGWidget::create_geometry_node(osg::ShapeDrawable* newShape)
     return geode;
 }
 
-void OSGWidget::create_new_wireframe(float wireframeSize)
+void OSGWidget::create_new_wireframe()
 {
     osg::Vec4 wireframeColorRGBA{0.2f,0.5f,1.f,0.1f};
-    osg::Vec3d scaleFactor = {wireframeSize,wireframeSize,wireframeSize};
+    float scaleFactorX = mShapeLength/2;
+    float scaleFactorY = mShapeWidth/2;
+    float scaleFactorZ = mShapeHeight/2;
+    osg::Vec3d scaleFactor = {scaleFactorX,scaleFactorY,scaleFactorZ};
     osg::Node* wireFrame = create_wireframe(wireframeColorRGBA, scaleFactor);
     mRoot->addChild(wireFrame);
 }
@@ -186,34 +189,51 @@ osg::Quat OSGWidget::rotate_about_y_axis()
     return rotation;
 }
 
-void OSGWidget::populate_spheres(int numberOfSpheres)
+float OSGWidget::get_diameter_of_print() const
+{
+    return mDiameterOfPrint;
+}
+
+void OSGWidget::set_needle_diameter(const double needleDiameter)
+{
+    mNeedleDiameter = needleDiameter;
+}
+
+double OSGWidget::get_needle_diameter() const
+{
+    return mNeedleDiameter;
+}
+
+void OSGWidget::create_cylinder_in_x_direction(int numberOfCylinders)
 {
     for(int i=0; i<1; i++)
     {
-        float radius{0.26};
-        float height{10};
+        float diameterOfPrint = get_diameter_of_print();
+        float length{mShapeLength};
         osg::Vec3 shapePosition{0,0,0};
         osg::Vec4 shapeRGBA = {1.0,1.0,0,1};
 
         osg::Quat rotation = rotate_about_y_axis();
-        float wireframeSize{5};
-        osg::Vec3 centeredAtZeroCompensation = {0,0,0};
-        shapePosition = shapePosition-centeredAtZeroCompensation;
-        create_cylinder(shapePosition, radius, height, rotation, shapeRGBA);
+        //        osg::Vec3 centeredAtZeroCompensation = {0,0,0};
+        //        shapePosition = shapePosition-centeredAtZeroCompensation;
+        create_cylinder(shapePosition, diameterOfPrint, length, rotation, shapeRGBA);
     }
     update();
 }
 
-void OSGWidget::create_axes(float wireframeSize)
+void OSGWidget::create_axes()
 {
     float radius{0.1};
     float height{1};
     osg::Vec3 shapePosition1{height/2,0,0};
     osg::Vec3 shapePosition2{0,height/2,0};
     osg::Vec3 shapePosition3{0,0,height/2};
-    shapePosition1 += {wireframeSize,0,0};
-    shapePosition2 += {0,wireframeSize,0};
-    shapePosition3 += {0,0,wireframeSize};
+    float moveDistanceX = mShapeLength/2;
+    float moveDistanceY = mShapeWidth/2;
+    float moveDistanceZ = mShapeHeight/2;
+    shapePosition1 += {moveDistanceX,0,0};
+    shapePosition2 += {0,moveDistanceY,0};
+    shapePosition3 += {0,0,moveDistanceZ};
     osg::Vec4 shapeRGBA1 = {1.0,0,0,0.1};
     osg::Vec4 shapeRGBA2 = {0,1.0,0,0.1};
     osg::Vec4 shapeRGBA3 = {0,0,1.0,0.1};
@@ -250,14 +270,10 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
 {
     mRoot = new osg::Group;
     set_up_environment();
-    float wireframeSize = 5;
-    create_new_wireframe(wireframeSize);
+    create_new_wireframe();
     set_up_min_graphics_window();
-    create_axes(wireframeSize);
-    populate_spheres(1);
-
-
-
+    create_axes();
+    create_cylinder_in_x_direction(1);
 
     mTimerId = set_up_timer();
 }

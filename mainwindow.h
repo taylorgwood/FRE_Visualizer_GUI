@@ -28,7 +28,7 @@ public slots:
 private slots:
 //    void on_gravityButton_clicked();
 //    void on_defaultButton_clicked();
-    void on_populateSpheres_clicked();
+//    void on_populateSpheres_clicked();
     void on_stopSimulationButton_clicked();
     void on_runSimulationButton_clicked();
 
