@@ -10,6 +10,7 @@
 #include <osg/Material>
 #include <osg/Shape>
 #include <osg/ShapeDrawable>
+#include <osg/BlendFunc>
 #include <osgViewer/ViewerEventHandlers>
 #include <osg/MatrixTransform>
 #include <osg/PositionAttitudeTransform>
@@ -104,6 +105,8 @@ osg::Geode *OSGWidget::create_geometry_node(osg::ShapeDrawable* newShape)
     osg::Geode* geode = new osg::Geode;
     geode->addDrawable(newShape);
     osg::StateSet* stateSet = geode->getOrCreateStateSet();
+    stateSet->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+    stateSet->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA), osg::StateAttribute::ON);
     osg::Material* material = new osg::Material;
     material->setColorMode( osg::Material::AMBIENT_AND_DIFFUSE );
     stateSet->setAttributeAndModes( material, osg::StateAttribute::ON );
@@ -251,7 +254,7 @@ void OSGWidget::create_cylinder_in_x_direction(int numberOfCylinders)
         float diameterOfPrint = get_diameter_of_print();
         float length{mShapeLength};
         osg::Vec3 shapePosition{0,0,0};
-        osg::Vec4 shapeRGBA = {1.0,1.0,0,1};
+        osg::Vec4 shapeRGBA = {1.0,1.0,0,0.2};
 
         osg::Quat rotation = rotate_about_y_axis();
         //        osg::Vec3 centeredAtZeroCompensation = {0,0,0};
