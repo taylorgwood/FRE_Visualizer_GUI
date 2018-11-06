@@ -32,7 +32,15 @@ add_executable(${PROJECT_NAME} ${MYSOURCE})
 target_link_libraries(${PROJECT_NAME}
     ${OPENSCENEGRAPH_LIBRARIES}
     Qt5::Widgets
-    Qt5::Gui
-    )
+    Qt5::Gui)
 
+IF (NOT TARGET gtest)
+# Prevent GoogleTest from overriding our compiler/linker options
+# when building with Visual Studio
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+add_subdirectory(libs/googletest)
+ENDIF()
 
+set(TEST_NAME ${PROJECT_NAME}_UnitTest)
+add_executable(${TEST_NAME} layercalculations_unittests.cpp)
+target_link_libraries(${TEST_NAME} gtest gtest_main)
