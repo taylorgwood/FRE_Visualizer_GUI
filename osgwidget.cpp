@@ -204,6 +204,46 @@ double OSGWidget::get_needle_diameter() const
     return mNeedleDiameter;
 }
 
+void OSGWidget::set_extrusion_multiplier(const double extrusionMultiplier)
+{
+    mExtrusionMultiplier = extrusionMultiplier;
+}
+
+double OSGWidget::get_extrusion_multiplier() const
+{
+    return mExtrusionMultiplier;
+}
+
+void OSGWidget::set_infill_percentage(const double infillPercentage)
+{
+    mInfillPercentage = infillPercentage;
+}
+
+double OSGWidget::get_infill_percentage() const
+{
+    return mInfillPercentage;
+}
+
+void OSGWidget::set_extrusion_width(const double extrusionWidth)
+{
+    mExtrusionWidth = extrusionWidth;
+}
+
+double OSGWidget::get_extrusion_width() const
+{
+    return mExtrusionWidth;
+}
+
+void OSGWidget::set_layer_height(const double layerHeight)
+{
+    mLayerHeight = layerHeight;
+}
+
+double OSGWidget::get_layer_height() const
+{
+    return mLayerHeight;
+}
+
 void OSGWidget::create_cylinder_in_x_direction(int numberOfCylinders)
 {
     for(int i=0; i<1; i++)

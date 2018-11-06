@@ -25,12 +25,20 @@ public:
     void create_cylinder_in_x_direction(int numberOfCylinders);
     void toggle_start(bool on);
     void toggle_stop(bool off);
-//    bool check_sphere_location(Vector3 shapePositionVector3, float sphereRadius);
+    //    bool check_sphere_location(Vector3 shapePositionVector3, float sphereRadius);
     osg::Quat rotate_about_x_axis();
     osg::Quat rotate_about_y_axis();
     float get_diameter_of_print() const;
     void set_needle_diameter(const double needleDiameter);
     double get_needle_diameter() const;
+    void set_extrusion_multiplier(const double extrusionMultiplier);
+    double get_extrusion_multiplier() const;
+    void set_infill_percentage(const double infillPercentage);
+    double get_infill_percentage() const;
+    void set_extrusion_width(const double extrusionWidth);
+    double get_extrusion_width() const;
+    void set_layer_height(const double layerHeight);
+    double get_layer_height() const;
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
@@ -73,6 +81,10 @@ private:
     //    PhysicsObject mObject;
     float mDiameterOfPrint{0.26};
     double mNeedleDiameter{0.26};
+    double mExtrusionMultiplier{1.0};
+    double mInfillPercentage{100};
+    double mExtrusionWidth{1.0};
+    double mLayerHeight{0.26};
     float mShapeWidth{10};
     float mShapeHeight{10};
     float mShapeLength{4};
