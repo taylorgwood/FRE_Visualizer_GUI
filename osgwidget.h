@@ -26,6 +26,8 @@ public:
     void toggle_start(bool on);
     void toggle_stop(bool off);
 //    bool check_sphere_location(Vector3 shapePositionVector3, float sphereRadius);
+    osg::Quat rotate_about_x_axis();
+    osg::Quat rotate_about_y_axis();
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);

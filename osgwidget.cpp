@@ -168,6 +168,24 @@ void OSGWidget::create_cylinder(osg::Vec3 shapePosition, float radius, float hei
 //    update();
 //}
 
+osg::Quat OSGWidget::rotate_about_x_axis()
+{
+    double angleInDegrees = 90;
+    double angleInRadians = osg::DegreesToRadians(angleInDegrees);
+    osg::Vec3 rotationAxis{1,0,0};
+    osg::Quat rotation{angleInRadians,rotationAxis};
+    return rotation;
+}
+
+osg::Quat OSGWidget::rotate_about_y_axis()
+{
+    double angleInDegrees = 90;
+    double angleInRadians = osg::DegreesToRadians(angleInDegrees);
+    osg::Vec3 rotationAxis{0,1,0};
+    osg::Quat rotation{angleInRadians,rotationAxis};
+    return rotation;
+}
+
 void OSGWidget::populate_spheres(int numberOfSpheres)
 {
     for(int i=0; i<1; i++)
@@ -175,14 +193,12 @@ void OSGWidget::populate_spheres(int numberOfSpheres)
         float radius{0.26};
         float height{10};
         osg::Vec3 shapePosition{0,0,0};
-        osg::Vec3 centeredAtZeroCompensation{5,0,5};
-        shapePosition = shapePosition-centeredAtZeroCompensation;
         osg::Vec4 shapeRGBA = {1.0,1.0,0,1};
 
-        double angleInDegrees = 90;
-        double angleInRadians = osg::DegreesToRadians(angleInDegrees);
-        osg::Vec3 rotationaxis{1,0,0};
-        osg::Quat rotation{angleInRadians,rotationaxis};
+        osg::Quat rotation = rotate_about_y_axis();
+        float wireframeSize{5};
+        osg::Vec3 centeredAtZeroCompensation = {0,0,0};
+        shapePosition = shapePosition-centeredAtZeroCompensation;
         create_cylinder(shapePosition, radius, height, rotation, shapeRGBA);
     }
     update();
@@ -198,9 +214,9 @@ void OSGWidget::create_axes(float wireframeSize)
     shapePosition1 += {wireframeSize,0,0};
     shapePosition2 += {0,wireframeSize,0};
     shapePosition3 += {0,0,wireframeSize};
-    osg::Vec4 shapeRGBA1 = {1.0,0,0,1};
-    osg::Vec4 shapeRGBA2 = {0,1.0,0,1};
-    osg::Vec4 shapeRGBA3 = {0,0,1.0,1};
+    osg::Vec4 shapeRGBA1 = {1.0,0,0,0.1};
+    osg::Vec4 shapeRGBA2 = {0,1.0,0,0.1};
+    osg::Vec4 shapeRGBA3 = {0,0,1.0,0.1};
 
     double angleInDegrees = 90;
     double angleInRadians = osg::DegreesToRadians(angleInDegrees);
@@ -238,7 +254,7 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     create_new_wireframe(wireframeSize);
     set_up_min_graphics_window();
     create_axes(wireframeSize);
-    //    populate_spheres(1);
+    populate_spheres(1);
 
 
 
