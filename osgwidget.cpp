@@ -92,6 +92,11 @@ int OSGWidget::set_up_timer()
 osg::ShapeDrawable *OSGWidget::create_graphic_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Vec4 shapeRGBA)
 {
     osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
+    double angleInDegrees = 15;
+    double angleInRadians = osg::DegreesToRadians(angleInDegrees);
+    osg::Vec3 rotationaxis{1,0,0};
+    osg::Quat rotation{angleInRadians,rotationaxis};
+    cylinder->setRotation(rotation);
     osg::ShapeDrawable* newShape = new osg::ShapeDrawable(cylinder);
     newShape->setColor(shapeRGBA);
     newShape->setName("Cylinder");
@@ -172,7 +177,7 @@ void OSGWidget::populate_spheres(int numberOfSpheres)
     for(int i=0; i<1; i++)
     {
         float radius{1.0};
-        float height{1.0};
+        float height{8.0};
         osg::Vec3 shapePosition{0,0,0};
         osg::Vec4 shapeRGBA = {1,0,0,1};
 
