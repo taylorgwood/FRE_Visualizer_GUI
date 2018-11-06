@@ -32,6 +32,12 @@ private slots:
     void on_stopSimulationButton_clicked();
     void on_runSimulationButton_clicked();
 
+    void on_extrusionMultiplierSlider_sliderMoved(int position);
+
+    void on_layerHeight_returnPressed();
+
+    void on_needleGauge_valueChanged(int arg1);
+
 private:
     Ui::MainWindowForm *mMainWindowUI;
     OSGWidget *mOSGWidget{nullptr};
