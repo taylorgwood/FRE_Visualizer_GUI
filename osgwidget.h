@@ -39,6 +39,8 @@ public:
     double get_extrusion_width() const;
     void set_layer_height(const double layerHeight);
     double get_layer_height() const;
+    void set_diameter_of_print(const double diameterOfPrint);
+    void figure_out_math();
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
@@ -79,15 +81,17 @@ private:
     int  set_up_timer();
 
     //    PhysicsObject mObject;
-    float mDiameterOfPrint{0.26};
+    double pi{3.14159}; const
+    double mDiameterOfSyringe{14.9};
+    float  mDiameterOfPrint{0.26};
     double mNeedleDiameter{0.26};
     double mExtrusionMultiplier{1.0};
     double mInfillPercentage{100};
     double mExtrusionWidth{1.0};
     double mLayerHeight{0.26};
-    float mShapeWidth{10};
-    float mShapeHeight{10};
-    float mShapeLength{4};
+    float  mShapeWidth{10};
+    float  mShapeHeight{10};
+    float  mShapeLength{4};
 
     bool   mSimulationOn{false};
     //    std::vector<PhysicsObject*> *mObjectList;

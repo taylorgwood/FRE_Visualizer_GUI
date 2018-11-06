@@ -125,6 +125,16 @@ void OSGWidget::create_new_wireframe()
     mRoot->addChild(wireFrame);
 }
 
+void OSGWidget::toggle_start(bool on)
+{
+    mSimulationOn = on;
+}
+
+void OSGWidget::toggle_stop(bool off)
+{
+    mSimulationOn = off;
+}
+
 void OSGWidget::animate_object(osg::Geode *geode, osg::Vec3 shapePosition, float sphereRadius)
 {
     osg::MatrixTransform *transform = new osg::MatrixTransform;
@@ -140,7 +150,6 @@ void OSGWidget::animate_object(osg::Geode *geode, osg::Vec3 shapePosition, float
     mRoot->addChild(transform);
 }
 
-
 void OSGWidget::create_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA)
 {
     osg::Vec3 origin{0,0,0};
@@ -148,31 +157,6 @@ void OSGWidget::create_cylinder(osg::Vec3 shapePosition, float radius, float hei
     osg::Geode *geode = create_geometry_node(newShape);
     animate_object(geode, shapePosition, radius);
 }
-
-//void OSGWidget::populate_spheres(int numberOfSpheres)
-//{
-//    for(int i=0; i<numberOfSpheres; i++)
-//    {
-//        float sphereRadius = get_random_float(mRadiusMin,mRadiusMax);
-//        float tolerance{0.01};
-//        osg::Vec3 shapePosition = get_random_osgVec3(mPositonMin+sphereRadius+tolerance, mPositionMax-sphereRadius-tolerance);
-//        Vector3 shapePositionVector3{0,0,0};
-//        shapePositionVector3.set_x(shapePosition.x());
-//        shapePositionVector3.set_y(shapePosition.y());
-//        shapePositionVector3.set_z(shapePosition.z());
-//        bool sphereLocationValid = check_sphere_location(shapePositionVector3, sphereRadius);
-//        if (!sphereLocationValid)
-//        {
-//            populate_spheres(1);
-//        }
-//        osg::Vec4 shapeRGBA = get_random_color();
-//        Vector3 initialVelocity = get_random_Vector3(mVelocityMin, mVelocityMax);
-//        double cOfR = get_random_double(mCOfRMin, mCOfRMax);
-//        double mass = get_random_double(mMassMin,mMassMax);
-//        create_sphere(shapePosition, sphereRadius, initialVelocity, shapeRGBA, cOfR, mass);
-//    }
-//    update();
-//}
 
 osg::Quat OSGWidget::rotate_about_x_axis()
 {
@@ -247,9 +231,74 @@ double OSGWidget::get_layer_height() const
     return mLayerHeight;
 }
 
+void OSGWidget::set_diameter_of_print(const double diameterOfPrint)
+{
+    mDiameterOfPrint = diameterOfPrint;
+}
+
+void OSGWidget::figure_out_math()
+{
+
+    double volumePrintPerLayer = mShapeWidth*mShapeLength*mLayerHeight*mInfillPercentage*mExtrusionMultiplier;
+    double volumeSyringePerLayer = volumePrintPerLayer;
+    double areaOfSyringe = pi/4*mDiameterOfSyringe*mDiameterOfSyringe;
+    double syringeExtrusionHeightPerLayer = volumeSyringePerLayer/areaOfSyringe;
+    double extrusionWidthCalculated = mExtrusionMultiplier/mInfillPercentage;
+    double diameterOfPrint = sqrt(volumePrintPerLayer*4*extrusionWidthCalculated/(mShapeWidth*mShapeLength*pi));
+    set_diameter_of_print(diameterOfPrint);
+
+    double numberOfLayers = floor(mShapeHeight/mLayerHeight);
+    double numberOfCylindersPerLayer = floor(mShapeWidth/extrusionWidthCalculated);
+
+    //    create_shape_location_vector();
+    unsigned int numberOfOrthogonalDirections{3};
+    double ***centerOfCylinderArray{nullptr};
+    centerOfCylinderArray = new double**[numberOfCylindersPerLayer];
+    for (unsigned int r{0}; r < numberOfCylindersPerLayer; r++) // 1:1:numberOfCircles
+    {
+        centerOfCylinderArray[r] = new double*[numberOfLayers];
+        for (unsigned int c{0}; c<numberOfLayers; c++)
+        {
+            centerOfCylinderArray[r][c] = new double[numberOfOrthogonalDirections];
+        }
+    }
+
+    for (unsigned int r{0}; r<numberOfCylindersPerLayer; r++)
+    {
+        for(unsigned int c{0}; c<numberOfLayers; c++)
+        {
+            unsigned int cylinderCount{r};
+            unsigned int layerCount{c};
+            double xLocation{0};
+            double yLocation{0};
+            double zLocation{c*mLayerHeight};
+            if ((layerCount%2) == 0)
+            {
+                xLocation = cylinderCount*extrusionWidthCalculated;
+                yLocation = -mShapeWidth/2;
+            }
+            else
+            {
+                xLocation = -mShapeLength/2;
+                yLocation = cylinderCount*extrusionWidthCalculated;
+            }
+            centerOfCylinderArray[r][c][1] = xLocation;
+            centerOfCylinderArray[r][c][2] = yLocation;
+            centerOfCylinderArray[r][c][3] = zLocation;
+        }
+    }
+
+
+}
+
+//void OSGWidget::create_shape_location_vector(double numberOf)
+//{
+
+//}
+
 void OSGWidget::create_cylinder_in_x_direction(int numberOfCylinders)
 {
-    for(int i=0; i<1; i++)
+    for(int i=0; i<numberOfCylinders; i++)
     {
         float diameterOfPrint = get_diameter_of_print();
         float length{mShapeLength};
@@ -277,9 +326,9 @@ void OSGWidget::create_axes()
     shapePosition1 += {moveDistanceX,0,0};
     shapePosition2 += {0,moveDistanceY,0};
     shapePosition3 += {0,0,moveDistanceZ};
-    osg::Vec4 shapeRGBA1 = {1.0,0,0,0.1};
-    osg::Vec4 shapeRGBA2 = {0,1.0,0,0.1};
-    osg::Vec4 shapeRGBA3 = {0,0,1.0,0.1};
+    osg::Vec4 shapeRGBA1 = {1.0,0,0,0.5};
+    osg::Vec4 shapeRGBA2 = {0,1.0,0,0.5};
+    osg::Vec4 shapeRGBA3 = {0,0,1.0,0.5};
 
     double angleInDegrees = 90;
     double angleInRadians = osg::DegreesToRadians(angleInDegrees);
@@ -296,15 +345,6 @@ void OSGWidget::create_axes()
     update();
 }
 
-void OSGWidget::toggle_start(bool on)
-{
-    mSimulationOn = on;
-}
-
-void OSGWidget::toggle_stop(bool off)
-{
-    mSimulationOn = off;
-}
 
 OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     QOpenGLWidget{parent,flags},
