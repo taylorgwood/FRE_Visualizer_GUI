@@ -25,18 +25,9 @@ public slots:
     void on_actionStart_triggered();
     void on_actionStop_triggered();
 private slots:
-//    void on_gravityButton_clicked();
-//    void on_defaultButton_clicked();
-//    void on_populateSpheres_clicked();
-//    void on_stopSimulationButton_clicked();
-//    void on_runSimulationButton_clicked();
-
     void on_extrusionMultiplierSlider_sliderMoved(int position);
-
     void on_layerHeight_returnPressed();
-
     void on_needleGauge_valueChanged(int arg1);
-
     void on_objectSizeButton_clicked();
 
 private:

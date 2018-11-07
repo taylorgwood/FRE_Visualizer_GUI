@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
     mMainWindowUI->setupUi(this);
     mOSGWidget = new OSGWidget{this};
     this->setCentralWidget(mOSGWidget);
+    bool simulationOn{false};
+    mPrintShape = new PrintShape(simulationOn);
 }
 
 MainWindow::~MainWindow()
@@ -35,48 +37,6 @@ void MainWindow::on_actionStop_triggered()
     MainWindow::mOSGWidget->toggle_start(Off);
 }
 
-
-//void MainWindow::on_gravityButton_clicked()
-//{
-//    double x = mMainWindowUI->gravityX->text().toDouble();
-//    double y = mMainWindowUI->gravityY->text().toDouble();
-//    double z = mMainWindowUI->gravityZ->text().toDouble();
-//    Vector3 gravity{x,y,z};
-//    MainWindow::mOSGWidget->set_gravity(gravity);
-//}
-
-
-//void MainWindow::on_defaultButton_clicked()
-//{
-//    double radiusMin = mMainWindowUI->radiusMin->text().toFloat();
-//    double radiusMax = mMainWindowUI->radiusMax->text().toFloat();
-//    double massMin = mMainWindowUI->massMin->text().toDouble();
-//    double massMax = mMainWindowUI->massMax->text().toDouble();
-//    double cOfRMin = mMainWindowUI->cOfRMin->text().toDouble();
-//    double cOfRMax = mMainWindowUI->cOfRMax->text().toDouble();
-//    double velocityMin = mMainWindowUI->velocityMin->text().toDouble();
-//    double velocityMax = mMainWindowUI->velocityMax->text().toDouble();
-//    MainWindow::mOSGWidget->set_random_ranges(radiusMin,radiusMax,massMin,massMax,cOfRMin,cOfRMax,velocityMin,velocityMax);
-//}
-
-//void MainWindow::on_populateSpheres_clicked()
-//{
-//    int numberOfSpheres = mMainWindowUI->numberOfSpheres->text().toInt();
-//    MainWindow::mOSGWidget->create_cylinder_in_x_direction(numberOfSpheres);
-//}
-
-//void MainWindow::on_runSimulationButton_clicked()
-//{
-//    bool On{1};
-//    MainWindow::mOSGWidget->toggle_start(On);
-//}
-
-//void MainWindow::on_stopSimulationButton_clicked()
-//{
-//    bool Off{0};
-//    MainWindow::mOSGWidget->toggle_start(Off);
-//}
-
 void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
 {
 
@@ -85,7 +45,7 @@ void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
 void MainWindow::on_layerHeight_returnPressed()
 {
     double layerHeight = mMainWindowUI->layerHeight->text().toDouble();
-//    MainWindow::mShapeUpdateCallback->set_layer_height(layerHeight);
+    MainWindow::mPrintShape->set_layer_height(layerHeight);
     MainWindow::mOSGWidget->update();
 }
 
@@ -137,15 +97,15 @@ void MainWindow::on_needleGauge_valueChanged(int arg1)
     {
         needleDiameter = 0.159;
     }
-//    MainWindow::mShapeUpdateCallback->set_needle_diameter(needleDiameter);
+    MainWindow::mPrintShape->set_needle_diameter(needleDiameter);
     MainWindow::mOSGWidget->update();
 }
 
 
 void MainWindow::on_objectSizeButton_clicked()
 {
-    double objectWidth  = mMainWindowUI->objectWidth->text().toDouble();
-    double objectLength = mMainWindowUI->objectLength->text().toDouble();
-    double objectHeight = mMainWindowUI->objectHeight->text().toDouble();
-//    MainWindow::mShapeUpdateCallback->set_shape_size(objectWidth,objectLength,objectHeight);
+    double shapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
+    double shapeLength = mMainWindowUI->shapeLength->text().toDouble();
+    double shapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
+    MainWindow::mPrintShape->set_shape_size(shapeWidth,shapeLength,shapeHeight);
 }

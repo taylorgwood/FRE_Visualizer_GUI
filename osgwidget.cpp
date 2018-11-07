@@ -174,9 +174,9 @@ void OSGWidget::create_axes()
     osg::Vec3 shapePosition1{height/2,0,0};
     osg::Vec3 shapePosition2{0,height/2,0};
     osg::Vec3 shapePosition3{0,0,height/2};
-    float moveDistanceX = 10/2; // change this back
-    float moveDistanceY = 10/2;
-    float moveDistanceZ = 10/2;
+    float moveDistanceX = mPrintShape->get_shape_width()/2;
+    float moveDistanceY = mPrintShape->get_shape_length()/2;
+    float moveDistanceZ = mPrintShape->get_shape_height()/2;
     shapePosition1 += {moveDistanceX,0,0};
     shapePosition2 += {0,moveDistanceY,0};
     shapePosition3 += {0,0,moveDistanceZ};
@@ -204,8 +204,8 @@ void OSGWidget::create_cylinders_in_x_direction(int numberOfCylinders)
     float cylinderCount{1};
     for(int i=0; i<numberOfCylinders; i++)
     {
-        float radiusOfPrint = 0.13;
-        float length{10};
+        float radiusOfPrint = mPrintShape->get_diameter_of_print()/2;
+        float length = mPrintShape->get_shape_length();
         float yLocation = -5+0.26*cylinderCount;
         osg::Vec3 shapePosition{0,yLocation,-5+0.13};
         osg::Vec4 shapeRGBA = {0,1.0,1.0,0.8};
@@ -222,8 +222,8 @@ void OSGWidget::create_cylinders_in_y_direction(int numberOfCylinders)
     float cylinderCount{1};
     for(int i=0; i<numberOfCylinders; i++)
     {
-        float radiusOfPrint = 0.13;
-        float length{10};
+        float radiusOfPrint = mPrintShape->get_diameter_of_print()/2;
+        float length = mPrintShape->get_shape_width();
         float xLocation = -5+0.26*cylinderCount;
         osg::Vec3 shapePosition{xLocation,0,-5+0.13+0.26};
         osg::Vec4 shapeRGBA = {1.0,1.0,0,0.8};
