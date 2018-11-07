@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindowform.h"
 #include "osgwidget.h"
-//#include "vector3d.h"
 
 #include <QDockWidget>
 
@@ -86,7 +85,7 @@ void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
 void MainWindow::on_layerHeight_returnPressed()
 {
     double layerHeight = mMainWindowUI->layerHeight->text().toDouble();
-    MainWindow::mOSGWidget->set_layer_height(layerHeight);
+//    MainWindow::mShapeUpdateCallback->set_layer_height(layerHeight);
     MainWindow::mOSGWidget->update();
 }
 
@@ -138,7 +137,7 @@ void MainWindow::on_needleGauge_valueChanged(int arg1)
     {
         needleDiameter = 0.159;
     }
-    MainWindow::mOSGWidget->set_needle_diameter(needleDiameter);
+//    MainWindow::mShapeUpdateCallback->set_needle_diameter(needleDiameter);
     MainWindow::mOSGWidget->update();
 }
 
@@ -148,5 +147,5 @@ void MainWindow::on_objectSizeButton_clicked()
     double objectWidth  = mMainWindowUI->objectWidth->text().toDouble();
     double objectLength = mMainWindowUI->objectLength->text().toDouble();
     double objectHeight = mMainWindowUI->objectHeight->text().toDouble();
-    MainWindow::mOSGWidget->set_object_size(objectWidth,objectLength,objectHeight);
+//    MainWindow::mShapeUpdateCallback->set_shape_size(objectWidth,objectLength,objectHeight);
 }

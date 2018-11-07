@@ -6,8 +6,7 @@
 
 class OutputWindow;
 class OSGWidget;
-class SphereUpdateCallback;
-class Vector3;
+class ShapeUpdateCallback;
 
 namespace Ui {
 class MainWindowForm;
@@ -43,7 +42,7 @@ private slots:
 private:
     Ui::MainWindowForm *mMainWindowUI;
     OSGWidget *mOSGWidget{nullptr};
-    SphereUpdateCallback *mSphereUpdateCallback{nullptr};
+    ShapeUpdateCallback *mShapeUpdateCallback{nullptr};
 
 };
 

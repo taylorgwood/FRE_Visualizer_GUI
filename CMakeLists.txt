@@ -25,6 +25,8 @@ SET(MYSOURCE
     wireframe.h
     shapeupdatecallback.cpp
     shapeupdatecallback.h
+    printshape.cpp
+    printshape.h
     )
 
 add_executable(${PROJECT_NAME} ${MYSOURCE})

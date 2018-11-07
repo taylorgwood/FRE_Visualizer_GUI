@@ -9,9 +9,9 @@
 #include <osgGA/TrackballManipulator>
 #include <osg/ShapeDrawable>
 #include <osgText/Text>
-//#include "physicsObject.h"
-//class Vector3;
-//class PhysicsObject;
+//#include "shapeupdatecallback.h"
+#include "printshape.h"
+class PrintShape;
 
 class OSGWidget : public QOpenGLWidget
 {
@@ -22,28 +22,17 @@ public:
               Qt::WindowFlags f = 0);
 
     virtual ~OSGWidget();
+    void  toggle_start(bool on);
+    void  toggle_stop(bool off);
+    void  set_view_along_x_axis();
+    void  create_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
+//    float get_shape_width() const;
+//    float get_shape_length() const;
+//    float get_shape_height() const;
     void create_cylinder_in_x_direction(int numberOfCylinders);
-    void toggle_start(bool on);
-    void toggle_stop(bool off);
+    void create_cylinder_in_y_direction(int numberOfCylinders);
     osg::Quat rotate_about_x_axis();
     osg::Quat rotate_about_y_axis();
-    float get_diameter_of_print() const;
-    void set_needle_diameter(const double needleDiameter);
-    double get_needle_diameter() const;
-    void set_extrusion_multiplier(const double extrusionMultiplier);
-    double get_extrusion_multiplier() const;
-    void set_infill_percentage(const double infillPercentage);
-    double get_infill_percentage() const;
-    void set_extrusion_width(const double extrusionWidth);
-    double get_extrusion_width() const;
-    void set_layer_height(const float layerHeight);
-    float get_layer_height() const;
-    void set_diameter_of_print(const double diameterOfPrint);
-    void calculate_layer_properties();
-    double*** create_center_of_cylinder_array(double numberOfLayers, double numberOfCylindersPerLayer);
-    void create_all_cylinders(double ***centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers);
-    void set_object_size(const double objectWidth, const double objectLength, const double objectHeight);
-    void set_view_along_x_axis();
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
@@ -67,8 +56,6 @@ private:
     osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> mGraphicsWindow;
     osg::ref_ptr<osgViewer::CompositeViewer> mViewer;
     osg::ref_ptr<osgViewer::View> mView;
-    osg::ref_ptr<osgViewer::CompositeViewer> mViewerX;
-    osg::ref_ptr<osgViewer::View> mViewX;
     osg::ref_ptr<osg::Group> mRoot;
     int mTimerId{0};
 
@@ -79,27 +66,15 @@ private:
     osg::ShapeDrawable *create_graphic_cylinder(osg::Vec3 shapeLocation, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
     osg::Geode *create_geometry_node(osg::ShapeDrawable* newShape);
     void create_axes();
-    void create_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
     void create_new_wireframe();
     void animate_object(osg::Geode *geode, osg::Vec3 shapeLocation, float sphereRadius);
     void set_up_min_graphics_window();
     int  set_up_timer();
 
-    double pi{3.14159}; const
-    double mDiameterOfSyringe{14.9};
-    float  mDiameterOfPrint{0.26};
-    double mNeedleDiameter{0.26};
-    double mExtrusionMultiplier{1.0};
-    double mInfillPercentage{100};
-    double mExtrusionWidth{1.0};
-    double mExtrusionWidthCalculated{mExtrusionWidth};
-    float  mLayerHeight{0.26};
-    float  mShapeWidth{10};
-    float  mShapeHeight{10};
-    float  mShapeLength{10};
-
     bool   mSimulationOn{false};
-//    std::vector<PhysicsObject*> *mObjectList;
+//    ShapeUpdateCallback *mShapeUpdateCallback{nullptr};
+    PrintShape mPrintShape;
+    std::vector<PrintShape*> *mShapeList;
 
 };
 

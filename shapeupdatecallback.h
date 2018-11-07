@@ -3,33 +3,59 @@
 
 #include <osg/MatrixTransform>
 #include <osg/Matrix>
-class Vector3;
-class PhysicsObject;
+class PrintShape;
 
 class ShapeUpdateCallback: public osg::NodeCallback
 {
 public:
-    ShapeUpdateCallback(bool& update, float radius);
+//    ShapeUpdateCallback(PrintShape* printShape, bool &update, std::vector<PrintShape*> *shapeList);
+    ShapeUpdateCallback(bool &update);
+
     virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
-
-//    void update_physics();
-
-//    osg::Vec3d convert_Vector3_to_osgVec3d(Vector3 shapeLocation);
-//    Vector3 convert_osgVec3d_to_Vector3(osg::Vec3d shapeLocation);
     double get_timestep() const;
-//    void box_collision(double boxSize, double coefficientOfRestitution);
+    float  get_diameter_of_print() const;
+    void   set_needle_diameter(const double needleDiameter);
+    double get_needle_diameter() const;
+    void   set_extrusion_multiplier(const double extrusionMultiplier);
+    double get_extrusion_multiplier() const;
+    void   set_infill_percentage(const double infillPercentage);
+    double get_infill_percentage() const;
+    void   set_extrusion_width(const double extrusionWidth);
+    double get_extrusion_width() const;
+    void   set_layer_height(const float layerHeight);
+    float  get_layer_height() const;
+    void   set_diameter_of_print(const double diameterOfPrint);
+    void   calculate_layer_properties();
+    void   set_default_parameters();
+    void   create_cylinder_in_x_direction(int numberOfCylinders);
+    double ***create_center_of_cylinder_array(double numberOfLayers, double numberOfCylindersPerLayer);
+    void   create_all_cylinders(double ***centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers);
+    void   set_shape_size(const double objectWidth, const double objectLength, const double objectHeight);
+    float  get_shape_width() const;
+    float  get_shape_length() const;
+    float  get_shape_height() const;
+
 
 private:
 
 
 protected:
     double mTimeStep{1.0/30.0};
-//    PhysicsObject *mObject;
-//    Vector3 mPosition{0,0,0};
-//    Vector3 mVelocity{0,0,0};
-//    Vector3 mAcceleration{0,0,-9.8};
+    double pi{3.14159}; const
+    double mDiameterOfSyringe{14.9};
+    float  mDiameterOfPrint{0.26f};
+    double mNeedleDiameter{0.26};
+    double mExtrusionMultiplier{1.0};
+    double mInfillPercentage{100};
+    double mExtrusionWidth{0.26};
+    double mExtrusionWidthCalculated{mExtrusionWidth};
+    float  mLayerHeight{0.26f};
+    float  mShapeWidth{10};
+    float  mShapeHeight{10};
+    float  mShapeLength{10};
     bool& mUpdate;
-//    std::vector<PhysicsObject*> *mObjectList {nullptr};
+//    std::vector<PrintObject*> *mObjectList {nullptr};
+    //    std::vector<PhysicsObject*> *mObjectList {nullptr};
 
 };
 

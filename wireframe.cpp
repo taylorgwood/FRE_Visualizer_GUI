@@ -44,3 +44,26 @@ osg::Node* create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor)
     transform->addChild(geode);
     return transform;
 }
+
+//void Wireframe::set_object_size(const double objectWidth, const double objectLength, const double objectHeight)
+//{
+//    mShapeWidth  = objectWidth;
+//    mShapeLength = objectLength;
+//    mShapeHeight = objectHeight;
+//    //    update();
+//}
+
+//float Wireframe::get_shape_width() const
+//{
+//    return mShapeWidth;
+//}
+
+//float Wireframe::get_shape_length() const
+//{
+//    return mShapeLength;
+//}
+
+//float Wireframe::get_shape_height() const
+//{
+//    return mShapeHeight;
+//}

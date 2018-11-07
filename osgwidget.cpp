@@ -2,7 +2,7 @@
 #include "osgwidget.h"
 #include "wireframe.h"
 //#include "vector3d.h"
-//#include "physicsObject.h"
+#include "printshape.h"
 #include "shapeupdatecallback.h"
 
 #include <osg/Camera>
@@ -143,9 +143,9 @@ osg::Geode *OSGWidget::create_geometry_node(osg::ShapeDrawable* newShape)
 void OSGWidget::create_new_wireframe()
 {
     osg::Vec4 wireframeColorRGBA{0.2f,0.5f,1.f,0.1f};
-    float scaleFactorX = mShapeLength/2;
-    float scaleFactorY = mShapeWidth/2;
-    float scaleFactorZ = mShapeHeight/2;
+    float scaleFactorX = 10/2;
+    float scaleFactorY = 10/2;
+    float scaleFactorZ = 10/2;
     osg::Vec3d scaleFactor = {scaleFactorX,scaleFactorY,scaleFactorZ};
     osg::Node* wireFrame = create_wireframe(wireframeColorRGBA, scaleFactor);
     mRoot->addChild(wireFrame);
@@ -171,7 +171,7 @@ void OSGWidget::animate_object(osg::Geode *geode, osg::Vec3 shapePosition, float
 
     //    PhysicsObject* sphere = new PhysicsObject(shapePositionVector3, initialVelocity, mGravity);
     transform->setMatrix(osg::Matrix::translate(shapePosition));
-    transform->setUpdateCallback(new ShapeUpdateCallback(mSimulationOn, sphereRadius));
+    transform->setUpdateCallback(new ShapeUpdateCallback(mSimulationOn));
     transform->addChild(geode);
     mRoot->addChild(transform);
 }
@@ -184,187 +184,6 @@ void OSGWidget::create_cylinder(osg::Vec3 shapePosition, float radius, float hei
     animate_object(geode, shapePosition, radius);
 }
 
-osg::Quat OSGWidget::rotate_about_x_axis()
-{
-    double angleInDegrees = 90;
-    double angleInRadians = osg::DegreesToRadians(angleInDegrees);
-    osg::Vec3 rotationAxis{1,0,0};
-    osg::Quat rotation{angleInRadians,rotationAxis};
-    return rotation;
-}
-
-osg::Quat OSGWidget::rotate_about_y_axis()
-{
-    double angleInDegrees = 90;
-    double angleInRadians = osg::DegreesToRadians(angleInDegrees);
-    osg::Vec3 rotationAxis{0,1,0};
-    osg::Quat rotation{angleInRadians,rotationAxis};
-    return rotation;
-}
-
-float OSGWidget::get_diameter_of_print() const
-{
-    return mDiameterOfPrint;
-}
-
-void OSGWidget::set_needle_diameter(const double needleDiameter)
-{
-    mNeedleDiameter = needleDiameter;
-}
-
-double OSGWidget::get_needle_diameter() const
-{
-    return mNeedleDiameter;
-}
-
-void OSGWidget::set_extrusion_multiplier(const double extrusionMultiplier)
-{
-    mExtrusionMultiplier = extrusionMultiplier;
-}
-
-double OSGWidget::get_extrusion_multiplier() const
-{
-    return mExtrusionMultiplier;
-}
-
-void OSGWidget::set_infill_percentage(const double infillPercentage)
-{
-    mInfillPercentage = infillPercentage;
-}
-
-double OSGWidget::get_infill_percentage() const
-{
-    return mInfillPercentage;
-}
-
-void OSGWidget::set_extrusion_width(const double extrusionWidth)
-{
-    mExtrusionWidth = extrusionWidth;
-}
-
-double OSGWidget::get_extrusion_width() const
-{
-    return mExtrusionWidth;
-}
-
-void OSGWidget::set_layer_height(const float layerHeight)
-{
-    mLayerHeight = layerHeight;
-}
-
-float OSGWidget::get_layer_height() const
-{
-    return mLayerHeight;
-}
-
-void OSGWidget::set_diameter_of_print(const double diameterOfPrint)
-{
-    mDiameterOfPrint = diameterOfPrint;
-}
-
-void OSGWidget::set_object_size(const double objectWidth, const double objectLength, const double objectHeight)
-{
-    mShapeWidth  = objectWidth;
-    mShapeLength = objectLength;
-    mShapeHeight = objectHeight;
-    update();
-}
-
-void OSGWidget::calculate_layer_properties()
-{
-    double volumePrintPerLayer = mShapeWidth*mShapeLength*mLayerHeight*mInfillPercentage*mExtrusionMultiplier;
-    double volumeSyringePerLayer = volumePrintPerLayer;
-    double areaOfSyringe = pi/4*mDiameterOfSyringe*mDiameterOfSyringe;
-    double syringeExtrusionHeightPerLayer = volumeSyringePerLayer/areaOfSyringe;
-    double mExtrusionWidthCalculated = mExtrusionMultiplier/mInfillPercentage;
-    double diameterOfPrint = sqrt(volumePrintPerLayer*4*mExtrusionWidthCalculated/(mShapeWidth*mShapeLength*pi));
-    set_diameter_of_print(diameterOfPrint);
-    //    create_shape_location_vector();
-
-    double numberOfLayers = floor(mShapeHeight/mLayerHeight);
-    double numberOfCylindersPerLayer = floor(mShapeWidth/mExtrusionWidthCalculated);
-    double*** centerOfCylinderArray = create_center_of_cylinder_array(numberOfLayers, numberOfCylindersPerLayer);
-    create_all_cylinders(centerOfCylinderArray, numberOfCylindersPerLayer, numberOfLayers);
-}
-
-double*** OSGWidget::create_center_of_cylinder_array(double numberOfLayers, double numberOfCylindersPerLayer)
-{
-    unsigned int numberOfOrthogonalDirections{3};
-    double ***centerOfCylinderArray{nullptr};
-    centerOfCylinderArray = new double**[numberOfCylindersPerLayer];
-    for (unsigned int r{0}; r < numberOfCylindersPerLayer; r++) // 1:1:numberOfCircles
-    {
-        centerOfCylinderArray[r] = new double*[numberOfLayers];
-        for (unsigned int c{0}; c<numberOfLayers; c++)
-        {
-            centerOfCylinderArray[r][c] = new double[numberOfOrthogonalDirections];
-        }
-    }
-
-    for (unsigned int r{0}; r<numberOfCylindersPerLayer; r++)
-    {
-        for(unsigned int c{0}; c<numberOfLayers; c++)
-        {
-            unsigned int cylinderCount{r};
-            unsigned int layerCount{c};
-            float xLocation{0};
-            float yLocation{0};
-            float zLocation{c*mLayerHeight};
-            if ((layerCount%2) == 0)
-            {
-                xLocation = cylinderCount*mExtrusionWidthCalculated;
-                yLocation = -mShapeWidth/2;
-            }
-            else
-            {
-                xLocation = -mShapeLength/2;
-                yLocation = cylinderCount*mExtrusionWidthCalculated;
-            }
-            centerOfCylinderArray[r][c][1] = xLocation;
-            centerOfCylinderArray[r][c][2] = yLocation;
-            centerOfCylinderArray[r][c][3] = zLocation;
-        }
-    }
-    return centerOfCylinderArray;
-}
-
-void OSGWidget::create_all_cylinders(double ***centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers)
-{
-    for (unsigned int r{0}; r<numberOfCylindersPerLayer; r++)
-    {
-        for(unsigned int c{0}; c<numberOfLayers; c++)
-        {
-            float diameterOfPrint = get_diameter_of_print();
-            float length{mShapeLength};
-            float positionX = centerOfCylinderArray[r][c][1];
-            float positionY = centerOfCylinderArray[r][c][2];
-            float positionZ = centerOfCylinderArray[r][c][3];
-
-            osg::Vec3 shapePosition{positionX,positionY,positionZ};
-            osg::Vec4 shapeRGBA = {1.0,1.0,0,0.2};
-
-            osg::Quat rotation = rotate_about_y_axis();
-            create_cylinder(shapePosition, diameterOfPrint, length, rotation, shapeRGBA);
-        }
-    }
-    update();
-}
-
-void OSGWidget::create_cylinder_in_x_direction(int numberOfCylinders)
-{
-    for(int i=0; i<numberOfCylinders; i++)
-    {
-        float diameterOfPrint = get_diameter_of_print();
-        float length{mShapeLength};
-        osg::Vec3 shapePosition{0,0,0};
-        osg::Vec4 shapeRGBA = {1.0,1.0,0,0.2};
-
-        osg::Quat rotation = rotate_about_y_axis();
-        create_cylinder(shapePosition, diameterOfPrint, length, rotation, shapeRGBA);
-    }
-    update();
-}
-
 void OSGWidget::create_axes()
 {
     float radius{0.1};
@@ -372,9 +191,12 @@ void OSGWidget::create_axes()
     osg::Vec3 shapePosition1{height/2,0,0};
     osg::Vec3 shapePosition2{0,height/2,0};
     osg::Vec3 shapePosition3{0,0,height/2};
-    float moveDistanceX = mShapeLength/2;
-    float moveDistanceY = mShapeWidth/2;
-    float moveDistanceZ = mShapeHeight/2;
+//    float moveDistanceX = mShapeUpdateCallback->get_shape_width()/2; // change this back
+//    float moveDistanceY = mShapeUpdateCallback->get_shape_length()/2;
+//    float moveDistanceZ = mShapeUpdateCallback->get_shape_height()/2;
+    float moveDistanceX = 10/2; // change this back
+    float moveDistanceY = 10/2;
+    float moveDistanceZ = 10/2;
     shapePosition1 += {moveDistanceX,0,0};
     shapePosition2 += {0,moveDistanceY,0};
     shapePosition3 += {0,0,moveDistanceZ};
@@ -397,6 +219,74 @@ void OSGWidget::create_axes()
     update();
 }
 
+//float OSGWidget::get_shape_width() const
+//{
+//    return mShapeUpdateCallback->get_shape_width();
+//}
+
+//float OSGWidget::get_shape_length() const
+//{
+//    return mShapeUpdateCallback->get_shape_length();
+//}
+
+//float OSGWidget::get_shape_height() const
+//{
+//    return mShapeUpdateCallback->get_shape_height();
+//}
+
+void OSGWidget::create_cylinder_in_x_direction(int numberOfCylinders)
+{
+    float layer{1};
+    for(int i=0; i<numberOfCylinders; i++)
+    {
+        float radiusOfPrint = 0.13;
+        float length{10};
+        float yLocation = -5+0.26*layer;
+        osg::Vec3 shapePosition{0,yLocation,-5+0.13};
+        osg::Vec4 shapeRGBA = {0,1.0,1.0,0.8};
+
+        osg::Quat rotation = rotate_about_y_axis();
+        create_cylinder(shapePosition, radiusOfPrint, length, rotation, shapeRGBA);
+        layer += 1;
+    }
+//    OSGWidget::update();
+}
+
+void OSGWidget::create_cylinder_in_y_direction(int numberOfCylinders)
+{
+    float layer{1};
+    for(int i=0; i<numberOfCylinders; i++)
+    {
+        float radiusOfPrint = 0.13;
+        float length{10};
+        float xLocation = -5+0.26*layer;
+        osg::Vec3 shapePosition{xLocation,0,-5+0.13+0.26};
+        osg::Vec4 shapeRGBA = {1.0,1.0,0,0.8};
+
+        osg::Quat rotation = rotate_about_x_axis();
+        create_cylinder(shapePosition, radiusOfPrint, length, rotation, shapeRGBA);
+        layer += 1;
+    }
+//    OSGWidget::update();
+}
+
+osg::Quat OSGWidget::rotate_about_x_axis()
+{
+    double angleInDegrees = 90;
+    double angleInRadians = osg::DegreesToRadians(angleInDegrees);
+    osg::Vec3 rotationAxis{1,0,0};
+    osg::Quat rotation{angleInRadians,rotationAxis};
+    return rotation;
+}
+
+osg::Quat OSGWidget::rotate_about_y_axis()
+{
+    double angleInDegrees = 90;
+    double angleInRadians = osg::DegreesToRadians(angleInDegrees);
+    osg::Vec3 rotationAxis{0,1,0};
+    osg::Quat rotation{angleInRadians,rotationAxis};
+    return rotation;
+}
 
 OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     QOpenGLWidget{parent,flags},
@@ -408,7 +298,8 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     create_new_wireframe();
     set_up_min_graphics_window();
     create_axes();
-    create_cylinder_in_x_direction(1);
+    create_cylinder_in_x_direction(38);
+    create_cylinder_in_y_direction(19);
 
     mTimerId = set_up_timer();
 }
