@@ -29,8 +29,8 @@ public:
 //    float get_shape_width() const;
 //    float get_shape_length() const;
 //    float get_shape_height() const;
-    void create_cylinder_in_x_direction(int numberOfCylinders);
-    void create_cylinder_in_y_direction(int numberOfCylinders);
+    void create_cylinders_in_x_direction(int numberOfCylinders);
+    void create_cylinders_in_y_direction(int numberOfCylinders);
     osg::Quat rotate_about_x_axis();
     osg::Quat rotate_about_y_axis();
 
@@ -67,13 +67,12 @@ private:
     osg::Geode *create_geometry_node(osg::ShapeDrawable* newShape);
     void create_axes();
     void create_new_wireframe();
-    void animate_object(osg::Geode *geode, osg::Vec3 shapeLocation, float sphereRadius);
     void set_up_min_graphics_window();
     int  set_up_timer();
 
     bool   mSimulationOn{false};
 //    ShapeUpdateCallback *mShapeUpdateCallback{nullptr};
-    PrintShape mPrintShape;
+    PrintShape *mPrintShape{nullptr};
     std::vector<PrintShape*> *mShapeList;
 
 };

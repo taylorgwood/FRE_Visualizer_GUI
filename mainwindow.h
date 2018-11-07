@@ -6,7 +6,7 @@
 
 class OutputWindow;
 class OSGWidget;
-class ShapeUpdateCallback;
+class PrintShape;
 
 namespace Ui {
 class MainWindowForm;
@@ -42,7 +42,8 @@ private slots:
 private:
     Ui::MainWindowForm *mMainWindowUI;
     OSGWidget *mOSGWidget{nullptr};
-    ShapeUpdateCallback *mShapeUpdateCallback{nullptr};
+    PrintShape *mPrintShape{nullptr};
+//    ShapeUpdateCallback *mShapeUpdateCallback{nullptr};
 
 };
 

@@ -3,7 +3,7 @@ project(FRE_Visualizer)
 
 FIND_PACKAGE(Qt5Widgets)
 FIND_PACKAGE(Qt5Gui)
-FIND_PACKAGE( OpenSceneGraph REQUIRED COMPONENTS osgDB osgGA osgUtil osgViewer osgText)
+FIND_PACKAGE(OpenSceneGraph REQUIRED COMPONENTS osgDB osgGA osgUtil osgViewer osgText)
 
 INCLUDE_DIRECTORIES( ${OPENSCENEGRAPH_INCLUDE_DIRS} )
 
@@ -23,8 +23,8 @@ SET(MYSOURCE
     osgwidget.cpp
     wireframe.cpp
     wireframe.h
-    shapeupdatecallback.cpp
-    shapeupdatecallback.h
+#    shapeupdatecallback.cpp
+#    shapeupdatecallback.h
     printshape.cpp
     printshape.h
     )

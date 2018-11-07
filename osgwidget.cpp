@@ -1,9 +1,8 @@
 #include <random>
 #include "osgwidget.h"
 #include "wireframe.h"
-//#include "vector3d.h"
 #include "printshape.h"
-#include "shapeupdatecallback.h"
+//#include "shapeupdatecallback.h"
 
 #include <osg/Camera>
 #include <osg/Geode>
@@ -161,27 +160,11 @@ void OSGWidget::toggle_stop(bool off)
     mSimulationOn = off;
 }
 
-void OSGWidget::animate_object(osg::Geode *geode, osg::Vec3 shapePosition, float sphereRadius)
-{
-    osg::MatrixTransform *transform = new osg::MatrixTransform;
-    //    Vector3 shapePositionVector3{0,0,0};
-    //    shapePositionVector3.set_x(shapePosition.x());
-    //    shapePositionVector3.set_y(shapePosition.y());
-    //    shapePositionVector3.set_z(shapePosition.z());
-
-    //    PhysicsObject* sphere = new PhysicsObject(shapePositionVector3, initialVelocity, mGravity);
-    transform->setMatrix(osg::Matrix::translate(shapePosition));
-    transform->setUpdateCallback(new ShapeUpdateCallback(mSimulationOn));
-    transform->addChild(geode);
-    mRoot->addChild(transform);
-}
-
 void OSGWidget::create_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA)
 {
-    osg::Vec3 origin{0,0,0};
-    osg::ShapeDrawable *newShape = create_graphic_cylinder(origin, radius, height, rotation, shapeRGBA);
+    osg::ShapeDrawable *newShape = create_graphic_cylinder(shapePosition, radius, height, rotation, shapeRGBA);
     osg::Geode *geode = create_geometry_node(newShape);
-    animate_object(geode, shapePosition, radius);
+    mRoot->addChild(geode);
 }
 
 void OSGWidget::create_axes()
@@ -191,9 +174,6 @@ void OSGWidget::create_axes()
     osg::Vec3 shapePosition1{height/2,0,0};
     osg::Vec3 shapePosition2{0,height/2,0};
     osg::Vec3 shapePosition3{0,0,height/2};
-//    float moveDistanceX = mShapeUpdateCallback->get_shape_width()/2; // change this back
-//    float moveDistanceY = mShapeUpdateCallback->get_shape_length()/2;
-//    float moveDistanceZ = mShapeUpdateCallback->get_shape_height()/2;
     float moveDistanceX = 10/2; // change this back
     float moveDistanceY = 10/2;
     float moveDistanceZ = 10/2;
@@ -219,55 +199,40 @@ void OSGWidget::create_axes()
     update();
 }
 
-//float OSGWidget::get_shape_width() const
-//{
-//    return mShapeUpdateCallback->get_shape_width();
-//}
-
-//float OSGWidget::get_shape_length() const
-//{
-//    return mShapeUpdateCallback->get_shape_length();
-//}
-
-//float OSGWidget::get_shape_height() const
-//{
-//    return mShapeUpdateCallback->get_shape_height();
-//}
-
-void OSGWidget::create_cylinder_in_x_direction(int numberOfCylinders)
+void OSGWidget::create_cylinders_in_x_direction(int numberOfCylinders)
 {
-    float layer{1};
+    float cylinderCount{1};
     for(int i=0; i<numberOfCylinders; i++)
     {
         float radiusOfPrint = 0.13;
         float length{10};
-        float yLocation = -5+0.26*layer;
+        float yLocation = -5+0.26*cylinderCount;
         osg::Vec3 shapePosition{0,yLocation,-5+0.13};
         osg::Vec4 shapeRGBA = {0,1.0,1.0,0.8};
 
         osg::Quat rotation = rotate_about_y_axis();
         create_cylinder(shapePosition, radiusOfPrint, length, rotation, shapeRGBA);
-        layer += 1;
+        cylinderCount += 1;
     }
-//    OSGWidget::update();
+    update();
 }
 
-void OSGWidget::create_cylinder_in_y_direction(int numberOfCylinders)
+void OSGWidget::create_cylinders_in_y_direction(int numberOfCylinders)
 {
-    float layer{1};
+    float cylinderCount{1};
     for(int i=0; i<numberOfCylinders; i++)
     {
         float radiusOfPrint = 0.13;
         float length{10};
-        float xLocation = -5+0.26*layer;
+        float xLocation = -5+0.26*cylinderCount;
         osg::Vec3 shapePosition{xLocation,0,-5+0.13+0.26};
         osg::Vec4 shapeRGBA = {1.0,1.0,0,0.8};
 
         osg::Quat rotation = rotate_about_x_axis();
         create_cylinder(shapePosition, radiusOfPrint, length, rotation, shapeRGBA);
-        layer += 1;
+        cylinderCount += 1;
     }
-//    OSGWidget::update();
+    update();
 }
 
 osg::Quat OSGWidget::rotate_about_x_axis()
@@ -294,12 +259,13 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     mViewer{new osgViewer::CompositeViewer}
 {
     mRoot = new osg::Group;
+    mPrintShape = new PrintShape(mSimulationOn);
     set_up_environment();
     create_new_wireframe();
     set_up_min_graphics_window();
     create_axes();
-    create_cylinder_in_x_direction(38);
-    create_cylinder_in_y_direction(19);
+    create_cylinders_in_x_direction(38);
+    create_cylinders_in_y_direction(19);
 
     mTimerId = set_up_timer();
 }
