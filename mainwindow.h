@@ -30,10 +30,15 @@ private slots:
     void on_needleGauge_valueChanged(int arg1);
     void on_objectSizeButton_clicked();
 
+    void on_clearButton_clicked();
+
+    void on_redrawButton_clicked();
+
 private:
     Ui::MainWindowForm *mMainWindowUI;
     OSGWidget *mOSGWidget{nullptr};
     PrintShape *mPrintShape{nullptr};
+    std::vector<PrintShape*> *mShapeList{nullptr};
 //    ShapeUpdateCallback *mShapeUpdateCallback{nullptr};
 
 };

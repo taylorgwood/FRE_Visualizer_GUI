@@ -8,7 +8,7 @@ class PrintShape //: public osg::NodeCallback
 {
 public:
 //    PrintShape(PrintShape* printShape, bool &update, std::vector<PrintShape*> *shapeList);
-    PrintShape(bool &update);
+    PrintShape(bool &update, std::vector<PrintShape *> *shapeList);
 
     float  get_diameter_of_print() const;
     void   set_needle_diameter(const double needleDiameter);
@@ -50,7 +50,7 @@ protected:
     float  mShapeHeight{10};
     float  mShapeLength{10};
     bool&  mUpdate;
-//    std::vector<PrintObject*> *mObjectList {nullptr};
+    std::vector<PrintShape*> *mShapeList {nullptr};
     //    std::vector<PhysicsObject*> *mObjectList {nullptr};
 
 };

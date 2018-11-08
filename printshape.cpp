@@ -5,9 +5,11 @@
 //ShapeUpdateCallback::ShapeUpdateCallback(PrintShape* printShape, bool &update, std::vector<PrintShape*> *shapeList) :
 //    mUpdate {update},
 //    mShapeList {shapeList}
-PrintShape::PrintShape(bool &update) :
-    mUpdate {update}
+PrintShape::PrintShape(bool &update, std::vector<PrintShape*> *shapeList) :
+    mUpdate {update},
+    mShapeList {shapeList}
 {
+
 //    mPosition = cylinder->get_position();
 //    mLength   = cylinder->get_length();
 //    mColor    = cylinder->get_color();

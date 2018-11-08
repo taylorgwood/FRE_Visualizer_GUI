@@ -26,16 +26,19 @@ public:
     void  toggle_stop(bool off);
     void  set_view_along_x_axis();
     void  create_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
-//    float get_shape_width() const;
-//    float get_shape_length() const;
-//    float get_shape_height() const;
+    //    float get_shape_width() const;
+    //    float get_shape_length() const;
+    //    float get_shape_height() const;
     void create_cylinders_in_x_direction(int numberOfCylinders);
     void create_cylinders_in_y_direction(int numberOfCylinders);
     osg::Quat rotate_about_x_axis();
     osg::Quat rotate_about_y_axis();
+    void clear_cylinders();
+    void redraw();
+    //    void reset_parameters(UserInput userInput);
 
-protected:
-    virtual void paintEvent(QPaintEvent* paintEvent);
+    protected:
+        virtual void paintEvent(QPaintEvent* paintEvent);
     virtual void paintGL();
     virtual void resizeGL(int width, int height);
     virtual void keyPressEvent(QKeyEvent* event);
@@ -71,7 +74,7 @@ private:
     int  set_up_timer();
 
     bool   mSimulationOn{false};
-//    ShapeUpdateCallback *mShapeUpdateCallback{nullptr};
+    //    ShapeUpdateCallback *mShapeUpdateCallback{nullptr};
     PrintShape *mPrintShape{nullptr};
     std::vector<PrintShape*> *mShapeList;
 

@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mOSGWidget = new OSGWidget{this};
     this->setCentralWidget(mOSGWidget);
     bool simulationOn{false};
-    mPrintShape = new PrintShape(simulationOn);
+    mPrintShape = new PrintShape(simulationOn, mShapeList);
 }
 
 MainWindow::~MainWindow()
@@ -101,11 +101,20 @@ void MainWindow::on_needleGauge_valueChanged(int arg1)
     MainWindow::mOSGWidget->update();
 }
 
-
 void MainWindow::on_objectSizeButton_clicked()
 {
     double shapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
     double shapeLength = mMainWindowUI->shapeLength->text().toDouble();
     double shapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
     MainWindow::mPrintShape->set_shape_size(shapeWidth,shapeLength,shapeHeight);
+}
+
+void MainWindow::on_clearButton_clicked()
+{
+    mOSGWidget->clear_cylinders();
+}
+
+void MainWindow::on_redrawButton_clicked()
+{
+    mOSGWidget->redraw();
 }

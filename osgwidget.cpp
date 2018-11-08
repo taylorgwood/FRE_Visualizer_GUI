@@ -49,7 +49,6 @@ void OSGWidget::create_manipulator_and_viewer()
     osg::ref_ptr<osgGA::TrackballManipulator> manipulator = new osgGA::TrackballManipulator;
     manipulator->setAllowThrow(false);
 
-
     osg::Vec3d cameraHomePosition{20.0,20.0,10.0};
     osg::Vec3d cameraHomeViewDirection{0,0,0};
     osg::Vec3d cameraHomeUpPosition{0,0,1};
@@ -142,9 +141,9 @@ osg::Geode *OSGWidget::create_geometry_node(osg::ShapeDrawable* newShape)
 void OSGWidget::create_new_wireframe()
 {
     osg::Vec4 wireframeColorRGBA{0.2f,0.5f,1.f,0.1f};
-    float scaleFactorX = 10/2;
-    float scaleFactorY = 10/2;
-    float scaleFactorZ = 10/2;
+    float scaleFactorX = mPrintShape->get_shape_width()/2;
+    float scaleFactorY = mPrintShape->get_shape_length()/2;
+    float scaleFactorZ = mPrintShape->get_shape_height()/2;
     osg::Vec3d scaleFactor = {scaleFactorX,scaleFactorY,scaleFactorZ};
     osg::Node* wireFrame = create_wireframe(wireframeColorRGBA, scaleFactor);
     mRoot->addChild(wireFrame);
@@ -253,13 +252,40 @@ osg::Quat OSGWidget::rotate_about_y_axis()
     return rotation;
 }
 
+void OSGWidget::clear_cylinders()
+{
+    mRoot->removeChildren(1, mRoot->getNumChildren());
+    mShapeList->clear();
+    this->update();
+}
+
+void OSGWidget::redraw()
+{
+    clear_cylinders();
+    create_axes();
+    create_cylinders_in_x_direction(10);
+    create_cylinders_in_y_direction(10);
+    create_new_wireframe();
+    update();
+}
+
+//void OSGWidget::reset_parameters(UserInput userInput)
+//{
+//    double input{userInput.get_input()};
+//    for (PrintShape *cylinder: *mShapeList)
+//    {
+//        cylinder->set_input_parameters(input);
+//    }
+//}
+
 OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     QOpenGLWidget{parent,flags},
     mGraphicsWindow{new osgViewer::GraphicsWindowEmbedded{this->x(),this->y(),this->width(),this->height()}},
-    mViewer{new osgViewer::CompositeViewer}
+    mViewer{new osgViewer::CompositeViewer},
+    mShapeList{new std::vector<PrintShape*>}
 {
     mRoot = new osg::Group;
-    mPrintShape = new PrintShape(mSimulationOn);
+    mPrintShape = new PrintShape(mSimulationOn, mShapeList);
     set_up_environment();
     create_new_wireframe();
     set_up_min_graphics_window();
