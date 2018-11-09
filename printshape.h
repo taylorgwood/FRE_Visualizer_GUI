@@ -10,7 +10,6 @@ public:
     ~PrintShape();
     PrintShape();
 
-    float  get_diameter_of_print() const;
     void   set_needle_diameter(const double needleDiameter);
     double get_needle_diameter() const;
     void   set_extrusion_multiplier(const double extrusionMultiplier);
@@ -21,10 +20,9 @@ public:
     double get_extrusion_width() const;
     void   set_layer_height(const float layerHeight);
     float  get_layer_height() const;
-    void   set_diameter_of_print(const double diameterOfPrint);
-    void   calculate_layer_properties();
+    float  calculate_diameter_of_print();
     void   set_default_parameters();
-    void   set_print_parameters(double dP, double nD, double eM, double iF, double eW, double lH);
+    void   set_print_parameters(double nD, double eM, double iF, double eW, double lH);
     int    calculate_number_of_layers();
 //    int    calculate_number_of_X_layers();
 //    int    calculate_number_of_Y_layers();
@@ -42,9 +40,7 @@ private:
 
 
 protected:
-    double pi{3.14159}; const
-    double mDiameterOfSyringe{14.9};
-    float  mDiameterOfPrint{0.26f};
+    double const pi{3.14159};
     double mNeedleDiameter{0.26};
     double mExtrusionMultiplier{0.785};
     double mInfillPercentage{100};
@@ -54,9 +50,7 @@ protected:
     float  mShapeWidth{10};
     float  mShapeHeight{10};
     float  mShapeLength{10};
-//    bool&  mUpdate;
     std::vector<PrintShape*> *mShapeList {nullptr};
-    //    std::vector<PhysicsObject*> *mObjectList {nullptr};
 
 };
 

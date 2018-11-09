@@ -188,10 +188,10 @@ void OSGWidget::create_axes()
 
 void OSGWidget::create_cylinders()
 {
-    mPrintShape->calculate_layer_properties();
+    mPrintShape->calculate_diameter_of_print();
     //    create_cylinders_in_x_direction();
     //    create_cylinders_in_y_direction();
-    float radiusOfPrint = mPrintShape->get_diameter_of_print()/2;
+    float radiusOfPrint = mPrintShape->calculate_diameter_of_print()/2;
 
     double*** centerOfCylinderArray = mPrintShape->create_center_of_cylinder_array();
     int numberOfXCylindersPerLayer = mPrintShape->calculate_number_of_cylinders_per_X_layer();
@@ -270,9 +270,9 @@ void OSGWidget::set_shape_size(const double shapeWidth, const double shapeLength
     update();
 }
 
-void OSGWidget::set_print_parameters(double dP, double nD, double eM, double iF, double eW, double lH)
+void OSGWidget::set_print_parameters(double nD, double eM, double iF, double eW, double lH)
 {
-    mPrintShape->set_print_parameters(dP,nD,eM,iF,eW,lH);
+    mPrintShape->set_print_parameters(nD,eM,iF,eW,lH);
     update();
 }
 

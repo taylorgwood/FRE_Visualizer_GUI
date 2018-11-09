@@ -130,6 +130,6 @@ void MainWindow::on_autoUpdateButton_clicked(bool checked)
 
 void MainWindow::send_updated_parameters()
 {
-    mOSGWidget->set_print_parameters(mDiameterOfPrint,mNeedleDiameter,mExtrusionMultiplier,mInfillPercentage,mExtrusionWidth,mLayerHeight);
+    mOSGWidget->set_print_parameters(mNeedleDiameter,mExtrusionMultiplier,mInfillPercentage,mExtrusionWidth,mLayerHeight);
 
 }

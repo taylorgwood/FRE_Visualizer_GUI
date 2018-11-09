@@ -40,8 +40,6 @@ private:
     OSGWidget *mOSGWidget{nullptr};
     PrintShape *mPrintShape{nullptr};
     std::vector<PrintShape*> *mShapeList{nullptr};
-    double mDiameterOfSyringe{14.9};
-    float  mDiameterOfPrint{0.26f};
     double mNeedleDiameter{0.26};
     double mExtrusionMultiplier{0.785};
     double mInfillPercentage{100};

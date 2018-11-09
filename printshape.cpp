@@ -10,11 +10,6 @@ PrintShape::~PrintShape()
 {
 }
 
-float PrintShape::get_diameter_of_print() const
-{
-    return mDiameterOfPrint;
-}
-
 void PrintShape::set_needle_diameter(const double needleDiameter)
 {
     mNeedleDiameter = needleDiameter;
@@ -65,11 +60,6 @@ float PrintShape::get_layer_height() const
     return mLayerHeight;
 }
 
-void PrintShape::set_diameter_of_print(const double diameterOfPrint)
-{
-    mDiameterOfPrint = diameterOfPrint;
-}
-
 void PrintShape::set_shape_size(const double shapeWidth, const double shapeLength, const double shapeHeight)
 {
     mShapeWidth  = shapeWidth;
@@ -94,7 +84,6 @@ float PrintShape::get_shape_height() const
 
 void PrintShape::set_default_parameters()
 {
-    double diameterOfPrint{0.26};
     double needleDiameter{0.26};
     double extrusionMuliplier{1.0};
     double infillPercentage{100};
@@ -103,7 +92,6 @@ void PrintShape::set_default_parameters()
     double shapeWidth{10};
     double shapeLength{10};
     double shapeHeight{10};
-    set_diameter_of_print(diameterOfPrint);
     set_needle_diameter(needleDiameter);
     set_extrusion_multiplier(extrusionMuliplier);
     set_infill_percentage(infillPercentage);
@@ -112,9 +100,8 @@ void PrintShape::set_default_parameters()
     set_shape_size(shapeWidth,shapeLength,shapeHeight);
 }
 
-void PrintShape::set_print_parameters(double dP, double nD, double eM, double iF, double eW, double lH)
+void PrintShape::set_print_parameters(double nD, double eM, double iF, double eW, double lH)
 {
-    set_diameter_of_print(dP);
     set_needle_diameter(nD);
     set_extrusion_multiplier(eM);
     set_infill_percentage(iF);
@@ -157,7 +144,7 @@ int PrintShape::calculate_number_of_cylinders_per_Y_layer()
 double*** PrintShape::create_center_of_cylinder_array()
 {
 
-    calculate_layer_properties();
+    calculate_diameter_of_print();
     int numberOfXCylindersPerLayer = calculate_number_of_cylinders_per_X_layer();
     int numberOfYCylindersPerLayer = calculate_number_of_cylinders_per_Y_layer();
     int numberOfCylindersPerLayer = numberOfXCylindersPerLayer+numberOfYCylindersPerLayer;
@@ -203,7 +190,7 @@ double*** PrintShape::create_center_of_cylinder_array()
     return centerOfCylinderArray;
 }
 
-void PrintShape::calculate_layer_properties()
+float PrintShape::calculate_diameter_of_print()
 {
     double infillRatio = mInfillPercentage/100;
     double volumePrintPerLayer = mShapeWidth*mShapeLength*mShapeHeight*infillRatio*mExtrusionMultiplier;
@@ -212,7 +199,7 @@ void PrintShape::calculate_layer_properties()
     double areaSyringe = pi/4*diameterOfSyringe*diameterOfSyringe;
     double heightSyringePerLayerCalculated = volumeSyringePerLayer/areaSyringe;
     double extrusionWidthCalculated = mExtrusionWidth/mInfillPercentage;
-    double diameterOfPrint = sqrt(volumePrintPerLayer*4*extrusionWidthCalculated/(mShapeWidth*mShapeLength*pi));
-    set_diameter_of_print(diameterOfPrint);
+    float diameterOfPrint = sqrt(volumePrintPerLayer*4*extrusionWidthCalculated/(mShapeWidth*mShapeLength*pi));
+    return diameterOfPrint;
 }
 

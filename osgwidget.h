@@ -32,7 +32,7 @@ public:
     void clear_window();
     void redraw();
     void set_shape_size(const double shapeWidth, const double shapeLength, const double shapeHeight);
-    void set_print_parameters(double dP, double nD, double eM, double iF, double eW, double lH);
+    void set_print_parameters(double nD, double eM, double iF, double eW, double lH);
     //    void reset_parameters(UserInput userInput);
 
 protected:
