@@ -47,8 +47,8 @@ void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
 void MainWindow::on_layerHeight_returnPressed()
 {
     double layerHeight = mMainWindowUI->layerHeight->text().toDouble();
-    MainWindow::mPrintShape->set_layer_height(layerHeight);
-    MainWindow::mOSGWidget->update();
+    mLayerHeight = layerHeight;
+    send_updated_parameters();
 }
 
 void MainWindow::on_needleGauge_valueChanged(int arg1)

@@ -7,11 +7,6 @@
 //    mShapeList {shapeList}
 PrintShape::PrintShape()
 {
-
-//    mPosition = cylinder->get_position();
-//    mLength   = cylinder->get_length();
-//    mColor    = cylinder->get_color();
-//    mDiameter = cylinder->get_diameter();
 }
 
 float PrintShape::get_diameter_of_print() const
@@ -79,7 +74,7 @@ void PrintShape::set_shape_size(const double shapeWidth, const double shapeLengt
     mShapeWidth  = shapeWidth;
     mShapeLength = shapeLength;
     mShapeHeight = shapeHeight;
-//    update();
+    //    update();
 }
 
 float PrintShape::get_shape_width() const
@@ -127,43 +122,48 @@ void PrintShape::set_print_parameters(double dP, double nD, double eM, double iF
     set_layer_height(lH);
 }
 
-void PrintShape::calculate_layer_properties()
+double PrintShape::calculate_number_of_layers()
 {
-    double volumePrintPerLayer = mShapeWidth*mShapeLength*mLayerHeight*mInfillPercentage*mExtrusionMultiplier;
-    double volumeSyringePerLayer = volumePrintPerLayer;
-    double areaOfSyringe = pi/4*mDiameterOfSyringe*mDiameterOfSyringe;
-    double syringeExtrusionHeightPerLayer = volumeSyringePerLayer/areaOfSyringe;
-    double mExtrusionWidthCalculated = mExtrusionMultiplier/mInfillPercentage;
-    double diameterOfPrint = sqrt(volumePrintPerLayer*4*mExtrusionWidthCalculated/(mShapeWidth*mShapeLength*pi));
-    set_diameter_of_print(diameterOfPrint);
-    //    create_shape_location_vector();
-
     double numberOfLayers = floor(mShapeHeight/mLayerHeight);
-    double numberOfCylindersPerLayer = floor(mShapeWidth/mExtrusionWidthCalculated);
-    double*** centerOfCylinderArray = create_center_of_cylinder_array(numberOfLayers, numberOfCylindersPerLayer);
-    create_all_cylinders(centerOfCylinderArray, numberOfCylindersPerLayer, numberOfLayers);
+    return numberOfLayers;
 }
 
-double*** PrintShape::create_center_of_cylinder_array(double numberOfLayers, double numberOfCylindersPerLayer)
+double PrintShape::calculate_number_of_cylinders_per_layer()
 {
-    unsigned int numberOfOrthogonalDirections{3};
+    double numberOfCylindersPerLayer = floor(mShapeWidth/mExtrusionWidthCalculated);
+    return numberOfCylindersPerLayer;
+}
+
+int PrintShape::calculate_number_of_cylinders()
+{
+    int numberOfCylindersPerLayer = floor(mShapeWidth/mExtrusionWidthCalculated);
+    int numberOfLayers = floor(mShapeHeight/mLayerHeight);
+    int numberOfCylinders = numberOfCylindersPerLayer*numberOfLayers;
+    return numberOfCylinders;
+}
+
+double*** PrintShape::create_center_of_cylinder_array()
+{
+    int numberOfCylindersPerLayer = calculate_number_of_cylinders_per_layer();
+    int numberOfLayers = calculate_number_of_layers();
+    int numberOfOrthogonalDirections{3};
     double ***centerOfCylinderArray{nullptr};
     centerOfCylinderArray = new double**[numberOfCylindersPerLayer];
-    for (unsigned int r{0}; r < numberOfCylindersPerLayer; r++) // 1:1:numberOfCircles
+    for (int r{0}; r < numberOfCylindersPerLayer; r++) // 1:1:numberOfCircles
     {
         centerOfCylinderArray[r] = new double*[numberOfLayers];
-        for (unsigned int c{0}; c<numberOfLayers; c++)
+        for (int c{0}; c<numberOfLayers; c++)
         {
             centerOfCylinderArray[r][c] = new double[numberOfOrthogonalDirections];
         }
     }
 
-    for (unsigned int r{0}; r<numberOfCylindersPerLayer; r++)
+    for (int r{0}; r<numberOfCylindersPerLayer; r++)
     {
-        for(unsigned int c{0}; c<numberOfLayers; c++)
+        for(int c{0}; c<numberOfLayers; c++)
         {
-            unsigned int cylinderCount{r};
-            unsigned int layerCount{c};
+            int cylinderCount{r};
+            int layerCount{c};
             float xLocation{0};
             float yLocation{0};
             float zLocation{c*mLayerHeight};
@@ -185,41 +185,53 @@ double*** PrintShape::create_center_of_cylinder_array(double numberOfLayers, dou
     return centerOfCylinderArray;
 }
 
-void PrintShape::create_all_cylinders(double ***centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers)
+void PrintShape::calculate_layer_properties()
 {
-//    for (unsigned int r{0}; r<numberOfCylindersPerLayer; r++)
-//    {
-//        for(unsigned int c{0}; c<numberOfLayers; c++)
-//        {
-//            float diameterOfPrint = get_diameter_of_print();
-//            float length{mShapeLength};
-//            float positionX = centerOfCylinderArray[r][c][1];
-//            float positionY = centerOfCylinderArray[r][c][2];
-//            float positionZ = centerOfCylinderArray[r][c][3];
-
-//            osg::Vec3 shapePosition{positionX,positionY,positionZ};
-//            osg::Vec4 shapeRGBA = {1.0,1.0,0,0.2};
-
-//            osg::Quat rotation = rotate_about_y_axis();
-//            OSGWidget osgwidget;
-//            osgwidget.create_cylinder(shapePosition, diameterOfPrint, length, rotation, shapeRGBA);
-//        }
-//    }
-//    OSGWidget::update();
+    double volumePrintPerLayer = mShapeWidth*mShapeLength*mShapeHeight*mInfillPercentage*mExtrusionMultiplier;
+    double volumeSyringePerLayer = volumePrintPerLayer;
+    double diameterOfSyringe{14.9};
+    double areaSyringe = pi/4*diameterOfSyringe*diameterOfSyringe;
+    double heightSyringePerLayerCalculated = volumeSyringePerLayer/areaSyringe;
+    double extrusionWidthCalculated = mExtrusionWidth/mInfillPercentage;
+    double diameterOfPrint = sqrt(volumePrintPerLayer*4*extrusionWidthCalculated/(mShapeWidth*mShapeLength*pi));
+    set_diameter_of_print(diameterOfPrint);
 }
 
-void PrintShape::create_cylinder_in_x_direction(int numberOfCylinders)
-{
-//    for(int i=0; i<numberOfCylinders; i++)
-//    {
-//        float diameterOfPrint = get_diameter_of_print();
-//        float length{mShapeLength};
-//        osg::Vec3 shapePosition{0,0,0};
-//        osg::Vec4 shapeRGBA = {1.0,1.0,0,0.2};
+//void PrintShape::create_all_cylinders(double ***centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers)
+//{
+    //    for (unsigned int r{0}; r<numberOfCylindersPerLayer; r++)
+    //    {
+    //        for(unsigned int c{0}; c<numberOfLayers; c++)
+    //        {
+    //            float diameterOfPrint = get_diameter_of_print();
+    //            float length{mShapeLength};
+    //            float positionX = centerOfCylinderArray[r][c][1];
+    //            float positionY = centerOfCylinderArray[r][c][2];
+    //            float positionZ = centerOfCylinderArray[r][c][3];
 
-//        osg::Quat rotation = rotate_about_y_axis();
-//        OSGWidget osgwidget;
-//        osgwidget.create_cylinder(shapePosition, diameterOfPrint, length, rotation, shapeRGBA);
-//    }
-//    OSGWidget::update();
-}
+    //            osg::Vec3 shapePosition{positionX,positionY,positionZ};
+    //            osg::Vec4 shapeRGBA = {1.0,1.0,0,0.2};
+
+    //            osg::Quat rotation = rotate_about_y_axis();
+    //            OSGWidget osgwidget;
+    //            osgwidget.create_cylinder(shapePosition, diameterOfPrint, length, rotation, shapeRGBA);
+    //        }
+    //    }
+    //    OSGWidget::update();
+//}
+
+//void PrintShape::create_cylinder_in_x_direction(int numberOfCylinders)
+//{
+//    //    for(int i=0; i<numberOfCylinders; i++)
+//    //    {
+//    //        float diameterOfPrint = get_diameter_of_print();
+//    //        float length{mShapeLength};
+//    //        osg::Vec3 shapePosition{0,0,0};
+//    //        osg::Vec4 shapeRGBA = {1.0,1.0,0,0.2};
+
+//    //        osg::Quat rotation = rotate_about_y_axis();
+//    //        OSGWidget osgwidget;
+//    //        osgwidget.create_cylinder(shapePosition, diameterOfPrint, length, rotation, shapeRGBA);
+//    //    }
+//    //    OSGWidget::update();
+//}

@@ -25,7 +25,8 @@ public:
     void  toggle_start(bool on);
     void  toggle_stop(bool off);
     void  set_view_along_x_axis();
-    void  create_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
+    void  create_osg_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
+    void create_cylinders();
     void create_cylinders_in_x_direction(int numberOfCylinders);
     void create_cylinders_in_y_direction(int numberOfCylinders);
     osg::Quat rotate_about_x_axis();

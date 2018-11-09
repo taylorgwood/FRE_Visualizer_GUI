@@ -25,8 +25,10 @@ public:
     void   calculate_layer_properties();
     void   set_default_parameters();
     void   set_print_parameters(double dP, double nD, double eM, double iF, double eW, double lH);
-    void   create_cylinder_in_x_direction(int numberOfCylinders);
-    double ***create_center_of_cylinder_array(double numberOfLayers, double numberOfCylindersPerLayer);
+    double calculate_number_of_layers();
+    double calculate_number_of_cylinders_per_layer();
+    int    calculate_number_of_cylinders();
+    double ***create_center_of_cylinder_array();
     void   create_all_cylinders(double ***centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers);
     void   set_shape_size(const double objectWidth, const double objectLength, const double objectHeight);
     float  get_shape_width() const;
