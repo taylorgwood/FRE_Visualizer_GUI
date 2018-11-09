@@ -26,8 +26,8 @@ public slots:
     void on_actionStop_triggered();
 private slots:
     void on_extrusionMultiplierSlider_sliderMoved(int position);
-
     void on_needleGauge_valueChanged(int arg1);
+    void set_needle_diameter(int needleGauge);
     void on_objectSizeButton_clicked();
     void on_clearButton_clicked();
     void on_redrawButton_clicked();

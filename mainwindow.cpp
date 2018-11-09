@@ -11,8 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
     mMainWindowUI->setupUi(this);
     mOSGWidget = new OSGWidget{this};
     this->setCentralWidget(mOSGWidget);
-    //    bool simulationOn{false};
-    //    mPrintShape = new PrintShape();
 }
 
 MainWindow::~MainWindow()
@@ -39,17 +37,21 @@ void MainWindow::on_actionStop_triggered()
 
 void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
 {
-    double extrusionMultiplier = mMainWindowUI->extrusionMultiplierSlider->value();
-    mExtrusionMultiplier = extrusionMultiplier;
+    double extrusionMultiplierPercentage = mMainWindowUI->extrusionMultiplierSlider->value();
+    mExtrusionMultiplier = extrusionMultiplierPercentage/100;
     send_print_parameters();
 }
 
-
-
 void MainWindow::on_needleGauge_valueChanged(int arg1)
+{    
+    int needleGauge{arg1};
+    set_needle_diameter(needleGauge);
+    send_print_parameters();
+}
+
+void MainWindow::set_needle_diameter(int needleGauge)
 {
     double needleDiameter{0.26};
-    int needleGauge{arg1};
     if (needleGauge == 20)
     {
         needleDiameter = 0.603;
@@ -94,8 +96,7 @@ void MainWindow::on_needleGauge_valueChanged(int arg1)
     {
         needleDiameter = 0.159;
     }
-    MainWindow::mPrintShape->set_needle_diameter(needleDiameter);
-    MainWindow::mOSGWidget->update();
+    mNeedleDiameter = needleDiameter;
 }
 
 void MainWindow::on_objectSizeButton_clicked()
@@ -122,29 +123,25 @@ void MainWindow::on_autoUpdateButton_clicked(bool checked)
 
 void MainWindow::on_layerHeight_returnPressed()
 {
-    double layerHeight = mMainWindowUI->layerHeight->text().toDouble();
-    mLayerHeight = layerHeight;
+    mLayerHeight = mMainWindowUI->layerHeight->text().toDouble();
     send_print_parameters();
 }
 
 void MainWindow::on_extrusionMultiplier_returnPressed()
 {
-    double extrusionMultiplier = mMainWindowUI->extrusionMultiplier->text().toDouble();
-    mExtrusionMultiplier = extrusionMultiplier;
+    mExtrusionMultiplier = mMainWindowUI->extrusionMultiplier->text().toDouble();
     send_print_parameters();
 }
 
 void MainWindow::on_infillPercentage_returnPressed()
 {
-    double infillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
-    mInfillPercentage = infillPercentage;
+    mInfillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
     send_print_parameters();
 }
 
 void MainWindow::on_extrusionWidth_returnPressed()
 {
-    double extrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
-    mExtrusionWidth = extrusionWidth;
+    mExtrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
     send_print_parameters();
 }
 
