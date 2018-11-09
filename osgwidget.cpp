@@ -63,26 +63,14 @@ void OSGWidget::create_manipulator_and_viewer()
 
 void OSGWidget::set_view_along_x_axis()
 {
-    //    osg::ref_ptr<osgGA::TrackballManipulator> manipulatorXView = new osgGA::TrackballManipulator;
-    //    manipulatorXView->setAllowThrow(false);
     osg::Vec3d eye{0,0,0};
     osg::Vec3d center{0,0,0};
     osg::Vec3d up{0,0,1};
 
-    //    osg::Matrix mat = osg::Matrix::lookAt(cameraXPosition, cameraXViewDirection, cameraXUpPosition);
     osg::Matrix mat;
     mat.makeLookAt(eye, center, up);
-    //    mView->getCameraManipulator()->setByMatrix(mat);
-    //    mView->getCamera()->setProjectionMatrix(mat);
-    //    osg::Camera *camera = new osg::Camera;
-    //    camera = mView->getCamera();
-    //    camera->setViewMatrixAsLookAt(eye,center,up);
     osg::ref_ptr<osgGA::CameraManipulator> manipulator = mView->getCameraManipulator();
     manipulator->setByMatrix(mat);
-    //    camera->setViewMatrix(mat);
-    //    mView->getCameraManipulator()->setByInverseMatrix(mat);
-    //mViewer->getCameraWithFocus()->setViewMatrixAsLookAt(cameraXPosition, cameraXViewDirection, cameraXUpPosition);
-    //mView->getCamera()->setViewMatrixAsLookAt(cameraXPosition, cameraXViewDirection, cameraXUpPosition);
     update();
 }
 
@@ -201,60 +189,45 @@ void OSGWidget::create_axes()
 void OSGWidget::create_cylinders()
 {
     mPrintShape->calculate_layer_properties();
-    create_cylinders_in_x_direction();
-    create_cylinders_in_y_direction();
-
-    update();
-}
-
-void OSGWidget::create_cylinders_in_x_direction()
-{
+    //    create_cylinders_in_x_direction();
+    //    create_cylinders_in_y_direction();
     float radiusOfPrint = mPrintShape->get_diameter_of_print()/2;
 
-    double*** centerOfXCylinderArray = mPrintShape->create_center_of_X_cylinder_array();
+    double*** centerOfCylinderArray = mPrintShape->create_center_of_cylinder_array();
     int numberOfXCylindersPerLayer = mPrintShape->calculate_number_of_cylinders_per_X_layer();
+    int numberOfYCylindersPerLayer = mPrintShape->calculate_number_of_cylinders_per_Y_layer();
+    int numberOfCylindersPerLayer = numberOfXCylindersPerLayer+numberOfYCylindersPerLayer;
     int numberOfLayers = mPrintShape->calculate_number_of_layers();
-    for (int r{0}; r<numberOfXCylindersPerLayer; r++)
+    for (int r{0}; r<numberOfCylindersPerLayer; r++)
     {
         for(int c{0}; c<numberOfLayers; c++)
         {
-            float xLocation = centerOfXCylinderArray[r][c][1];
-            float yLocation = centerOfXCylinderArray[r][c][2];
-            float zLocation = centerOfXCylinderArray[r][c][3];
+            int cylinderCount{r};
+            int layerCount{c};
+            float xLocation = centerOfCylinderArray[r][c][1];
+            float yLocation = centerOfCylinderArray[r][c][2];
+            float zLocation = centerOfCylinderArray[r][c][3];
             osg::Vec3 shapePosition{xLocation,yLocation,zLocation};
-            osg::Vec4 shapeRGBA = {1.0,0,0,0.8};
-            osg::Quat rotation = rotate_about_y_axis();
-            float cylinderLength = mPrintShape->get_shape_length();
-            create_osg_cylinder(shapePosition, radiusOfPrint, cylinderLength, rotation, shapeRGBA);
-
+            if (cylinderCount<numberOfXCylindersPerLayer)
+            {
+                osg::Vec4 shapeRGBA = {1.0,0,0,0.6};
+                osg::Quat rotation = rotate_about_y_axis();
+                float cylinderLength = mPrintShape->get_shape_length();
+                create_osg_cylinder(shapePosition, radiusOfPrint, cylinderLength, rotation, shapeRGBA);
+            }
+            else
+            {
+                osg::Vec4 shapeRGBA = {0,0,1.0,0.6};
+                osg::Quat rotation = rotate_about_x_axis();
+                float cylinderLength = mPrintShape->get_shape_width();
+                create_osg_cylinder(shapePosition, radiusOfPrint, cylinderLength, rotation, shapeRGBA);
+            }
             mShapeList->push_back(mPrintShape);
         }
     }
-}
 
-void OSGWidget::create_cylinders_in_y_direction()
-{
-    float radiusOfPrint = mPrintShape->get_diameter_of_print()/2;
-    double*** centerOfYCylinderArray = mPrintShape->create_center_of_Y_cylinder_array();
-    int numberOfYCylindersPerLayer = mPrintShape->calculate_number_of_cylinders_per_Y_layer();
-    int numberOfLayers = mPrintShape->calculate_number_of_layers();
-    for (int r{0}; r<numberOfYCylindersPerLayer; r++)
-    {
-        for(int c{1}; c<numberOfLayers; c++)
-        {
-            float xLocation = centerOfYCylinderArray[r][c][1];
-            float yLocation = centerOfYCylinderArray[r][c][2];
-            float zLocation = centerOfYCylinderArray[r][c][3];
-            osg::Vec3 shapePosition{xLocation,yLocation,zLocation};
 
-            osg::Vec4 shapeRGBA = {0,0,1.0,0.8};
-            osg::Quat rotation = rotate_about_x_axis();
-            float cylinderLength = mPrintShape->get_shape_width();
-            create_osg_cylinder(shapePosition, radiusOfPrint, cylinderLength, rotation, shapeRGBA);
-        }
-
-        mShapeList->push_back(mPrintShape);
-    }
+    update();
 }
 
 osg::Quat OSGWidget::rotate_about_x_axis()
