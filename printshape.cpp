@@ -115,20 +115,6 @@ int PrintShape::calculate_number_of_XYlayers()
     return numberOfXYLayers;
 }
 
-//int PrintShape::calculate_number_of_X_layers()
-//{
-//    //    int numberOfLayers = calculate_number_of_layers();
-//    int numberOfXLayers = floor(mShapeHeight/mLayerHeight);
-//    return numberOfXLayers;
-//}
-
-//int PrintShape::calculate_number_of_Y_layers()
-//{
-//    //    int numberOfLayers = calculate_number_of_layers();
-//    int numberOfYLayers = floor(mShapeHeight/mLayerHeight);
-//    return numberOfYLayers;
-//}
-
 int PrintShape::calculate_number_of_cylinders_per_X_layer()
 {
     int numberOfXCylindersPerLayer = floor(mShapeWidth/mExtrusionWidthCalculated);
@@ -168,19 +154,29 @@ double*** PrintShape::create_center_of_cylinder_array()
         {
             int cylinderCount{r};
             int layerCount{c};
-            float xLocation{0};
-            float yLocation{0};
-            float zLocation{0};
+            double xLocation{0};
+            double yLocation{0};
+            double zLocation{0};
+            double alongBottom{-mShapeHeight/2};
+            double abovePreviousLayers{layerCount*mLayerHeight*2};
+            double sizeAdjustForRadiusOfPrint = calculate_diameter_of_print()/2;
+            zLocation = alongBottom+sizeAdjustForRadiusOfPrint+abovePreviousLayers;
+
             if (cylinderCount<numberOfXCylindersPerLayer)
             {
-                yLocation = mShapeWidth/2-cylinderCount*mExtrusionWidthCalculated;
-                zLocation = -mShapeHeight/2+layerCount*mLayerHeight*2;
+                double alongSide{mShapeWidth/2-sizeAdjustForRadiusOfPrint};
+                double nextToPreviousCylinder{-cylinderCount*mExtrusionWidthCalculated};
+                yLocation = alongSide+nextToPreviousCylinder;
+
             }
             else
             {
                 int cylinderYCount = cylinderCount-numberOfXCylindersPerLayer;
-                xLocation = mShapeLength/2-cylinderYCount*mExtrusionWidthCalculated;
-                zLocation = -mShapeHeight/2+(layerCount+0.5)*mLayerHeight*2;
+                double alongSide{mShapeLength/2-sizeAdjustForRadiusOfPrint};
+                double nextToPreviousCylinder{-cylinderYCount*mExtrusionWidthCalculated};
+                xLocation = alongSide+nextToPreviousCylinder;
+                double aboveXLayer{mLayerHeight};
+                zLocation += aboveXLayer;
             }
             centerOfCylinderArray[r][c][1] = xLocation;
             centerOfCylinderArray[r][c][2] = yLocation;

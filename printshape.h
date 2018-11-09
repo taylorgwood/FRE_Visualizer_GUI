@@ -24,8 +24,6 @@ public:
     void   set_default_parameters();
     void   set_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight);
     int    calculate_number_of_XYlayers();
-    //    int    calculate_number_of_X_layers();
-    //    int    calculate_number_of_Y_layers();
     int    calculate_number_of_cylinders_per_X_layer();
     int    calculate_number_of_cylinders_per_Y_layer();
     double ***create_center_of_cylinder_array();
@@ -35,9 +33,7 @@ public:
     float  get_shape_length() const;
     float  get_shape_height() const;
 
-
 private:
-
 
 protected:
     double const pi{3.14159};
