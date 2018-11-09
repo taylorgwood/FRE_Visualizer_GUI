@@ -24,6 +24,9 @@ public slots:
     void on_actionExit_triggered();
     void on_actionStart_triggered();
     void on_actionStop_triggered();
+    void view_axes();
+    void view_wireframe();
+
 private slots:
     void on_extrusionMultiplierSlider_sliderMoved(int position);
     void on_needleGauge_valueChanged(int arg1);

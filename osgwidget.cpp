@@ -126,7 +126,7 @@ osg::Geode *OSGWidget::create_geometry_node(osg::ShapeDrawable* newShape)
     return geode;
 }
 
-void OSGWidget::create_new_wireframe()
+void OSGWidget::draw_wireframe()
 {
     osg::Vec4 wireframeColorRGBA{0.2f,0.5f,1.f,0.1f};
     float scaleFactorX = mPrintShape->get_shape_length()/2;
@@ -255,8 +255,14 @@ void OSGWidget::clear_window()
 void OSGWidget::redraw()
 {
     clear_window();
-    create_new_wireframe();
-    create_axes();
+    if (mWireframeOn)
+    {
+        draw_wireframe();
+    }
+    if (mAxesOn)
+    {
+        create_axes();
+    }
     create_cylinders();
     update();
 }
@@ -273,6 +279,16 @@ void OSGWidget::set_print_parameters(double needleDiameter, double extrusionMult
     update();
 }
 
+void OSGWidget::view_axes(bool On)
+{
+    mAxesOn = On;
+}
+
+void OSGWidget::view_wireframe(bool On)
+{
+    mWireframeOn = On;
+}
+
 OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     QOpenGLWidget{parent,flags},
     mGraphicsWindow{new osgViewer::GraphicsWindowEmbedded{this->x(),this->y(),this->width(),this->height()}},
@@ -283,7 +299,7 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     mRoot = new osg::Group;
     //    mPrintShape = new PrintShape(mShapeList);
     set_up_environment();
-    create_new_wireframe();
+    draw_wireframe();
     set_up_min_graphics_window();
     create_axes();
     create_cylinders();

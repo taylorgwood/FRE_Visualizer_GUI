@@ -35,6 +35,19 @@ void MainWindow::on_actionStop_triggered()
     MainWindow::mOSGWidget->toggle_start(Off);
 }
 
+void MainWindow::view_axes()
+{
+    bool viewAxes = mMainWindowUI->actionView_axes->isChecked();
+    MainWindow::mOSGWidget->view_axes(viewAxes);
+
+}
+
+void MainWindow::view_wireframe()
+{
+    bool viewWireframe = mMainWindowUI->actionView_wireframe->isChecked();
+    MainWindow::mOSGWidget->view_wireframe(viewWireframe);
+}
+
 void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
 {
     double extrusionMultiplierPercentage = mMainWindowUI->extrusionMultiplierSlider->value();
@@ -126,6 +139,8 @@ void MainWindow::on_redrawButton_clicked()
 {
     redraw_print_parameters();
     redraw_shape_parameters();
+    view_axes();
+    view_wireframe();
     mOSGWidget->redraw();
 }
 

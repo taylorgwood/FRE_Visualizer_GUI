@@ -56,8 +56,16 @@
     <addaction name="actionStart_2"/>
     <addaction name="actionStop_2"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionView_axes"/>
+    <addaction name="actionView_wireframe"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuRun"/>
+   <addaction name="menuView"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -407,6 +415,28 @@
   <action name="actionStop_2">
    <property name="text">
     <string>Stop</string>
+   </property>
+  </action>
+  <action name="actionView_axes">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>View Axes</string>
+   </property>
+  </action>
+  <action name="actionView_wireframe">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>View Wireframe</string>
    </property>
   </action>
  </widget>

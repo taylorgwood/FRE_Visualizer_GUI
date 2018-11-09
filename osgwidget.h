@@ -33,9 +33,10 @@ public:
     void redraw();
     void set_shape_size(const double shapeWidth, const double shapeLength, const double shapeHeight);
     void set_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight);
-    //    void reset_parameters(UserInput userInput);
+    void view_axes(bool On);
+    void view_wireframe(bool On);
 
-protected:
+    protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
     virtual void paintGL();
     virtual void resizeGL(int width, int height);
@@ -68,7 +69,7 @@ private:
     osg::ShapeDrawable *create_graphic_cylinder(osg::Vec3 shapeLocation, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
     osg::Geode *create_geometry_node(osg::ShapeDrawable* newShape);
     void create_axes();
-    void create_new_wireframe();
+    void draw_wireframe();
     void set_up_min_graphics_window();
     int  set_up_timer();
 
@@ -77,6 +78,8 @@ private:
     PrintShape *mPrintShape{nullptr};
     std::vector<PrintShape*> *mShapeList;
     int mRedrawCount{0};
+    bool mAxesOn{1};
+    bool mWireframeOn{1};
 
 };
 
