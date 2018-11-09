@@ -1,12 +1,14 @@
 #include "gtest/gtest.h"
-#include "shapeupdatecallback.h"
+#include "printshape.h"
 
 
-TEST(VolumePrintPerLayer, givenPrintParameters_getCorrectVolume)
+TEST(a, b_c)
 {
-//    bool update{true};
-//    ShapeUpdateCallback shape(update);
-//    shape.set_default_parameters;
+//    PrintShape shape;
+//    shape.calculate_layer_properties();
+//    double calculatedDiameter{shape.get_diameter_of_print()};
+//    double expectedDiameter{0.26};
 
-    EXPECT_DOUBLE_EQ(0, 0);
+//    EXPECT_DOUBLE_EQ(calculatedDiameter, expectedDiameter);
+    EXPECT_DOUBLE_EQ(0,0);
 }

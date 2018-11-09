@@ -4,10 +4,10 @@
 #include <osg/MatrixTransform>
 #include <osg/Matrix>
 
-class PrintShape //: public osg::NodeCallback
+class PrintShape
 {
 public:
-//    PrintShape(PrintShape* printShape, bool &update, std::vector<PrintShape*> *shapeList);
+    ~PrintShape();
     PrintShape();
 
     float  get_diameter_of_print() const;
@@ -25,10 +25,13 @@ public:
     void   calculate_layer_properties();
     void   set_default_parameters();
     void   set_print_parameters(double dP, double nD, double eM, double iF, double eW, double lH);
-    double calculate_number_of_layers();
-    double calculate_number_of_cylinders_per_layer();
-    int    calculate_number_of_cylinders();
-    double ***create_center_of_cylinder_array();
+    int    calculate_number_of_layers();
+    int    calculate_number_of_cylinders_per_X_layer();
+//    int    calculate_number_of_X_cylinders();
+    int    calculate_number_of_cylinders_per_Y_layer();
+//    int    calculate_number_of_Y_cylinders();
+    double ***create_center_of_X_cylinder_array();
+    double ***create_center_of_Y_cylinder_array();
     void   create_all_cylinders(double ***centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers);
     void   set_shape_size(const double objectWidth, const double objectLength, const double objectHeight);
     float  get_shape_width() const;
