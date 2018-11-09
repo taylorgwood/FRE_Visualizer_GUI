@@ -100,19 +100,19 @@ void PrintShape::set_default_parameters()
     set_shape_size(shapeWidth,shapeLength,shapeHeight);
 }
 
-void PrintShape::set_print_parameters(double nD, double eM, double iF, double eW, double lH)
+void PrintShape::set_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight)
 {
-    set_needle_diameter(nD);
-    set_extrusion_multiplier(eM);
-    set_infill_percentage(iF);
-    set_extrusion_width(eW);
-    set_layer_height(lH);
+    set_needle_diameter(needleDiameter);
+    set_extrusion_multiplier(extrusionMultiplier);
+    set_infill_percentage(infillPercentage);
+    set_extrusion_width(extrusionWidth);
+    set_layer_height(layerHeight);
 }
 
-int PrintShape::calculate_number_of_layers()
+int PrintShape::calculate_number_of_XYlayers()
 {
-    int numberOfLayers = floor(mShapeHeight/mLayerHeight);
-    return numberOfLayers;
+    int numberOfXYLayers = floor(mShapeHeight/mLayerHeight/2);
+    return numberOfXYLayers;
 }
 
 //int PrintShape::calculate_number_of_X_layers()
@@ -148,15 +148,15 @@ double*** PrintShape::create_center_of_cylinder_array()
     int numberOfXCylindersPerLayer = calculate_number_of_cylinders_per_X_layer();
     int numberOfYCylindersPerLayer = calculate_number_of_cylinders_per_Y_layer();
     int numberOfCylindersPerLayer = numberOfXCylindersPerLayer+numberOfYCylindersPerLayer;
-    int numberOfLayers = calculate_number_of_layers();
+    int numberOfXYLayers = calculate_number_of_XYlayers();
     int numberOfOrthogonalDirections{3};
 
     double ***centerOfCylinderArray{nullptr};
     centerOfCylinderArray = new double**[numberOfCylindersPerLayer];
     for (int r{0}; r < numberOfCylindersPerLayer; r++)
     {
-        centerOfCylinderArray[r] = new double*[numberOfLayers];
-        for (int c{0}; c<numberOfLayers; c++)
+        centerOfCylinderArray[r] = new double*[numberOfXYLayers];
+        for (int c{0}; c<numberOfXYLayers; c++)
         {
             centerOfCylinderArray[r][c] = new double[numberOfOrthogonalDirections];
         }
@@ -164,7 +164,7 @@ double*** PrintShape::create_center_of_cylinder_array()
 
     for (int r{0}; r<numberOfCylindersPerLayer; r++)
     {
-        for(int c{0}; c<numberOfLayers; c++)
+        for(int c{0}; c<numberOfXYLayers; c++)
         {
             int cylinderCount{r};
             int layerCount{c};
@@ -174,13 +174,13 @@ double*** PrintShape::create_center_of_cylinder_array()
             if (cylinderCount<numberOfXCylindersPerLayer)
             {
                 yLocation = mShapeWidth/2-cylinderCount*mExtrusionWidthCalculated;
-                zLocation = -mShapeHeight/2+layerCount*mLayerHeight;
+                zLocation = -mShapeHeight/2+layerCount*mLayerHeight*2;
             }
             else
             {
                 int cylinderYCount = cylinderCount-numberOfXCylindersPerLayer;
                 xLocation = mShapeLength/2-cylinderYCount*mExtrusionWidthCalculated;
-                zLocation = -mShapeHeight/2+(layerCount+0.5)*mLayerHeight;
+                zLocation = -mShapeHeight/2+(layerCount+0.5)*mLayerHeight*2;
             }
             centerOfCylinderArray[r][c][1] = xLocation;
             centerOfCylinderArray[r][c][2] = yLocation;
@@ -193,13 +193,13 @@ double*** PrintShape::create_center_of_cylinder_array()
 float PrintShape::calculate_diameter_of_print()
 {
     double infillRatio = mInfillPercentage/100;
-    double volumePrintPerLayer = mShapeWidth*mShapeLength*mShapeHeight*infillRatio*mExtrusionMultiplier;
+    double volumePrintPerLayer = mShapeWidth*mShapeLength*mLayerHeight*infillRatio*mExtrusionMultiplier;
     double volumeSyringePerLayer = volumePrintPerLayer;
     double diameterOfSyringe{14.9};
     double areaSyringe = pi/4*diameterOfSyringe*diameterOfSyringe;
     double heightSyringePerLayerCalculated = volumeSyringePerLayer/areaSyringe;
-    double extrusionWidthCalculated = mExtrusionWidth/mInfillPercentage;
-    float diameterOfPrint = sqrt(volumePrintPerLayer*4*extrusionWidthCalculated/(mShapeWidth*mShapeLength*pi));
+    mExtrusionWidthCalculated = mExtrusionWidth/infillRatio;
+    float diameterOfPrint = sqrt(volumePrintPerLayer*4*mExtrusionWidthCalculated/(mShapeWidth*mShapeLength*pi));
     return diameterOfPrint;
 }
 

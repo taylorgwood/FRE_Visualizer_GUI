@@ -188,16 +188,13 @@ void OSGWidget::create_axes()
 
 void OSGWidget::create_cylinders()
 {
-    mPrintShape->calculate_diameter_of_print();
-    //    create_cylinders_in_x_direction();
-    //    create_cylinders_in_y_direction();
     float radiusOfPrint = mPrintShape->calculate_diameter_of_print()/2;
 
     double*** centerOfCylinderArray = mPrintShape->create_center_of_cylinder_array();
     int numberOfXCylindersPerLayer = mPrintShape->calculate_number_of_cylinders_per_X_layer();
     int numberOfYCylindersPerLayer = mPrintShape->calculate_number_of_cylinders_per_Y_layer();
     int numberOfCylindersPerLayer = numberOfXCylindersPerLayer+numberOfYCylindersPerLayer;
-    int numberOfLayers = mPrintShape->calculate_number_of_layers();
+    int numberOfLayers = mPrintShape->calculate_number_of_XYlayers();
     for (int r{0}; r<numberOfCylindersPerLayer; r++)
     {
         for(int c{0}; c<numberOfLayers; c++)
@@ -270,9 +267,9 @@ void OSGWidget::set_shape_size(const double shapeWidth, const double shapeLength
     update();
 }
 
-void OSGWidget::set_print_parameters(double nD, double eM, double iF, double eW, double lH)
+void OSGWidget::set_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight)
 {
-    mPrintShape->set_print_parameters(nD,eM,iF,eW,lH);
+    mPrintShape->set_print_parameters(needleDiameter,extrusionMultiplier,infillPercentage,extrusionWidth,layerHeight);
     update();
 }
 
