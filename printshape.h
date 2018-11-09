@@ -26,8 +26,8 @@ public:
     void   set_default_parameters();
     void   set_print_parameters(double dP, double nD, double eM, double iF, double eW, double lH);
     int    calculate_number_of_layers();
-    int    calculate_number_of_X_layers();
-    int    calculate_number_of_Y_layers();
+//    int    calculate_number_of_X_layers();
+//    int    calculate_number_of_Y_layers();
     int    calculate_number_of_cylinders_per_X_layer();
     int    calculate_number_of_cylinders_per_Y_layer();
     double ***create_center_of_cylinder_array();
@@ -46,7 +46,7 @@ protected:
     double mDiameterOfSyringe{14.9};
     float  mDiameterOfPrint{0.26f};
     double mNeedleDiameter{0.26};
-    double mExtrusionMultiplier{1.0};
+    double mExtrusionMultiplier{0.785};
     double mInfillPercentage{100};
     double mExtrusionWidth{0.26};
     double mExtrusionWidthCalculated{mExtrusionWidth};

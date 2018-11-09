@@ -118,6 +118,8 @@ void MainWindow::on_clearButton_clicked()
 
 void MainWindow::on_redrawButton_clicked()
 {
+    send_updated_parameters();
+    on_objectSizeButton_clicked();
     mOSGWidget->redraw();
 }
 

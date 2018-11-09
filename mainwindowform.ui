@@ -255,7 +255,7 @@
           <item>
            <widget class="QLineEdit" name="extrusionMultiplier">
             <property name="text">
-             <string>1.0</string>
+             <string>0.785</string>
             </property>
            </widget>
           </item>

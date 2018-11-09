@@ -43,7 +43,7 @@ private:
     double mDiameterOfSyringe{14.9};
     float  mDiameterOfPrint{0.26f};
     double mNeedleDiameter{0.26};
-    double mExtrusionMultiplier{1.0};
+    double mExtrusionMultiplier{0.785};
     double mInfillPercentage{100};
     double mExtrusionWidth{0.26};
     double mExtrusionWidthCalculated{mExtrusionWidth};

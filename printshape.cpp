@@ -128,34 +128,35 @@ int PrintShape::calculate_number_of_layers()
     return numberOfLayers;
 }
 
-int PrintShape::calculate_number_of_X_layers()
-{
-    //    int numberOfLayers = calculate_number_of_layers();
-    int numberOfXLayers = floor(mShapeHeight/mLayerHeight);
-    return numberOfXLayers;
-}
+//int PrintShape::calculate_number_of_X_layers()
+//{
+//    //    int numberOfLayers = calculate_number_of_layers();
+//    int numberOfXLayers = floor(mShapeHeight/mLayerHeight);
+//    return numberOfXLayers;
+//}
 
-int PrintShape::calculate_number_of_Y_layers()
-{
-    //    int numberOfLayers = calculate_number_of_layers();
-    int numberOfYLayers = floor(mShapeHeight/mLayerHeight);
-    return numberOfYLayers;
-}
+//int PrintShape::calculate_number_of_Y_layers()
+//{
+//    //    int numberOfLayers = calculate_number_of_layers();
+//    int numberOfYLayers = floor(mShapeHeight/mLayerHeight);
+//    return numberOfYLayers;
+//}
 
 int PrintShape::calculate_number_of_cylinders_per_X_layer()
 {
-    int numberOfXCylindersPerLayer = floor(mShapeLength/mExtrusionWidthCalculated);
+    int numberOfXCylindersPerLayer = floor(mShapeWidth/mExtrusionWidthCalculated);
     return numberOfXCylindersPerLayer;
 }
 
 int PrintShape::calculate_number_of_cylinders_per_Y_layer()
 {
-    int numberOfYCylindersPerLayer = floor(mShapeWidth/mExtrusionWidthCalculated);
+    int numberOfYCylindersPerLayer = floor(mShapeLength/mExtrusionWidthCalculated);
     return numberOfYCylindersPerLayer;
 }
 
 double*** PrintShape::create_center_of_cylinder_array()
 {
+
     calculate_layer_properties();
     int numberOfXCylindersPerLayer = calculate_number_of_cylinders_per_X_layer();
     int numberOfYCylindersPerLayer = calculate_number_of_cylinders_per_Y_layer();

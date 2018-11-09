@@ -289,8 +289,6 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     create_new_wireframe();
     set_up_min_graphics_window();
     create_axes();
-    //    create_cylinders_in_x_direction(1);
-    //    create_cylinders_in_y_direction(1);
     create_cylinders();
 
     mTimerId = set_up_timer();
