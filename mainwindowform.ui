@@ -53,6 +53,8 @@
     <property name="title">
      <string>Run</string>
     </property>
+    <addaction name="actionStart_2"/>
+    <addaction name="actionStop_2"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuRun"/>
@@ -342,6 +344,19 @@
       <string>Redraw</string>
      </property>
     </widget>
+    <widget class="QRadioButton" name="autoUpdateButton">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>500</y>
+       <width>95</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Auto Update</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <action name="actionOpen">
@@ -382,6 +397,16 @@
   <action name="actionStop">
    <property name="text">
     <string>Pause</string>
+   </property>
+  </action>
+  <action name="actionStart_2">
+   <property name="text">
+    <string>Start</string>
+   </property>
+  </action>
+  <action name="actionStop_2">
+   <property name="text">
+    <string>Stop</string>
    </property>
   </action>
  </widget>

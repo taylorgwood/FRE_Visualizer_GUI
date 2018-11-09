@@ -11,8 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
     mMainWindowUI->setupUi(this);
     mOSGWidget = new OSGWidget{this};
     this->setCentralWidget(mOSGWidget);
-    bool simulationOn{false};
-    mPrintShape = new PrintShape(simulationOn, mShapeList);
+    //    bool simulationOn{false};
+    //    mPrintShape = new PrintShape();
 }
 
 MainWindow::~MainWindow()
@@ -39,7 +39,9 @@ void MainWindow::on_actionStop_triggered()
 
 void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
 {
-
+    double extrusionMultiplier = mMainWindowUI->extrusionMultiplierSlider->value();
+    mExtrusionMultiplier = extrusionMultiplier;
+    send_updated_parameters();
 }
 
 void MainWindow::on_layerHeight_returnPressed()
@@ -106,15 +108,26 @@ void MainWindow::on_objectSizeButton_clicked()
     double shapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
     double shapeLength = mMainWindowUI->shapeLength->text().toDouble();
     double shapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
-    MainWindow::mPrintShape->set_shape_size(shapeWidth,shapeLength,shapeHeight);
+    MainWindow::mOSGWidget->set_shape_size(shapeWidth,shapeLength,shapeHeight);
 }
 
 void MainWindow::on_clearButton_clicked()
 {
-    mOSGWidget->clear_cylinders();
+    mOSGWidget->clear_window();
 }
 
 void MainWindow::on_redrawButton_clicked()
 {
     mOSGWidget->redraw();
+}
+
+void MainWindow::on_autoUpdateButton_clicked(bool checked)
+{
+    MainWindow::mOSGWidget->toggle_start(checked);
+}
+
+void MainWindow::send_updated_parameters()
+{
+    mOSGWidget->set_print_parameters(mDiameterOfPrint,mNeedleDiameter,mExtrusionMultiplier,mInfillPercentage,mExtrusionWidth,mLayerHeight);
+
 }

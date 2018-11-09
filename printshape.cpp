@@ -5,9 +5,7 @@
 //ShapeUpdateCallback::ShapeUpdateCallback(PrintShape* printShape, bool &update, std::vector<PrintShape*> *shapeList) :
 //    mUpdate {update},
 //    mShapeList {shapeList}
-PrintShape::PrintShape(bool &update, std::vector<PrintShape*> *shapeList) :
-    mUpdate {update},
-    mShapeList {shapeList}
+PrintShape::PrintShape()
 {
 
 //    mPosition = cylinder->get_position();
@@ -117,6 +115,16 @@ void PrintShape::set_default_parameters()
     set_extrusion_width(extrusionWidth);
     set_layer_height(layerHeight);
     set_shape_size(shapeWidth,shapeLength,shapeHeight);
+}
+
+void PrintShape::set_print_parameters(double dP, double nD, double eM, double iF, double eW, double lH)
+{
+    set_diameter_of_print(dP);
+    set_needle_diameter(nD);
+    set_extrusion_multiplier(eM);
+    set_infill_percentage(iF);
+    set_extrusion_width(eW);
+    set_layer_height(lH);
 }
 
 void PrintShape::calculate_layer_properties()

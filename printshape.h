@@ -8,7 +8,7 @@ class PrintShape //: public osg::NodeCallback
 {
 public:
 //    PrintShape(PrintShape* printShape, bool &update, std::vector<PrintShape*> *shapeList);
-    PrintShape(bool &update, std::vector<PrintShape *> *shapeList);
+    PrintShape();
 
     float  get_diameter_of_print() const;
     void   set_needle_diameter(const double needleDiameter);
@@ -24,6 +24,7 @@ public:
     void   set_diameter_of_print(const double diameterOfPrint);
     void   calculate_layer_properties();
     void   set_default_parameters();
+    void   set_print_parameters(double dP, double nD, double eM, double iF, double eW, double lH);
     void   create_cylinder_in_x_direction(int numberOfCylinders);
     double ***create_center_of_cylinder_array(double numberOfLayers, double numberOfCylindersPerLayer);
     void   create_all_cylinders(double ***centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers);
@@ -49,7 +50,7 @@ protected:
     float  mShapeWidth{10};
     float  mShapeHeight{10};
     float  mShapeLength{10};
-    bool&  mUpdate;
+//    bool&  mUpdate;
     std::vector<PrintShape*> *mShapeList {nullptr};
     //    std::vector<PhysicsObject*> *mObjectList {nullptr};
 

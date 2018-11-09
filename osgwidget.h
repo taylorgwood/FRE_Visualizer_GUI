@@ -26,19 +26,18 @@ public:
     void  toggle_stop(bool off);
     void  set_view_along_x_axis();
     void  create_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
-    //    float get_shape_width() const;
-    //    float get_shape_length() const;
-    //    float get_shape_height() const;
     void create_cylinders_in_x_direction(int numberOfCylinders);
     void create_cylinders_in_y_direction(int numberOfCylinders);
     osg::Quat rotate_about_x_axis();
     osg::Quat rotate_about_y_axis();
-    void clear_cylinders();
+    void clear_window();
     void redraw();
+    void set_shape_size(const double shapeWidth, const double shapeLength, const double shapeHeight);
+    void set_print_parameters(double dP, double nD, double eM, double iF, double eW, double lH);
     //    void reset_parameters(UserInput userInput);
 
-    protected:
-        virtual void paintEvent(QPaintEvent* paintEvent);
+protected:
+    virtual void paintEvent(QPaintEvent* paintEvent);
     virtual void paintGL();
     virtual void resizeGL(int width, int height);
     virtual void keyPressEvent(QKeyEvent* event);
@@ -51,6 +50,7 @@ public:
     virtual bool event(QEvent* event);
     void repaint_osg_graphics_after_interaction(QEvent* event);
     void timerEvent(QTimerEvent *);
+
 
 private:
     virtual void on_resize(int width, int height);

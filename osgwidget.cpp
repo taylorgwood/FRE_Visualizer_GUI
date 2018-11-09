@@ -63,24 +63,24 @@ void OSGWidget::create_manipulator_and_viewer()
 
 void OSGWidget::set_view_along_x_axis()
 {
-//    osg::ref_ptr<osgGA::TrackballManipulator> manipulatorXView = new osgGA::TrackballManipulator;
-//    manipulatorXView->setAllowThrow(false);
+    //    osg::ref_ptr<osgGA::TrackballManipulator> manipulatorXView = new osgGA::TrackballManipulator;
+    //    manipulatorXView->setAllowThrow(false);
     osg::Vec3d eye{0,0,0};
     osg::Vec3d center{0,0,0};
     osg::Vec3d up{0,0,1};
 
-//    osg::Matrix mat = osg::Matrix::lookAt(cameraXPosition, cameraXViewDirection, cameraXUpPosition);
+    //    osg::Matrix mat = osg::Matrix::lookAt(cameraXPosition, cameraXViewDirection, cameraXUpPosition);
     osg::Matrix mat;
     mat.makeLookAt(eye, center, up);
-//    mView->getCameraManipulator()->setByMatrix(mat);
-//    mView->getCamera()->setProjectionMatrix(mat);
-//    osg::Camera *camera = new osg::Camera;
-//    camera = mView->getCamera();
-//    camera->setViewMatrixAsLookAt(eye,center,up);
+    //    mView->getCameraManipulator()->setByMatrix(mat);
+    //    mView->getCamera()->setProjectionMatrix(mat);
+    //    osg::Camera *camera = new osg::Camera;
+    //    camera = mView->getCamera();
+    //    camera->setViewMatrixAsLookAt(eye,center,up);
     osg::ref_ptr<osgGA::CameraManipulator> manipulator = mView->getCameraManipulator();
     manipulator->setByMatrix(mat);
-//    camera->setViewMatrix(mat);
-//    mView->getCameraManipulator()->setByInverseMatrix(mat);
+    //    camera->setViewMatrix(mat);
+    //    mView->getCameraManipulator()->setByInverseMatrix(mat);
     //mViewer->getCameraWithFocus()->setViewMatrixAsLookAt(cameraXPosition, cameraXViewDirection, cameraXUpPosition);
     //mView->getCamera()->setViewMatrixAsLookAt(cameraXPosition, cameraXViewDirection, cameraXUpPosition);
     update();
@@ -203,8 +203,9 @@ void OSGWidget::create_cylinders_in_x_direction(int numberOfCylinders)
     float cylinderCount{1};
     for(int i=0; i<numberOfCylinders; i++)
     {
-        float radiusOfPrint = mPrintShape->get_diameter_of_print()/2;
-        float length = mPrintShape->get_shape_length();
+        PrintShape* cylinder = new PrintShape();
+        float radiusOfPrint = cylinder->get_diameter_of_print()/2;
+        float length = cylinder->get_shape_length();
         float yLocation = -5+0.26*cylinderCount;
         osg::Vec3 shapePosition{0,yLocation,-5+0.13};
         osg::Vec4 shapeRGBA = {0,1.0,1.0,0.8};
@@ -212,6 +213,7 @@ void OSGWidget::create_cylinders_in_x_direction(int numberOfCylinders)
         osg::Quat rotation = rotate_about_y_axis();
         create_cylinder(shapePosition, radiusOfPrint, length, rotation, shapeRGBA);
         cylinderCount += 1;
+        mShapeList->push_back(cylinder);
     }
     update();
 }
@@ -221,8 +223,9 @@ void OSGWidget::create_cylinders_in_y_direction(int numberOfCylinders)
     float cylinderCount{1};
     for(int i=0; i<numberOfCylinders; i++)
     {
-        float radiusOfPrint = mPrintShape->get_diameter_of_print()/2;
-        float length = mPrintShape->get_shape_width();
+        PrintShape* cylinder = new PrintShape();
+        float radiusOfPrint = cylinder->get_diameter_of_print()/2;
+        float length = cylinder->get_shape_length();
         float xLocation = -5+0.26*cylinderCount;
         osg::Vec3 shapePosition{xLocation,0,-5+0.13+0.26};
         osg::Vec4 shapeRGBA = {1.0,1.0,0,0.8};
@@ -230,6 +233,7 @@ void OSGWidget::create_cylinders_in_y_direction(int numberOfCylinders)
         osg::Quat rotation = rotate_about_x_axis();
         create_cylinder(shapePosition, radiusOfPrint, length, rotation, shapeRGBA);
         cylinderCount += 1;
+        mShapeList->push_back(cylinder);
     }
     update();
 }
@@ -252,40 +256,46 @@ osg::Quat OSGWidget::rotate_about_y_axis()
     return rotation;
 }
 
-void OSGWidget::clear_cylinders()
+void OSGWidget::clear_window()
 {
-    mRoot->removeChildren(1, mRoot->getNumChildren());
+    mRoot->removeChildren(0, mRoot->getNumChildren());
     mShapeList->clear();
     this->update();
 }
 
 void OSGWidget::redraw()
 {
-    clear_cylinders();
+    clear_window();
+    create_new_wireframe();
     create_axes();
     create_cylinders_in_x_direction(10);
     create_cylinders_in_y_direction(10);
-    create_new_wireframe();
+
     update();
 }
 
-//void OSGWidget::reset_parameters(UserInput userInput)
-//{
-//    double input{userInput.get_input()};
-//    for (PrintShape *cylinder: *mShapeList)
-//    {
-//        cylinder->set_input_parameters(input);
-//    }
-//}
+void OSGWidget::set_shape_size(const double shapeWidth, const double shapeLength, const double shapeHeight)
+{
+    mPrintShape->set_shape_size(shapeWidth,shapeLength,shapeHeight);
+    update();
+}
+
+void OSGWidget::set_print_parameters(double dP, double nD, double eM, double iF, double eW, double lH)
+{
+    mPrintShape->set_print_parameters(dP,nD,eM,iF,eW,lH);
+    update();
+}
+
 
 OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     QOpenGLWidget{parent,flags},
     mGraphicsWindow{new osgViewer::GraphicsWindowEmbedded{this->x(),this->y(),this->width(),this->height()}},
     mViewer{new osgViewer::CompositeViewer},
-    mShapeList{new std::vector<PrintShape*>}
+    mShapeList{new std::vector<PrintShape*>},
+    mPrintShape{new PrintShape()}
 {
     mRoot = new osg::Group;
-    mPrintShape = new PrintShape(mSimulationOn, mShapeList);
+    //    mPrintShape = new PrintShape(mShapeList);
     set_up_environment();
     create_new_wireframe();
     set_up_min_graphics_window();
@@ -304,7 +314,10 @@ OSGWidget::~OSGWidget()
 void OSGWidget::timerEvent(QTimerEvent *)
 {
     if (mSimulationOn)
+    {
         update();
+        redraw();
+    }
 }
 
 void OSGWidget::paintEvent(QPaintEvent*)
