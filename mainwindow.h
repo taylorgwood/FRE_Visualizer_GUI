@@ -29,6 +29,7 @@ private slots:
     void on_needleGauge_valueChanged(int arg1);
     void set_needle_diameter(int needleGauge);
     void on_objectSizeButton_clicked();
+    void on_resetParametersButton_clicked();
     void on_clearButton_clicked();
     void on_redrawButton_clicked();
     void on_autoUpdateButton_clicked(bool checked);
@@ -36,13 +37,11 @@ private slots:
     void on_extrusionMultiplier_returnPressed();
     void on_infillPercentage_returnPressed();
     void on_extrusionWidth_returnPressed();
-    void send_print_parameters();
+    void redraw_print_parameters();
     void on_shapeWidth_returnPressed();
     void on_shapeLength_returnPressed();
     void on_shapeHeight_returnPressed();
-    void send_shape_parameters();
-
-
+    void redraw_shape_parameters();
 
 private:
     Ui::MainWindowForm *mMainWindowUI;

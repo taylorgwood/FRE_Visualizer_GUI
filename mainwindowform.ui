@@ -278,9 +278,9 @@
        </layout>
       </item>
       <item>
-       <widget class="QPushButton" name="defaultButton">
+       <widget class="QPushButton" name="resetParametersButton">
         <property name="text">
-         <string>Reset Parameters</string>
+         <string>Reset Print Parameters</string>
         </property>
        </widget>
       </item>
@@ -321,8 +321,8 @@
     <widget class="QPushButton" name="clearButton">
      <property name="geometry">
       <rect>
-       <x>60</x>
-       <y>440</y>
+       <x>10</x>
+       <y>420</y>
        <width>93</width>
        <height>28</height>
       </rect>
@@ -334,8 +334,8 @@
     <widget class="QPushButton" name="redrawButton">
      <property name="geometry">
       <rect>
-       <x>50</x>
-       <y>490</y>
+       <x>130</x>
+       <y>420</y>
        <width>93</width>
        <height>28</height>
       </rect>
@@ -347,8 +347,8 @@
     <widget class="QRadioButton" name="autoUpdateButton">
      <property name="geometry">
       <rect>
-       <x>170</x>
-       <y>500</y>
+       <x>140</x>
+       <y>460</y>
        <width>95</width>
        <height>20</height>
       </rect>
