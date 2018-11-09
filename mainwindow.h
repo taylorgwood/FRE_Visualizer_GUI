@@ -26,14 +26,23 @@ public slots:
     void on_actionStop_triggered();
 private slots:
     void on_extrusionMultiplierSlider_sliderMoved(int position);
-    void on_layerHeight_returnPressed();
+
     void on_needleGauge_valueChanged(int arg1);
     void on_objectSizeButton_clicked();
     void on_clearButton_clicked();
     void on_redrawButton_clicked();
     void on_autoUpdateButton_clicked(bool checked);
+    void on_layerHeight_returnPressed();
+    void on_extrusionMultiplier_returnPressed();
+    void on_infillPercentage_returnPressed();
+    void on_extrusionWidth_returnPressed();
+    void send_print_parameters();
+    void on_shapeWidth_returnPressed();
+    void on_shapeLength_returnPressed();
+    void on_shapeHeight_returnPressed();
+    void send_shape_parameters();
 
-    void send_updated_parameters();
+
 
 private:
     Ui::MainWindowForm *mMainWindowUI;

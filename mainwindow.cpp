@@ -41,15 +41,10 @@ void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
 {
     double extrusionMultiplier = mMainWindowUI->extrusionMultiplierSlider->value();
     mExtrusionMultiplier = extrusionMultiplier;
-    send_updated_parameters();
+    send_print_parameters();
 }
 
-void MainWindow::on_layerHeight_returnPressed()
-{
-    double layerHeight = mMainWindowUI->layerHeight->text().toDouble();
-    mLayerHeight = layerHeight;
-    send_updated_parameters();
-}
+
 
 void MainWindow::on_needleGauge_valueChanged(int arg1)
 {
@@ -105,10 +100,7 @@ void MainWindow::on_needleGauge_valueChanged(int arg1)
 
 void MainWindow::on_objectSizeButton_clicked()
 {
-    double shapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
-    double shapeLength = mMainWindowUI->shapeLength->text().toDouble();
-    double shapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
-    MainWindow::mOSGWidget->set_shape_size(shapeWidth,shapeLength,shapeHeight);
+    send_shape_parameters();
 }
 
 void MainWindow::on_clearButton_clicked()
@@ -118,7 +110,7 @@ void MainWindow::on_clearButton_clicked()
 
 void MainWindow::on_redrawButton_clicked()
 {
-    send_updated_parameters();
+    send_print_parameters();
     on_objectSizeButton_clicked();
     mOSGWidget->redraw();
 }
@@ -128,8 +120,62 @@ void MainWindow::on_autoUpdateButton_clicked(bool checked)
     MainWindow::mOSGWidget->toggle_start(checked);
 }
 
-void MainWindow::send_updated_parameters()
+void MainWindow::on_layerHeight_returnPressed()
+{
+    double layerHeight = mMainWindowUI->layerHeight->text().toDouble();
+    mLayerHeight = layerHeight;
+    send_print_parameters();
+}
+
+void MainWindow::on_extrusionMultiplier_returnPressed()
+{
+    double extrusionMultiplier = mMainWindowUI->extrusionMultiplier->text().toDouble();
+    mExtrusionMultiplier = extrusionMultiplier;
+    send_print_parameters();
+}
+
+void MainWindow::on_infillPercentage_returnPressed()
+{
+    double infillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
+    mInfillPercentage = infillPercentage;
+    send_print_parameters();
+}
+
+void MainWindow::on_extrusionWidth_returnPressed()
+{
+    double extrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
+    mExtrusionWidth = extrusionWidth;
+    send_print_parameters();
+}
+
+void MainWindow::send_print_parameters()
 {
     mOSGWidget->set_print_parameters(mNeedleDiameter,mExtrusionMultiplier,mInfillPercentage,mExtrusionWidth,mLayerHeight);
 
 }
+
+void MainWindow::on_shapeWidth_returnPressed()
+{
+    mShapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
+    send_shape_parameters();
+}
+
+void MainWindow::on_shapeLength_returnPressed()
+{
+    mShapeLength = mMainWindowUI->shapeLength->text().toDouble();
+    send_shape_parameters();
+}
+
+void MainWindow::on_shapeHeight_returnPressed()
+{
+    mShapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
+    send_shape_parameters();
+}
+
+void MainWindow::send_shape_parameters()
+{
+    MainWindow::mOSGWidget->set_shape_size(mShapeWidth,mShapeLength,mShapeHeight);
+}
+
+
+
