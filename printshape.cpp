@@ -128,6 +128,20 @@ int PrintShape::calculate_number_of_layers()
     return numberOfLayers;
 }
 
+int PrintShape::calculate_number_of_X_layers()
+{
+//    int numberOfLayers = calculate_number_of_layers();
+    int numberOfXLayers = floor(mShapeHeight/mLayerHeight/2);
+    return numberOfXLayers;
+}
+
+int PrintShape::calculate_number_of_Y_layers()
+{
+//    int numberOfLayers = calculate_number_of_layers();
+    int numberOfYLayers = floor(mShapeHeight/mLayerHeight/2);
+    return numberOfYLayers;
+}
+
 int PrintShape::calculate_number_of_cylinders_per_X_layer()
 {
     int numberOfXCylindersPerLayer = floor(mShapeWidth/mExtrusionWidthCalculated);
@@ -160,14 +174,15 @@ double*** PrintShape::create_center_of_X_cylinder_array()
 {
     calculate_layer_properties();
     int numberOfXCylindersPerLayer = calculate_number_of_cylinders_per_X_layer();
-    int numberOfLayers = calculate_number_of_layers();
+    int numberOfXLayers = calculate_number_of_layers();
+//    int numberOfXLayers{numberOfLayers/2};
     int numberOfOrthogonalDirections{3};
     double ***centerOfXCylinderArray{nullptr};
     centerOfXCylinderArray = new double**[numberOfXCylindersPerLayer];
     for (int r{0}; r < numberOfXCylindersPerLayer; r++)
     {
-        centerOfXCylinderArray[r] = new double*[numberOfLayers];
-        for (int c{0}; c<numberOfLayers; c++)
+        centerOfXCylinderArray[r] = new double*[numberOfXLayers];
+        for (int c{0}; c<numberOfXLayers; c++)
         {
             centerOfXCylinderArray[r][c] = new double[numberOfOrthogonalDirections];
         }
@@ -175,13 +190,13 @@ double*** PrintShape::create_center_of_X_cylinder_array()
 
     for (int r{0}; r<numberOfXCylindersPerLayer; r++)
     {
-        for(int c{0}; c<numberOfLayers; c++)
+        for(int c{0}; c<numberOfXLayers; c++)
         {
             int cylinderCount{r};
             int layerCount{c};
             float xLocation{0};
             float yLocation{0};
-            float zLocation{-mShapeHeight/2+layerCount*mLayerHeight};
+            float zLocation{-mShapeHeight/2+layerCount*mLayerHeight*2};
             yLocation = mShapeWidth/2-cylinderCount*mExtrusionWidthCalculated;
             centerOfXCylinderArray[r][c][1] = xLocation;
             centerOfXCylinderArray[r][c][2] = yLocation;
@@ -195,14 +210,15 @@ double*** PrintShape::create_center_of_Y_cylinder_array()
 {
     calculate_layer_properties();
     int numberOfYCylindersPerLayer = calculate_number_of_cylinders_per_X_layer();
-    int numberOfLayers = calculate_number_of_layers();
+    int numberOfYLayers = calculate_number_of_layers();
+//    int numberOfYLayers{numberOfLayers/2};
     int numberOfOrthogonalDirections{3};
     double ***centerOfYCylinderArray{nullptr};
     centerOfYCylinderArray = new double**[numberOfYCylindersPerLayer];
     for (int r{0}; r < numberOfYCylindersPerLayer; r++)
     {
-        centerOfYCylinderArray[r] = new double*[numberOfLayers];
-        for (int c{0}; c<numberOfLayers; c++)
+        centerOfYCylinderArray[r] = new double*[numberOfYLayers];
+        for (int c{0}; c<numberOfYLayers; c++)
         {
             centerOfYCylinderArray[r][c] = new double[numberOfOrthogonalDirections];
         }
@@ -210,13 +226,13 @@ double*** PrintShape::create_center_of_Y_cylinder_array()
 
     for (int r{0}; r<numberOfYCylindersPerLayer; r++)
     {
-        for(int c{0}; c<numberOfLayers; c++)
+        for(int c{0}; c<numberOfYLayers; c++)
         {
             int cylinderCount{r};
             int layerCount{c};
             float xLocation{0};
             float yLocation{0};
-            float zLocation{-mShapeHeight/2+layerCount*mLayerHeight};
+            float zLocation{-mShapeHeight/2+layerCount*mLayerHeight*2};
             xLocation = mShapeLength/2-cylinderCount*mExtrusionWidthCalculated;
 
             centerOfYCylinderArray[r][c][1] = xLocation;
