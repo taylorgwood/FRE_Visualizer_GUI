@@ -123,235 +123,6 @@
       <string>Extrusion Multiplier</string>
      </property>
     </widget>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>250</y>
-       <width>221</width>
-       <height>109</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_7">
-      <item alignment="Qt::AlignHCenter">
-       <widget class="QLabel" name="label_13">
-        <property name="text">
-         <string>Object Size (mm)</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item alignment="Qt::AlignLeft">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Width (X)</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="shapeWidth">
-            <property name="text">
-             <string>10</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Length (Y)</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="shapeLength">
-            <property name="text">
-             <string>10</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>Height (Z)</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="shapeHeight">
-            <property name="text">
-             <string>10</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QPushButton" name="objectSizeButton">
-        <property name="text">
-         <string>Reset Object Size</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>231</width>
-       <height>150</height>
-      </rect>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_10">
-          <item>
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Layer Height (mm)</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Extrusion Multiplier</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_9">
-            <property name="text">
-             <string>Infill Percentage (%)</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_10">
-            <property name="text">
-             <string>Extrusion Width (mm)</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
-          <item>
-           <widget class="QLineEdit" name="layerHeight">
-            <property name="text">
-             <string>0.26</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="extrusionMultiplier">
-            <property name="text">
-             <string>0.785</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="infillPercentage">
-            <property name="text">
-             <string>100</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="extrusionWidth">
-            <property name="text">
-             <string>0.26</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QPushButton" name="resetParametersButton">
-        <property name="text">
-         <string>Reset Print Parameters</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>221</width>
-       <height>24</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Needle gauge</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSpinBox" name="needleGauge">
-        <property name="minimum">
-         <number>20</number>
-        </property>
-        <property name="maximum">
-         <number>30</number>
-        </property>
-        <property name="value">
-         <number>25</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QPushButton" name="clearButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>420</y>
-       <width>93</width>
-       <height>28</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Clear</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="redrawButton">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>420</y>
-       <width>93</width>
-       <height>28</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Redraw</string>
-     </property>
-    </widget>
     <widget class="QRadioButton" name="autoUpdateButton">
      <property name="geometry">
       <rect>
@@ -364,6 +135,233 @@
      <property name="text">
       <string>Auto Update</string>
      </property>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>271</width>
+       <height>317</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_8">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Needle gauge</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Layer Height (mm)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Extrusion Multiplier</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>Infill Percentage (%)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>Extrusion Width (mm)</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QSpinBox" name="needleGauge">
+              <property name="minimum">
+               <number>20</number>
+              </property>
+              <property name="maximum">
+               <number>30</number>
+              </property>
+              <property name="value">
+               <number>25</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="layerHeight">
+              <property name="text">
+               <string>0.26</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="extrusionMultiplier">
+              <property name="text">
+               <string>0.785</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="infillPercentage">
+              <property name="text">
+               <string>100</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="extrusionWidth">
+              <property name="text">
+               <string>0.26</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QPushButton" name="resetParametersButton">
+          <property name="text">
+           <string>Reset Print Parameters</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
+        <item alignment="Qt::AlignHCenter">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Object Size (mm)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item alignment="Qt::AlignLeft">
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Width (X)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="shapeWidth">
+              <property name="text">
+               <string>10</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Length (Y)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="shapeLength">
+              <property name="text">
+               <string>10</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Height (Z)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="shapeHeight">
+              <property name="text">
+               <string>10</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QPushButton" name="objectSizeButton">
+          <property name="text">
+           <string>Reset Object Size</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Line" name="line_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>420</y>
+       <width>195</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="clearButton">
+        <property name="text">
+         <string>Clear</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="redrawButton">
+        <property name="text">
+         <string>Redraw</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </widget>
   </widget>

@@ -129,7 +129,6 @@ int PrintShape::calculate_number_of_cylinders_per_Y_layer()
 
 double*** PrintShape::create_center_of_cylinder_array()
 {
-
     calculate_diameter_of_print();
     int numberOfXCylindersPerLayer = calculate_number_of_cylinders_per_X_layer();
     int numberOfYCylindersPerLayer = calculate_number_of_cylinders_per_Y_layer();

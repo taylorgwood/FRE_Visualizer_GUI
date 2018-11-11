@@ -65,10 +65,13 @@ void OSGWidget::set_view_along_x_axis()
 {
     osg::Vec3d eye{0,0,0};
     osg::Vec3d center{0,0,0};
-    osg::Vec3d up{0,0,1};
+    osg::Vec3d up{0,0,0};
 
     osg::Matrix mat;
-    mat.makeLookAt(eye, center, up);
+//    mat.makeLookAt(eye, center, up);
+//    mat.makeIdentity();
+    mat.makeLookAt(eye,center,up);
+//    mat.setRotate(rotate_about_x_axis());
     osg::ref_ptr<osgGA::CameraManipulator> manipulator = mView->getCameraManipulator();
     manipulator->setByMatrix(mat);
     update();
