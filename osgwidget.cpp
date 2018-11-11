@@ -23,7 +23,7 @@ void OSGWidget::set_up_environment()
     float aspectRatio = static_cast<float>( this->width() ) / static_cast<float>( this->height() );
     int pixelRatio   = this->devicePixelRatio();
     mView = create_scene(aspectRatio,pixelRatio);
-    create_manipulator_and_viewer();
+    create_manipulator();
 }
 
 osg::Camera *OSGWidget::create_camera(float aspectRatio, int pixelRatio)
@@ -44,16 +44,25 @@ osg::Camera *OSGWidget::create_camera(float aspectRatio, int pixelRatio)
     return camera;
 }
 
-void OSGWidget::create_manipulator_and_viewer()
+void OSGWidget::create_manipulator()
 {
     osg::ref_ptr<osgGA::TrackballManipulator> manipulator = new osgGA::TrackballManipulator;
     manipulator->setAllowThrow(false);
 
+    set_original_home_position(manipulator);
+    set_manipulator_to_viewer(manipulator);
+}
+
+void OSGWidget::set_original_home_position(osg::ref_ptr<osgGA::TrackballManipulator> manipulator)
+{
     osg::Vec3d cameraHomePosition{20.0,20.0,10.0};
     osg::Vec3d cameraHomeViewDirection{0,0,0};
     osg::Vec3d cameraHomeUpPosition{0,0,1};
     manipulator->setHomePosition(cameraHomePosition,cameraHomeViewDirection,cameraHomeUpPosition);
+}
 
+void OSGWidget::set_manipulator_to_viewer(osg::ref_ptr<osgGA::TrackballManipulator> manipulator)
+{
     mView->setCameraManipulator(manipulator);
     mViewer->addView(mView);
     mViewer->setThreadingModel(osgViewer::CompositeViewer::SingleThreaded);
@@ -65,17 +74,28 @@ void OSGWidget::set_view_along_x_axis()
 {
     osg::Vec3d eye{0,0,0};
     osg::Vec3d center{0,0,0};
-    osg::Vec3d up{0,0,0};
+    osg::Vec3d up{0,0,1};
 
     osg::Matrix mat;
-//    mat.makeLookAt(eye, center, up);
-//    mat.makeIdentity();
     mat.makeLookAt(eye,center,up);
-//    mat.setRotate(rotate_about_x_axis());
     osg::ref_ptr<osgGA::CameraManipulator> manipulator = mView->getCameraManipulator();
     manipulator->setByMatrix(mat);
+//    this->mView->setCameraManipulator(manipulator,true);
     update();
+
+//    osgGA::TrackballManipulator* man = (osgGA::TrackballManipulator*)this->mView->getCameraManipulator();
+////    osg::Matrix trans;
+////    trans.makeTranslate(osg::Vec3(position.x(),position.y(),position.z()));
+//    osg::Matrix rot;
+//    rot.makeRotate();
+//    rot.makeRotate(Angle,osg::Vec3(Axis.x,Axis.y,Axis.z)));
+//    osg::Matrix cam = rot*trans;
+//    this->mView->setCameraManipulator();
+//    this->mView->setByMatrix(cam)
 }
+
+
+
 
 void OSGWidget::set_up_min_graphics_window()
 {

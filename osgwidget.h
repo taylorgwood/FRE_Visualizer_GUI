@@ -63,7 +63,9 @@ private:
     int mTimerId{0};
 
     void set_up_environment();
-    void create_manipulator_and_viewer();
+    void create_manipulator();
+    void set_original_home_position(osg::ref_ptr<osgGA::TrackballManipulator> manipulator);
+    void set_manipulator_to_viewer(osg::ref_ptr<osgGA::TrackballManipulator> manipulator);
     osg::Camera *create_camera(float aspectRatio, int pixelRatio);
     osgViewer::View *create_scene(float aspectRatio, int pixelRatio);
     osg::ShapeDrawable *create_graphic_cylinder(osg::Vec3 shapeLocation, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
