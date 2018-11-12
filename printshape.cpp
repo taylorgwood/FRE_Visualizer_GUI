@@ -109,19 +109,19 @@ void PrintShape::set_print_parameters(double needleDiameter, double extrusionMul
     set_layer_height(layerHeight);
 }
 
-int PrintShape::calculate_number_of_XYlayers()
+int PrintShape::get_number_of_XYlayers()
 {
     int numberOfXYLayers = floor(mShapeHeight/mLayerHeight/2);
     return numberOfXYLayers;
 }
 
-int PrintShape::calculate_number_of_cylinders_per_X_layer()
+int PrintShape::get_number_of_cylinders_per_X_layer()
 {
     int numberOfXCylindersPerLayer = floor(mShapeWidth/mExtrusionWidthCalculated);
     return numberOfXCylindersPerLayer;
 }
 
-int PrintShape::calculate_number_of_cylinders_per_Y_layer()
+int PrintShape::get_number_of_cylinders_per_Y_layer()
 {
     int numberOfYCylindersPerLayer = floor(mShapeLength/mExtrusionWidthCalculated);
     return numberOfYCylindersPerLayer;
@@ -129,11 +129,11 @@ int PrintShape::calculate_number_of_cylinders_per_Y_layer()
 
 double*** PrintShape::create_center_of_cylinder_array()
 {
-    calculate_diameter_of_print();
-    int numberOfXCylindersPerLayer = calculate_number_of_cylinders_per_X_layer();
-    int numberOfYCylindersPerLayer = calculate_number_of_cylinders_per_Y_layer();
+    get_diameter_of_print();
+    int numberOfXCylindersPerLayer = get_number_of_cylinders_per_X_layer();
+    int numberOfYCylindersPerLayer = get_number_of_cylinders_per_Y_layer();
     int numberOfCylindersPerLayer = numberOfXCylindersPerLayer+numberOfYCylindersPerLayer;
-    int numberOfXYLayers = calculate_number_of_XYlayers();
+    int numberOfXYLayers = get_number_of_XYlayers();
     int numberOfOrthogonalDirections{3};
 
     double ***centerOfCylinderArray{nullptr};
@@ -158,7 +158,7 @@ double*** PrintShape::create_center_of_cylinder_array()
             double zLocation{0};
             double alongBottom{-mShapeHeight/2};
             double abovePreviousLayers{layerCount*mLayerHeight*2};
-            double sizeAdjustForRadiusOfPrint = calculate_diameter_of_print()/2;
+            double sizeAdjustForRadiusOfPrint = get_diameter_of_print()/2;
             zLocation = alongBottom+sizeAdjustForRadiusOfPrint+abovePreviousLayers;
 
             if (cylinderCount<numberOfXCylindersPerLayer)
@@ -185,7 +185,7 @@ double*** PrintShape::create_center_of_cylinder_array()
     return centerOfCylinderArray;
 }
 
-float PrintShape::calculate_diameter_of_print()
+float PrintShape::get_diameter_of_print()
 {
     double infillRatio = mInfillPercentage/100;
     double volumePrintPerLayer = mShapeWidth*mShapeLength*mLayerHeight*infillRatio*mExtrusionMultiplier;

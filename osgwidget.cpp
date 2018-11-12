@@ -80,18 +80,18 @@ void OSGWidget::set_view_along_x_axis()
     mat.makeLookAt(eye,center,up);
     osg::ref_ptr<osgGA::CameraManipulator> manipulator = mView->getCameraManipulator();
     manipulator->setByMatrix(mat);
-//    this->mView->setCameraManipulator(manipulator,true);
+    //    this->mView->setCameraManipulator(manipulator,true);
     update();
 
-//    osgGA::TrackballManipulator* man = (osgGA::TrackballManipulator*)this->mView->getCameraManipulator();
-////    osg::Matrix trans;
-////    trans.makeTranslate(osg::Vec3(position.x(),position.y(),position.z()));
-//    osg::Matrix rot;
-//    rot.makeRotate();
-//    rot.makeRotate(Angle,osg::Vec3(Axis.x,Axis.y,Axis.z)));
-//    osg::Matrix cam = rot*trans;
-//    this->mView->setCameraManipulator();
-//    this->mView->setByMatrix(cam)
+    //    osgGA::TrackballManipulator* man = (osgGA::TrackballManipulator*)this->mView->getCameraManipulator();
+    ////    osg::Matrix trans;
+    ////    trans.makeTranslate(osg::Vec3(position.x(),position.y(),position.z()));
+    //    osg::Matrix rot;
+    //    rot.makeRotate();
+    //    rot.makeRotate(Angle,osg::Vec3(Axis.x,Axis.y,Axis.z)));
+    //    osg::Matrix cam = rot*trans;
+    //    this->mView->setCameraManipulator();
+    //    this->mView->setByMatrix(cam)
 }
 
 
@@ -179,7 +179,7 @@ void OSGWidget::create_osg_cylinder(osg::Vec3 shapePosition, float radius, float
 
 void OSGWidget::create_axes()
 {
-    float radius{0.1};
+    float radius{0.05};
     float height{1};
     osg::Vec3 shapePosition1{height/2,0,0};
     osg::Vec3 shapePosition2{0,height/2,0};
@@ -190,9 +190,9 @@ void OSGWidget::create_axes()
     shapePosition1 += {moveDistanceX,0,0};
     shapePosition2 += {0,moveDistanceY,0};
     shapePosition3 += {0,0,moveDistanceZ};
-    osg::Vec4 shapeRGBA1 = {1.0,0,0,0.5};
-    osg::Vec4 shapeRGBA2 = {0,1.0,0,0.5};
-    osg::Vec4 shapeRGBA3 = {0,0,1.0,0.5};
+    osg::Vec4 shapeRGBA1 = {1.0,0,0,1};
+    osg::Vec4 shapeRGBA2 = {0,1.0,0,1};
+    osg::Vec4 shapeRGBA3 = {0,0,1.0,1};
 
     double angleInDegrees = 90;
     double angleInRadians = osg::DegreesToRadians(angleInDegrees);
@@ -211,13 +211,13 @@ void OSGWidget::create_axes()
 
 void OSGWidget::create_cylinders()
 {
-    float radiusOfPrint = mPrintShape->calculate_diameter_of_print()/2;
+    float radiusOfPrint = mPrintShape->get_diameter_of_print()/2;
 
     double*** centerOfCylinderArray = mPrintShape->create_center_of_cylinder_array();
-    int numberOfXCylindersPerLayer = mPrintShape->calculate_number_of_cylinders_per_X_layer();
-    int numberOfYCylindersPerLayer = mPrintShape->calculate_number_of_cylinders_per_Y_layer();
+    int numberOfXCylindersPerLayer = mPrintShape->get_number_of_cylinders_per_X_layer();
+    int numberOfYCylindersPerLayer = mPrintShape->get_number_of_cylinders_per_Y_layer();
     int numberOfCylindersPerLayer = numberOfXCylindersPerLayer+numberOfYCylindersPerLayer;
-    int numberOfLayers = mPrintShape->calculate_number_of_XYlayers();
+    int numberOfLayers = mPrintShape->get_number_of_XYlayers();
     for (int r{0}; r<numberOfCylindersPerLayer; r++)
     {
         for(int c{0}; c<numberOfLayers; c++)
@@ -310,6 +310,29 @@ void OSGWidget::view_axes(bool On)
 void OSGWidget::view_wireframe(bool On)
 {
     mWireframeOn = On;
+}
+
+float OSGWidget::get_diameter_of_print()
+{
+    float  diameterOfPrint = mPrintShape->get_diameter_of_print();
+    return diameterOfPrint;
+}
+
+double OSGWidget::get_extruded_volume()
+{
+    double extrudedVolume{0};
+    float  diameterOfPrint = mPrintShape->get_diameter_of_print();
+    double crossSectionalAreaOfCylinder = diameterOfPrint*diameterOfPrint*pi/4;
+    int    numberOfXCylindersPerLayer = mPrintShape->get_number_of_cylinders_per_X_layer();
+    int    numberOfYCylindersPerLayer = mPrintShape->get_number_of_cylinders_per_Y_layer();
+    int    numberOfLayers = mPrintShape->get_number_of_XYlayers();
+    double XCylinderLength = mPrintShape->get_shape_length();
+    double YCylinderLength = mPrintShape->get_shape_width();
+
+    double XCylindersVolume = numberOfXCylindersPerLayer*XCylinderLength*crossSectionalAreaOfCylinder;
+    double YCylindersVolume = numberOfYCylindersPerLayer*YCylinderLength*crossSectionalAreaOfCylinder;
+    extrudedVolume = XCylindersVolume+YCylindersVolume;
+    return extrudedVolume;
 }
 
 OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):

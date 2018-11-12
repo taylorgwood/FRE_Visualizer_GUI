@@ -20,12 +20,12 @@ public:
     double get_extrusion_width() const;
     void   set_layer_height(const float layerHeight);
     float  get_layer_height() const;
-    float  calculate_diameter_of_print();
+    float  get_diameter_of_print();
     void   set_default_parameters();
     void   set_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight);
-    int    calculate_number_of_XYlayers();
-    int    calculate_number_of_cylinders_per_X_layer();
-    int    calculate_number_of_cylinders_per_Y_layer();
+    int    get_number_of_XYlayers();
+    int    get_number_of_cylinders_per_X_layer();
+    int    get_number_of_cylinders_per_Y_layer();
     double ***create_center_of_cylinder_array();
     void   create_all_cylinders(double ***centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers);
     void   set_shape_size(const double objectWidth, const double objectLength, const double objectHeight);

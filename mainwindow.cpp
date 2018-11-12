@@ -40,13 +40,14 @@ void MainWindow::view_axes()
 {
     bool viewAxes = mMainWindowUI->actionView_axes->isChecked();
     MainWindow::mOSGWidget->view_axes(viewAxes);
-
+    mOSGWidget->redraw();
 }
 
 void MainWindow::view_wireframe()
 {
     bool viewWireframe = mMainWindowUI->actionView_wireframe->isChecked();
     MainWindow::mOSGWidget->view_wireframe(viewWireframe);
+    mOSGWidget->redraw();
 }
 
 void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
@@ -180,6 +181,7 @@ void MainWindow::redraw_print_parameters()
 {
     mOSGWidget->set_print_parameters(mNeedleDiameter,mExtrusionMultiplier,mInfillPercentage,mExtrusionWidth,mLayerHeight);
     mOSGWidget->redraw();
+    set_label_text();
 }
 
 void MainWindow::on_shapeWidth_returnPressed()
@@ -204,6 +206,7 @@ void MainWindow::redraw_shape_parameters()
 {
     MainWindow::mOSGWidget->set_shape_size(mShapeWidth,mShapeLength,mShapeHeight);
     mOSGWidget->redraw();
+    set_label_text();
 }
 
 void MainWindow::set_label_text()
@@ -213,7 +216,9 @@ void MainWindow::set_label_text()
     QString objectVolumeText = QString::number(objectVolumeDouble);
     mMainWindowUI->objectVolume->setText(objectVolumeText);
 
-    double extrudedVolumeDouble = mExtrudedVolume;
+    double infillRatio = mInfillPercentage/100;
+    double extrudedVolumeDouble = objectVolumeDouble*infillRatio*mExtrusionMultiplier;
+//    double needleDiameter = mOSGWidget->get_diameter_of_print();
     QString extrudedVolumeText = QString::number(extrudedVolumeDouble);
     mMainWindowUI->extrudedVolume->setText(extrudedVolumeText);
 }

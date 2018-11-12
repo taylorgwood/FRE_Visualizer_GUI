@@ -22,21 +22,23 @@ public:
               Qt::WindowFlags f = 0);
 
     virtual ~OSGWidget();
-    void  toggle_start(bool on);
-    void  toggle_stop(bool off);
-    void  set_view_along_x_axis();
-    void  create_osg_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
-    void create_cylinders();
+    void   toggle_start(bool on);
+    void   toggle_stop(bool off);
+    void   set_view_along_x_axis();
+    void   create_osg_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
+    void   create_cylinders();
     osg::Quat rotate_about_x_axis();
     osg::Quat rotate_about_y_axis();
-    void clear_window();
-    void redraw();
-    void set_shape_size(const double shapeWidth, const double shapeLength, const double shapeHeight);
-    void set_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight);
-    void view_axes(bool On);
-    void view_wireframe(bool On);
+    void   clear_window();
+    void   redraw();
+    void   set_shape_size(const double shapeWidth, const double shapeLength, const double shapeHeight);
+    void   set_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight);
+    void   view_axes(bool On);
+    void   view_wireframe(bool On);
+    float  get_diameter_of_print();
+    double get_extruded_volume();
 
-    protected:
+protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
     virtual void paintGL();
     virtual void resizeGL(int width, int height);
@@ -82,6 +84,7 @@ private:
     int mRedrawCount{0};
     bool mAxesOn{1};
     bool mWireframeOn{1};
+    double const pi{3.14159};
 
 };
 
