@@ -63,8 +63,6 @@ private:
     float  mShapeWidth{10};
     float  mShapeHeight{10};
     float  mShapeLength{10};
-    float  mExtrudedVolume{1000};
-
 };
 
 #endif // MAINWINDOW_H

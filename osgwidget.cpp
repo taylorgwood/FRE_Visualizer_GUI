@@ -318,23 +318,6 @@ float OSGWidget::get_diameter_of_print()
     return diameterOfPrint;
 }
 
-double OSGWidget::get_extruded_volume()
-{
-    double extrudedVolume{0};
-    float  diameterOfPrint = mPrintShape->get_diameter_of_print();
-    double crossSectionalAreaOfCylinder = diameterOfPrint*diameterOfPrint*pi/4;
-    int    numberOfXCylindersPerLayer = mPrintShape->get_number_of_cylinders_per_X_layer();
-    int    numberOfYCylindersPerLayer = mPrintShape->get_number_of_cylinders_per_Y_layer();
-    int    numberOfLayers = mPrintShape->get_number_of_XYlayers();
-    double XCylinderLength = mPrintShape->get_shape_length();
-    double YCylinderLength = mPrintShape->get_shape_width();
-
-    double XCylindersVolume = numberOfXCylindersPerLayer*XCylinderLength*crossSectionalAreaOfCylinder;
-    double YCylindersVolume = numberOfYCylindersPerLayer*YCylinderLength*crossSectionalAreaOfCylinder;
-    extrudedVolume = XCylindersVolume+YCylindersVolume;
-    return extrudedVolume;
-}
-
 OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     QOpenGLWidget{parent,flags},
     mGraphicsWindow{new osgViewer::GraphicsWindowEmbedded{this->x(),this->y(),this->width(),this->height()}},

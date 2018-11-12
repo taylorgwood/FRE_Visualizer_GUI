@@ -36,7 +36,6 @@ public:
     void   view_axes(bool On);
     void   view_wireframe(bool On);
     float  get_diameter_of_print();
-    double get_extruded_volume();
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);

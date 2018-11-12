@@ -211,16 +211,18 @@ void MainWindow::redraw_shape_parameters()
 
 void MainWindow::set_label_text()
 {
-//    this->objectVolume->setText(text);
     double objectVolumeDouble = mShapeHeight*mShapeLength*mShapeWidth;
     QString objectVolumeText = QString::number(objectVolumeDouble);
     mMainWindowUI->objectVolume->setText(objectVolumeText);
 
     double infillRatio = mInfillPercentage/100;
     double extrudedVolumeDouble = objectVolumeDouble*infillRatio*mExtrusionMultiplier;
-//    double needleDiameter = mOSGWidget->get_diameter_of_print();
     QString extrudedVolumeText = QString::number(extrudedVolumeDouble);
     mMainWindowUI->extrudedVolume->setText(extrudedVolumeText);
+
+    double needleDiameterDouble = mNeedleDiameter;
+    QString needleDiameterText = QString::number(needleDiameterDouble);
+    mMainWindowUI->needleDiameterDisplay->setText(needleDiameterText);
 }
 
 
