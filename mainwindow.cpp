@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mMainWindowUI->setupUi(this);
     mOSGWidget = new OSGWidget{this};
     this->setCentralWidget(mOSGWidget);
+    set_label_text();
 }
 
 MainWindow::~MainWindow()
@@ -118,6 +119,7 @@ void MainWindow::on_objectSizeButton_clicked()
     mShapeLength = mMainWindowUI->shapeLength->text().toDouble();
     mShapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
     redraw_shape_parameters();
+    set_label_text();
 }
 
 void MainWindow::on_resetParametersButton_clicked()
@@ -128,6 +130,7 @@ void MainWindow::on_resetParametersButton_clicked()
     mInfillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
     mExtrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
     redraw_print_parameters();
+    set_label_text();
 }
 
 void MainWindow::on_clearButton_clicked()
@@ -203,7 +206,16 @@ void MainWindow::redraw_shape_parameters()
     mOSGWidget->redraw();
 }
 
+void MainWindow::set_label_text()
+{
+//    this->objectVolume->setText(text);
+    double objectVolumeDouble = mShapeHeight*mShapeLength*mShapeWidth;
+    QString objectVolumeText = QString::number(objectVolumeDouble);
+    mMainWindowUI->objectVolume->setText(objectVolumeText);
 
-
+    double extrudedVolumeDouble = mExtrudedVolume;
+    QString extrudedVolumeText = QString::number(extrudedVolumeDouble);
+    mMainWindowUI->extrudedVolume->setText(extrudedVolumeText);
+}
 
 

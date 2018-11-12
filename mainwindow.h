@@ -45,6 +45,9 @@ private slots:
     void on_shapeLength_returnPressed();
     void on_shapeHeight_returnPressed();
     void redraw_shape_parameters();
+    void set_label_text();
+
+signals:
 
 private:
     Ui::MainWindowForm *mMainWindowUI;
@@ -60,6 +63,7 @@ private:
     float  mShapeWidth{10};
     float  mShapeHeight{10};
     float  mShapeLength{10};
+    float  mExtrudedVolume{1000};
 
 };
 
