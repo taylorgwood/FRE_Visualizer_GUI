@@ -113,6 +113,7 @@ osgViewer::View *OSGWidget::create_scene(float aspectRatio, int pixelRatio)
     view->setCamera(camera);
     view->setSceneData(mRoot.get());
     view->addEventHandler(new osgViewer::StatsHandler);
+    view->getEventQueue()->keyPress('s');
     return view;
 }
 
@@ -134,6 +135,19 @@ osg::ShapeDrawable *OSGWidget::create_graphic_cylinder(osg::Vec3 shapePosition, 
     newShape->setName("Cylinder");
     return newShape;
 }
+
+// MOve the call out of the create sphere loop.
+// So only make one sphere then reuse it.
+// still individualy do the position, scale, osg::PositionAttitudeTransform, ... transform -> addChild(geode)... root->addChild(transform);
+
+//OSG Widget has almost everything
+//  has set up scene that is a virtual function.
+// Each of the children would have the same set up scene function that is overloaded.
+// make more OSG widgets with other cameras.
+// heads up display - draw over the top of the window
+// swap cameras out or turn them off. There is a switch node that allows you to switch nodes.
+// KeySwitchManipulator
+
 
 osg::Geode *OSGWidget::create_geometry_node(osg::ShapeDrawable* newShape)
 {
@@ -326,7 +340,6 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     mPrintShape{new PrintShape()}
 {
     mRoot = new osg::Group;
-    //    mPrintShape = new PrintShape(mShapeList);
     set_up_environment();
     draw_wireframe();
     set_up_min_graphics_window();
@@ -346,12 +359,12 @@ void OSGWidget::timerEvent(QTimerEvent *)
     if (mSimulationOn)
     {
         update();
-        mRedrawCount++;
-        if (mRedrawCount > 30)
-        {
+//        mRedrawCount++;
+//        if (mRedrawCount > 30)
+//        {
             redraw();
-            mRedrawCount = 0;
-        }
+//            mRedrawCount = 0;
+//        }
     }
 }
 
