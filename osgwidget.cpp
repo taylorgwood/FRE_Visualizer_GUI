@@ -17,7 +17,7 @@
 #include <QKeyEvent>
 #include <QPainter>
 #include <QWheelEvent>
-#include <future>
+#include <osgUtil/Optimizer>
 
 void OSGWidget::set_up_environment()
 {
@@ -118,8 +118,8 @@ osgViewer::View *OSGWidget::create_scene(float aspectRatio, int pixelRatio)
     osgViewer::View *view = new osgViewer::View;
     view->setCamera(camera);
     view->setSceneData(mRoot.get());
-//    view->addEventHandler(new osgViewer::StatsHandler);
-//    view->getEventQueue()->keyPress('s');
+    view->addEventHandler(new osgViewer::StatsHandler);
+    view->getEventQueue()->keyPress('s');
     return view;
 }
 
@@ -132,57 +132,42 @@ int OSGWidget::set_up_timer()
     return timerID;
 }
 
-osg::ShapeDrawable *OSGWidget::create_graphic_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA)
+osg::ShapeDrawable *OSGWidget::create_graphic_cylinder(const osg::Vec3& shapePosition, float radius, float height, const osg::Quat& rotation, const osg::Vec4& shapeRGBA)
 {
     osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
     cylinder->setRotation(rotation);
     osg::ShapeDrawable* newShape = new osg::ShapeDrawable(cylinder);
     newShape->setColor(shapeRGBA);
-    newShape->setName("Cylinder");
-    return newShape;
-}
 
-// Move the call out of the create sphere loop.
-// So only make one sphere then reuse it.
-// still individualy do the position, scale, osg::PositionAttitudeTransform, ... transform -> addChild(geode)... root->addChild(transform);
-
-//OSG Widget has almost everything
-//  has set up scene that is a virtual function.
-// Each of the children would have the same set up scene function that is overloaded.
-// make more OSG widgets with other cameras.
-// heads up display - draw over the top of the window
-// swap cameras out or turn them off. There is a switch node that allows you to switch nodes.
-// KeySwitchManipulator
-
-
-// Class notes Nov 15, 2018
-// Made new widget which is pretty close to the same
-//osg::Group *SceneDate = create_scene_data(mFrameRate);
-//Created light source
-// create multiple views
-// create_view: criets view, stat handler, add view to viewer. Set trackball manipulator, set home. Return view.
-// can set it to be orthographic instead of projection
-// set manipulator to null - people can't move the window around.
-// you can lock the view by not using the manipulator
-// created camera layout class - treats window like a grid of some size. called mCameraLayout
-// osg::ref_ptr<osgViewer::View> topView = create_view(sceneData);
-
-// osgUtil::Optimizer
-
-
-osg::Geode *OSGWidget::create_geometry_node(osg::ShapeDrawable* newShape)
-{
-    osg::Geode* geode = new osg::Geode;
-    geode->addDrawable(newShape);
-    osg::StateSet* stateSet = geode->getOrCreateStateSet();
+    osg::StateSet* stateSet = newShape->getOrCreateStateSet();
     stateSet->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
     stateSet->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA), osg::StateAttribute::ON);
+
     osg::Material* material = new osg::Material;
     material->setColorMode( osg::Material::AMBIENT_AND_DIFFUSE );
     stateSet->setAttributeAndModes( material, osg::StateAttribute::ON );
     stateSet->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
-    return geode;
+
+    return newShape;
 }
+
+// create unit shape drawable
+// geode to specify the color
+// transform to scale, rotate, and set position. Add to root here.
+
+//osg::Geode *OSGWidget::create_geometry_node(osg::ShapeDrawable* newShape)
+//{
+//    osg::Geode* geode = new osg::Geode;
+//    geode->addDrawable(newShape);
+//    osg::StateSet* stateSet = geode->getOrCreateStateSet();
+//    stateSet->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+//    stateSet->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA), osg::StateAttribute::ON);
+//    osg::Material* material = new osg::Material;
+//    material->setColorMode( osg::Material::AMBIENT_AND_DIFFUSE );
+//    stateSet->setAttributeAndModes( material, osg::StateAttribute::ON );
+//    stateSet->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
+//    return geode;
+//}
 
 void OSGWidget::draw_wireframe()
 {
@@ -205,11 +190,11 @@ void OSGWidget::toggle_stop(bool off)
     mSimulationOn = off;
 }
 
-void OSGWidget::create_osg_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA)
+void OSGWidget::create_osg_cylinder(const osg::Vec3& shapePosition, float radius, float height, const osg::Quat& rotation, const osg::Vec4& shapeRGBA)
 {
     osg::ShapeDrawable *newShape = create_graphic_cylinder(shapePosition, radius, height, rotation, shapeRGBA);
-    osg::Geode *geode = create_geometry_node(newShape);
-    mRoot->addChild(geode);
+    //osg::Geode *geode = create_geometry_node(newShape);
+    mRoot->addChild(newShape);
 }
 
 void OSGWidget::create_axes()
@@ -253,6 +238,11 @@ void OSGWidget::create_cylinders()
     int numberOfYCylindersPerLayer = mPrintShape->get_number_of_cylinders_per_Y_layer();
     int numberOfCylindersPerLayer = numberOfXCylindersPerLayer+numberOfYCylindersPerLayer;
     int numberOfLayers = mPrintShape->get_number_of_XYlayers();
+
+//    create_osg_cylinder();
+    // create one cylinder, then transform and color it differently.
+
+
     for (int r{0}; r<numberOfCylindersPerLayer; r++)
     {
         for(int c{0}; c<numberOfLayers; c++)
@@ -268,6 +258,7 @@ void OSGWidget::create_cylinders()
                 osg::Vec4 shapeRGBA = {1.0,0,0,0.6};
                 osg::Quat rotation = rotate_about_y_axis();
                 float cylinderLength = mPrintShape->get_shape_length();
+                // transform here. Call transform function that sets the color
                 create_osg_cylinder(shapePosition, radiusOfPrint, cylinderLength, rotation, shapeRGBA);
             }
             else
@@ -277,10 +268,12 @@ void OSGWidget::create_cylinders()
                 float cylinderLength = mPrintShape->get_shape_width();
                 create_osg_cylinder(shapePosition, radiusOfPrint, cylinderLength, rotation, shapeRGBA);
             }
-            mShapeList->push_back(mPrintShape);
+//            mShapeList->push_back(mPrintShape);
         }
     }
 
+    osgUtil::Optimizer optimizer;
+    optimizer.optimize(mRoot);
 
     update();
 }
@@ -553,3 +546,30 @@ void OSGWidget::repaint_osg_graphics_after_interaction(QEvent* event)
         }
     }
 }
+
+// Move the call out of the create sphere loop.
+// So only make one sphere then reuse it.
+// still individualy do the position, scale, osg::PositionAttitudeTransform, ... transform -> addChild(geode)... root->addChild(transform);
+
+//OSG Widget has almost everything
+//  has set up scene that is a virtual function.
+// Each of the children would have the same set up scene function that is overloaded.
+// make more OSG widgets with other cameras.
+// heads up display - draw over the top of the window
+// swap cameras out or turn them off. There is a switch node that allows you to switch nodes.
+// KeySwitchManipulator
+
+
+// Class notes Nov 15, 2018
+// Made new widget which is pretty close to the same
+//osg::Group *SceneDate = create_scene_data(mFrameRate);
+//Created light source
+// create multiple views
+// create_view: criets view, stat handler, add view to viewer. Set trackball manipulator, set home. Return view.
+// can set it to be orthographic instead of projection
+// set manipulator to null - people can't move the window around.
+// you can lock the view by not using the manipulator
+// created camera layout class - treats window like a grid of some size. called mCameraLayout
+// osg::ref_ptr<osgViewer::View> topView = create_view(sceneData);
+
+// osgUtil::Optimizer

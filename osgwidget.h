@@ -25,7 +25,7 @@ public:
     void   toggle_start(bool on);
     void   toggle_stop(bool off);
     void   set_view_along_x_axis();
-    void   create_osg_cylinder(osg::Vec3 shapePosition, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
+    void   create_osg_cylinder(const osg::Vec3 &shapePosition, float radius, float height, const osg::Quat &rotation, const osg::Vec4 &shapeRGBA);
     void   create_cylinders();
     osg::Quat rotate_about_x_axis();
     osg::Quat rotate_about_y_axis();
@@ -69,8 +69,8 @@ private:
     void set_manipulator_to_viewer(osg::ref_ptr<osgGA::TrackballManipulator> manipulator);
     osg::Camera *create_camera(float aspectRatio, int pixelRatio);
     osgViewer::View *create_scene(float aspectRatio, int pixelRatio);
-    osg::ShapeDrawable *create_graphic_cylinder(osg::Vec3 shapeLocation, float radius, float height, osg::Quat rotation, osg::Vec4 shapeRGBA);
-    osg::Geode *create_geometry_node(osg::ShapeDrawable* newShape);
+    osg::ShapeDrawable *create_graphic_cylinder(const osg::Vec3 &shapeLocation, float radius, float height, const osg::Quat &rotation, const osg::Vec4 &shapeRGBA);
+//    osg::Geode *create_geometry_node(osg::ShapeDrawable* newShape);
     void create_axes();
     void draw_wireframe();
     void set_up_min_graphics_window();
