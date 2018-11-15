@@ -272,8 +272,8 @@ void OSGWidget::create_cylinders()
         }
     }
 
-    osgUtil::Optimizer optimizer;
-    optimizer.optimize(mRoot);
+//    osgUtil::Optimizer optimizer;
+//    optimizer.optimize(mRoot);
 
     update();
 }
