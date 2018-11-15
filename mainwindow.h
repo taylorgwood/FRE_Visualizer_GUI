@@ -32,7 +32,7 @@ private slots:
     void on_needleGauge_valueChanged(int arg1);
     void set_needle_diameter(int needleGauge);
     void on_objectSizeButton_clicked();
-    void on_resetParametersButton_clicked();
+    void on_applyParametersButton_clicked();
     void on_clearButton_clicked();
     void on_redrawButton_clicked();
     void on_autoUpdateButton_clicked(bool checked);

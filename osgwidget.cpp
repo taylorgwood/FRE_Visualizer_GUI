@@ -32,12 +32,20 @@ osg::Camera *OSGWidget::create_camera(float aspectRatio, int pixelRatio)
     int viewportOriginX{0};
     int viewportOriginY{0};
     camera->setViewport(viewportOriginX, viewportOriginY, this->width() * pixelRatio, this->height() * pixelRatio);
-    osg::Vec4 clearColorRGBA{0.95f,0.95f,0.95f,0.1f};
+    osg::Vec4 clearColorRGBA{0.75f,0.75f,0.75f,0.1f};
     camera->setClearColor(clearColorRGBA);
 
     float viewingAngle{45};
     float nearestViewDistance{1};
     float farthestViewDistance{1000};
+//    double left{-3};
+//    double right{3};
+//    double bottom{-2};
+//    double top{2};
+//    double zNear{1};
+//    double zFar{20};
+//    camera->setProjectionMatrixAsOrtho2D(left,right,bottom,top);
+//    camera->setProjectionMatrixAsOrtho(left,right,bottom,top,zNear,zFar);
     camera->setProjectionMatrixAsPerspective(viewingAngle, aspectRatio, nearestViewDistance, farthestViewDistance);
     camera->setGraphicsContext(mGraphicsWindow);
 
@@ -84,8 +92,8 @@ void OSGWidget::set_view_along_x_axis()
     update();
 
     //    osgGA::TrackballManipulator* man = (osgGA::TrackballManipulator*)this->mView->getCameraManipulator();
-    ////    osg::Matrix trans;
-    ////    trans.makeTranslate(osg::Vec3(position.x(),position.y(),position.z()));
+    //    osg::Matrix trans;
+    //    trans.makeTranslate(osg::Vec3(position.x(),position.y(),position.z()));
     //    osg::Matrix rot;
     //    rot.makeRotate();
     //    rot.makeRotate(Angle,osg::Vec3(Axis.x,Axis.y,Axis.z)));
@@ -136,7 +144,7 @@ osg::ShapeDrawable *OSGWidget::create_graphic_cylinder(osg::Vec3 shapePosition, 
     return newShape;
 }
 
-// MOve the call out of the create sphere loop.
+// Move the call out of the create sphere loop.
 // So only make one sphere then reuse it.
 // still individualy do the position, scale, osg::PositionAttitudeTransform, ... transform -> addChild(geode)... root->addChild(transform);
 
@@ -147,6 +155,19 @@ osg::ShapeDrawable *OSGWidget::create_graphic_cylinder(osg::Vec3 shapePosition, 
 // heads up display - draw over the top of the window
 // swap cameras out or turn them off. There is a switch node that allows you to switch nodes.
 // KeySwitchManipulator
+
+
+// Class notes Nov 15, 2018
+// Made new widget which is pretty close to the same
+//osg::Group *SceneDate = create_scene_data(mFrameRate);
+//Created light source
+// create multiple views
+// create_view: criets view, stat handler, add view to viewer. Set trackball manipulator, set home. Return view.
+// can set it to be orthographic instead of projection
+// set manipulator to null - people can't move the window around.
+// you can lock the view by not using the manipulator
+// created camera layout class - treats window like a grid of some size. called mCameraLayout
+// osg::ref_ptr<osgViewer::View> topView = create_view(sceneData);
 
 
 osg::Geode *OSGWidget::create_geometry_node(osg::ShapeDrawable* newShape)

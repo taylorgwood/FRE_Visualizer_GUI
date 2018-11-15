@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1002</width>
-    <height>681</height>
+    <width>996</width>
+    <height>678</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,27 +19,13 @@
   <property name="windowTitle">
    <string>FRE Visualizer GUI</string>
   </property>
-  <widget class="QWidget" name="centralWidget">
-   <widget class="Line" name="line">
-    <property name="geometry">
-     <rect>
-      <x>510</x>
-      <y>0</y>
-      <width>321</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-  </widget>
+  <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1002</width>
+     <width>996</width>
      <height>26</height>
     </rect>
    </property>
@@ -82,8 +68,8 @@
     <widget class="QSlider" name="extrusionMultiplierSlider">
      <property name="geometry">
       <rect>
-       <x>130</x>
-       <y>380</y>
+       <x>160</x>
+       <y>570</y>
        <width>111</width>
        <height>22</height>
       </rect>
@@ -113,8 +99,8 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>380</y>
+       <x>10</x>
+       <y>570</y>
        <width>121</width>
        <height>21</height>
       </rect>
@@ -139,15 +125,123 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
+       <x>50</x>
+       <y>410</y>
+       <width>195</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="clearButton">
+        <property name="text">
+         <string>Clear</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="redrawButton">
+        <property name="text">
+         <string>Redraw</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="Line" name="line">
+     <property name="geometry">
+      <rect>
        <x>20</x>
+       <y>540</y>
+       <width>261</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>490</y>
+       <width>221</width>
+       <height>45</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_9">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Object volume:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="objectVolume">
+          <property name="text">
+           <string>100</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Extruded volume:</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="extrudedVolume">
+          <property name="text">
+           <string>100</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
        <y>10</y>
-       <width>271</width>
-       <height>340</height>
+       <width>301</width>
+       <height>377</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_8">
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QLabel" name="label_14">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Print Parameters</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
@@ -251,11 +345,22 @@
          </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="resetParametersButton">
-          <property name="text">
-           <string>Reset Print Parameters</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QPushButton" name="applyParametersButton">
+            <property name="text">
+             <string>Apply</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="resetParametersButton">
+            <property name="text">
+             <string>Reset</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -270,6 +375,11 @@
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <item alignment="Qt::AlignHCenter">
          <widget class="QLabel" name="label_13">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>Object Size (mm)</string>
           </property>
@@ -279,10 +389,13 @@
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
            <layout class="QVBoxLayout" name="verticalLayout">
-            <item alignment="Qt::AlignLeft">
+            <item>
              <widget class="QLabel" name="label_2">
               <property name="text">
                <string>Width (X)</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -302,6 +415,9 @@
               <property name="text">
                <string>Length (Y)</string>
               </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
              </widget>
             </item>
             <item>
@@ -320,6 +436,9 @@
               <property name="text">
                <string>Height (Z)</string>
               </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
              </widget>
             </item>
             <item>
@@ -334,11 +453,22 @@
          </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="objectSizeButton">
-          <property name="text">
-           <string>Reset Object Size</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QPushButton" name="objectSizeButton">
+            <property name="text">
+             <string>Apply</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="resetObjectSizeButton">
+            <property name="text">
+             <string>Reset</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <widget class="Line" name="line_3">
@@ -350,84 +480,6 @@
        </layout>
       </item>
      </layout>
-    </widget>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>420</y>
-       <width>195</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QPushButton" name="clearButton">
-        <property name="text">
-         <string>Clear</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="redrawButton">
-        <property name="text">
-         <string>Redraw</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QLabel" name="label_7">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>540</y>
-       <width>151</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Extruded volume:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_11">
-     <property name="geometry">
-      <rect>
-       <x>40</x>
-       <y>520</y>
-       <width>151</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Object volume:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="objectVolume">
-     <property name="geometry">
-      <rect>
-       <x>160</x>
-       <y>520</y>
-       <width>61</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>100</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="extrudedVolume">
-     <property name="geometry">
-      <rect>
-       <x>160</x>
-       <y>540</y>
-       <width>61</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>100</string>
-     </property>
     </widget>
    </widget>
   </widget>

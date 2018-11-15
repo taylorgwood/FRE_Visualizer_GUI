@@ -123,7 +123,7 @@ void MainWindow::on_objectSizeButton_clicked()
     set_label_text();
 }
 
-void MainWindow::on_resetParametersButton_clicked()
+void MainWindow::on_applyParametersButton_clicked()
 {
 
     mLayerHeight = mMainWindowUI->layerHeight->text().toDouble();
