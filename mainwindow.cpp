@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mMainWindowUI->setupUi(this);
     mOSGWidget = new OSGWidget{this};
     this->setCentralWidget(mOSGWidget);
-    set_label_text();
+    set_volume_label();
 }
 
 MainWindow::~MainWindow()
@@ -54,6 +54,7 @@ void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
 {
     double extrusionMultiplierPercentage = mMainWindowUI->extrusionMultiplierSlider->value();
     mExtrusionMultiplier = extrusionMultiplierPercentage/100;
+    apply_print_parameters();
     redraw_print_parameters();
 }
 
@@ -61,57 +62,57 @@ void MainWindow::on_needleGauge_valueChanged(int arg1)
 {    
     int needleGauge{arg1};
     set_needle_diameter(needleGauge);
-    redraw_print_parameters();
+    apply_print_parameters();
 }
 
 void MainWindow::set_needle_diameter(int needleGauge)
 {
     double needleDiameter{0.26};
-    if (needleGauge == 20)
+
+    switch (needleGauge)
     {
+    case 20:
         needleDiameter = 0.603;
-    }
-    else if (needleGauge == 21)
-    {
+        break;
+    case 21:
         needleDiameter = 0.514;
-    }
-    else if (needleGauge == 22)
-    {
+        break;
+    case 22:
         needleDiameter = 0.413;
-    }
-    else if (needleGauge == 23)
-    {
+        break;
+    case 23:
         needleDiameter = 0.337;
-    }
-    else if (needleGauge == 24)
-    {
+        break;
+    case 24:
         needleDiameter = 0.311;
-    }
-    else if (needleGauge == 25)
-    {
+        break;
+    case 25:
         needleDiameter = 0.260;
-    }
-    else if (needleGauge == 26)
-    {
+        break;
+    case 26:
         needleDiameter = 0.260;
-    }
-    else if (needleGauge == 27)
-    {
+        break;
+    case 27:
         needleDiameter = 0.210;
-    }
-    else if (needleGauge == 28)
-    {
+        break;
+    case 28:
         needleDiameter = 0.184;
-    }
-    else if (needleGauge == 29)
-    {
+        break;
+    case 29:
         needleDiameter = 0.184;
-    }
-    else if (needleGauge == 30)
-    {
+        break;
+    case 30:
         needleDiameter = 0.159;
     }
     mNeedleDiameter = needleDiameter;
+    set_needle_diameter_label();
+}
+
+void MainWindow::set_needle_diameter_label()
+{
+    double needleDiameterDouble = mNeedleDiameter;
+    QString needleDiameterText = QString::number(needleDiameterDouble);
+    mMainWindowUI->needleDiameterDisplay->setText(needleDiameterText);
 }
 
 void MainWindow::on_objectSizeButton_clicked()
@@ -119,8 +120,9 @@ void MainWindow::on_objectSizeButton_clicked()
     mShapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
     mShapeLength = mMainWindowUI->shapeLength->text().toDouble();
     mShapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
-    redraw_shape_parameters();
-    set_label_text();
+    apply_object_size_parameters();
+    redraw_object_size_parameters();
+    set_volume_label();
 }
 
 void MainWindow::on_applyParametersButton_clicked()
@@ -130,8 +132,9 @@ void MainWindow::on_applyParametersButton_clicked()
     mExtrusionMultiplier = mMainWindowUI->extrusionMultiplier->text().toDouble();
     mInfillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
     mExtrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
+    apply_print_parameters();
     redraw_print_parameters();
-    set_label_text();
+    set_volume_label();
 }
 
 void MainWindow::on_clearButton_clicked()
@@ -142,7 +145,7 @@ void MainWindow::on_clearButton_clicked()
 void MainWindow::on_redrawButton_clicked()
 {
     redraw_print_parameters();
-    redraw_shape_parameters();
+    redraw_object_size_parameters();
     view_axes();
     view_wireframe();
     mOSGWidget->redraw();
@@ -156,60 +159,75 @@ void MainWindow::on_autoUpdateButton_clicked(bool checked)
 void MainWindow::on_layerHeight_returnPressed()
 {
     mLayerHeight = mMainWindowUI->layerHeight->text().toDouble();
+    apply_print_parameters();
     redraw_print_parameters();
 }
 
 void MainWindow::on_extrusionMultiplier_returnPressed()
 {
     mExtrusionMultiplier = mMainWindowUI->extrusionMultiplier->text().toDouble();
+    apply_print_parameters();
     redraw_print_parameters();
 }
 
 void MainWindow::on_infillPercentage_returnPressed()
 {
     mInfillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
+    apply_print_parameters();
     redraw_print_parameters();
 }
 
 void MainWindow::on_extrusionWidth_returnPressed()
 {
     mExtrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
+    apply_print_parameters();
     redraw_print_parameters();
+}
+
+void MainWindow::apply_print_parameters()
+{
+    mOSGWidget->apply_print_parameters(mNeedleDiameter,mExtrusionMultiplier,mInfillPercentage,mExtrusionWidth,mLayerHeight);
 }
 
 void MainWindow::redraw_print_parameters()
 {
-    mOSGWidget->set_print_parameters(mNeedleDiameter,mExtrusionMultiplier,mInfillPercentage,mExtrusionWidth,mLayerHeight);
     mOSGWidget->redraw();
-    set_label_text();
+    set_volume_label();
 }
 
 void MainWindow::on_shapeWidth_returnPressed()
 {
     mShapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
-    redraw_shape_parameters();
+    apply_object_size_parameters();
+    redraw_object_size_parameters();
 }
 
 void MainWindow::on_shapeLength_returnPressed()
 {
     mShapeLength = mMainWindowUI->shapeLength->text().toDouble();
-    redraw_shape_parameters();
+    apply_object_size_parameters();
+    redraw_object_size_parameters();
 }
 
 void MainWindow::on_shapeHeight_returnPressed()
 {
     mShapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
-    redraw_shape_parameters();
+    apply_object_size_parameters();
+    redraw_object_size_parameters();
 }
 
-void MainWindow::redraw_shape_parameters()
+void MainWindow::apply_object_size_parameters()
 {
-    MainWindow::mOSGWidget->set_shape_size(mShapeWidth,mShapeLength,mShapeHeight);
-    mOSGWidget->redraw();
-    set_label_text();
+    MainWindow::mOSGWidget->apply_object_size(mShapeWidth,mShapeLength,mShapeHeight);
 }
 
-void MainWindow::set_label_text()
+void MainWindow::redraw_object_size_parameters()
+{
+    mOSGWidget->redraw();
+    set_volume_label();
+}
+
+void MainWindow::set_volume_label()
 {
     double objectVolumeDouble = mShapeHeight*mShapeLength*mShapeWidth;
     QString objectVolumeText = QString::number(objectVolumeDouble);
@@ -219,10 +237,54 @@ void MainWindow::set_label_text()
     double extrudedVolumeDouble = objectVolumeDouble*infillRatio*mExtrusionMultiplier;
     QString extrudedVolumeText = QString::number(extrudedVolumeDouble);
     mMainWindowUI->extrudedVolume->setText(extrudedVolumeText);
-
-    double needleDiameterDouble = mNeedleDiameter;
-    QString needleDiameterText = QString::number(needleDiameterDouble);
-    mMainWindowUI->needleDiameterDisplay->setText(needleDiameterText);
 }
 
 
+void MainWindow::on_resetParametersButton_clicked()
+{
+    set_default_print_parameters();
+    apply_print_parameters();
+    redraw_print_parameters();
+    reset_print_parameter_labels();
+}
+
+void MainWindow::on_resetObjectSizeButton_clicked()
+{
+    set_default_object_size();
+    apply_object_size_parameters();
+    redraw_object_size_parameters();
+    reset_object_size_labels();
+}
+
+void MainWindow::set_default_print_parameters()
+{
+    mNeedleDiameter = 0.26;
+    mExtrusionMultiplier = 0.785;
+    mInfillPercentage = 100;
+    mExtrusionWidth = 0.26;
+    mLayerHeight = 0.26;
+}
+
+void MainWindow::set_default_object_size()
+{
+    mShapeWidth = 10;
+    mShapeLength = 10;
+    mShapeHeight = 10;
+}
+
+void MainWindow::reset_print_parameter_labels()
+{
+    mMainWindowUI->needleDiameterDisplay->setText(QString::number(mNeedleDiameter));
+    mMainWindowUI->needleGauge->setValue(25);
+    mMainWindowUI->extrusionMultiplier->setText(QString::number(mExtrusionMultiplier));
+    mMainWindowUI->infillPercentage->setText(QString::number(mInfillPercentage));
+    mMainWindowUI->extrusionWidth->setText(QString::number(mExtrusionWidth));
+    mMainWindowUI->layerHeight->setText(QString::number(mLayerHeight));
+}
+
+void MainWindow::reset_object_size_labels()
+{
+    mMainWindowUI->shapeWidth->setText(QString::number(mShapeWidth));
+    mMainWindowUI->shapeLength->setText(QString::number(mShapeLength));
+    mMainWindowUI->shapeHeight->setText(QString::number(mShapeHeight));
+}

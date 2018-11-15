@@ -17,6 +17,7 @@
 #include <QKeyEvent>
 #include <QPainter>
 #include <QWheelEvent>
+#include <future>
 
 void OSGWidget::set_up_environment()
 {
@@ -102,9 +103,6 @@ void OSGWidget::set_view_along_x_axis()
     //    this->mView->setByMatrix(cam)
 }
 
-
-
-
 void OSGWidget::set_up_min_graphics_window()
 {
     this->setFocusPolicy(Qt::StrongFocus);
@@ -120,8 +118,8 @@ osgViewer::View *OSGWidget::create_scene(float aspectRatio, int pixelRatio)
     osgViewer::View *view = new osgViewer::View;
     view->setCamera(camera);
     view->setSceneData(mRoot.get());
-    view->addEventHandler(new osgViewer::StatsHandler);
-    view->getEventQueue()->keyPress('s');
+//    view->addEventHandler(new osgViewer::StatsHandler);
+//    view->getEventQueue()->keyPress('s');
     return view;
 }
 
@@ -168,6 +166,8 @@ osg::ShapeDrawable *OSGWidget::create_graphic_cylinder(osg::Vec3 shapePosition, 
 // you can lock the view by not using the manipulator
 // created camera layout class - treats window like a grid of some size. called mCameraLayout
 // osg::ref_ptr<osgViewer::View> topView = create_view(sceneData);
+
+// osgUtil::Optimizer
 
 
 osg::Geode *OSGWidget::create_geometry_node(osg::ShapeDrawable* newShape)
@@ -321,17 +321,18 @@ void OSGWidget::redraw()
     {
         create_axes();
     }
+
     create_cylinders();
     update();
 }
 
-void OSGWidget::set_shape_size(const double shapeWidth, const double shapeLength, const double shapeHeight)
+void OSGWidget::apply_object_size(const double shapeWidth, const double shapeLength, const double shapeHeight)
 {
     mPrintShape->set_shape_size(shapeWidth,shapeLength,shapeHeight);
     update();
 }
 
-void OSGWidget::set_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight)
+void OSGWidget::apply_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight)
 {
     mPrintShape->set_print_parameters(needleDiameter,extrusionMultiplier,infillPercentage,extrusionWidth,layerHeight);
     update();

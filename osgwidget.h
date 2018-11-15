@@ -31,8 +31,8 @@ public:
     osg::Quat rotate_about_y_axis();
     void   clear_window();
     void   redraw();
-    void   set_shape_size(const double shapeWidth, const double shapeLength, const double shapeHeight);
-    void   set_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight);
+    void   apply_object_size(const double shapeWidth, const double shapeLength, const double shapeHeight);
+    void   apply_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight);
     void   view_axes(bool On);
     void   view_wireframe(bool On);
     float  get_diameter_of_print();
