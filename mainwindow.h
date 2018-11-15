@@ -28,7 +28,7 @@ public slots:
     void view_wireframe();
 
 private slots:
-    void on_extrusionMultiplierSlider_sliderMoved(int position);
+//    void on_extrusionMultiplierSlider_sliderMoved(int position);
     void on_needleGauge_valueChanged(int arg1);
     void set_needle_diameter(int needleGauge);
     void set_needle_diameter_label();
@@ -36,7 +36,7 @@ private slots:
     void on_applyParametersButton_clicked();
     void on_clearButton_clicked();
     void on_redrawButton_clicked();
-    void on_autoUpdateButton_clicked(bool checked);
+//    void on_autoUpdateButton_clicked(bool checked);
     void on_layerHeight_returnPressed();
     void on_extrusionMultiplier_returnPressed();
     void on_infillPercentage_returnPressed();

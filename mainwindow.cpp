@@ -50,13 +50,13 @@ void MainWindow::view_wireframe()
     mOSGWidget->redraw();
 }
 
-void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
-{
-    double extrusionMultiplierPercentage = mMainWindowUI->extrusionMultiplierSlider->value();
-    mExtrusionMultiplier = extrusionMultiplierPercentage/100;
-    apply_print_parameters();
-    redraw_print_parameters();
-}
+//void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
+//{
+//    double extrusionMultiplierPercentage = mMainWindowUI->extrusionMultiplierSlider->value();
+//    mExtrusionMultiplier = extrusionMultiplierPercentage/100;
+//    apply_print_parameters();
+//    redraw_print_parameters();
+//}
 
 void MainWindow::on_needleGauge_valueChanged(int arg1)
 {    
@@ -151,10 +151,10 @@ void MainWindow::on_redrawButton_clicked()
     mOSGWidget->redraw();
 }
 
-void MainWindow::on_autoUpdateButton_clicked(bool checked)
-{
-    MainWindow::mOSGWidget->toggle_start(checked);
-}
+//void MainWindow::on_autoUpdateButton_clicked(bool checked)
+//{
+//    MainWindow::mOSGWidget->toggle_start(checked);
+//}
 
 void MainWindow::on_layerHeight_returnPressed()
 {

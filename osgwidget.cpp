@@ -33,7 +33,7 @@ osg::Camera *OSGWidget::create_camera(float aspectRatio, int pixelRatio)
     int viewportOriginX{0};
     int viewportOriginY{0};
     camera->setViewport(viewportOriginX, viewportOriginY, this->width() * pixelRatio, this->height() * pixelRatio);
-    osg::Vec4 clearColorRGBA{0.75f,0.75f,0.75f,0.1f};
+    osg::Vec4 clearColorRGBA{0.95f,0.95f,0.95f,0.1f};
     camera->setClearColor(clearColorRGBA);
 
     float viewingAngle{45};
@@ -118,8 +118,8 @@ osgViewer::View *OSGWidget::create_scene(float aspectRatio, int pixelRatio)
     osgViewer::View *view = new osgViewer::View;
     view->setCamera(camera);
     view->setSceneData(mRoot.get());
-    view->addEventHandler(new osgViewer::StatsHandler);
-    view->getEventQueue()->keyPress('s');
+//    view->addEventHandler(new osgViewer::StatsHandler);
+//    view->getEventQueue()->keyPress('s');
     return view;
 }
 
@@ -171,7 +171,7 @@ osg::ShapeDrawable *OSGWidget::create_graphic_cylinder(const osg::Vec3& shapePos
 
 void OSGWidget::draw_wireframe()
 {
-    osg::Vec4 wireframeColorRGBA{0.2f,0.5f,1.f,0.1f};
+    osg::Vec4 wireframeColorRGBA{0.5f,0.5f,1.f,0.1f};
     float scaleFactorX = mPrintShape->get_shape_length()/2;
     float scaleFactorY = mPrintShape->get_shape_width()/2;
     float scaleFactorZ = mPrintShape->get_shape_height()/2;
@@ -255,7 +255,7 @@ void OSGWidget::create_cylinders()
             osg::Vec3 shapePosition{xLocation,yLocation,zLocation};
             if (cylinderCount<numberOfXCylindersPerLayer)
             {
-                osg::Vec4 shapeRGBA = {1.0,0,0,0.6};
+                osg::Vec4 shapeRGBA = {1.0,0,0,0.5};
                 osg::Quat rotation = rotate_about_y_axis();
                 float cylinderLength = mPrintShape->get_shape_length();
                 // transform here. Call transform function that sets the color
@@ -263,7 +263,7 @@ void OSGWidget::create_cylinders()
             }
             else
             {
-                osg::Vec4 shapeRGBA = {0,0,1.0,0.6};
+                osg::Vec4 shapeRGBA = {0,0,1.0,0.5};
                 osg::Quat rotation = rotate_about_x_axis();
                 float cylinderLength = mPrintShape->get_shape_width();
                 create_osg_cylinder(shapePosition, radiusOfPrint, cylinderLength, rotation, shapeRGBA);
