@@ -85,19 +85,11 @@ float PrintShape::get_shape_height() const
 void PrintShape::set_default_parameters()
 {
     double needleDiameter{0.26};
-    double extrusionMuliplier{1.0};
+    double extrusionMultiplier{1.0};
     double infillPercentage{100};
     double extrusionWidth{0.26};
     double layerHeight{0.26};
-    double shapeWidth{10};
-    double shapeLength{10};
-    double shapeHeight{10};
-    set_needle_diameter(needleDiameter);
-    set_extrusion_multiplier(extrusionMuliplier);
-    set_infill_percentage(infillPercentage);
-    set_extrusion_width(extrusionWidth);
-    set_layer_height(layerHeight);
-    set_shape_size(shapeWidth,shapeLength,shapeHeight);
+    set_print_parameters(needleDiameter, extrusionMultiplier, infillPercentage, extrusionWidth, layerHeight);
 }
 
 void PrintShape::set_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight)
@@ -117,19 +109,27 @@ int PrintShape::get_number_of_XYlayers()
 
 int PrintShape::get_number_of_cylinders_per_X_layer()
 {
-    int numberOfXCylindersPerLayer = floor(mShapeWidth/mExtrusionWidthCalculated);
+    double extrusionWidthModified = calculate_modified_extrusion_width();
+    int numberOfXCylindersPerLayer = floor(mShapeWidth/extrusionWidthModified);
     return numberOfXCylindersPerLayer;
 }
 
 int PrintShape::get_number_of_cylinders_per_Y_layer()
 {
-    int numberOfYCylindersPerLayer = floor(mShapeLength/mExtrusionWidthCalculated);
+    double extrusionWidthModified = calculate_modified_extrusion_width();
+    int numberOfYCylindersPerLayer = floor(mShapeLength/extrusionWidthModified);
     return numberOfYCylindersPerLayer;
 }
 
 double*** PrintShape::create_center_of_cylinder_array()
 {
-    get_diameter_of_print();
+    double*** emptyCylinderArray = create_empty_cylinder_array();
+    double*** cylinderArray = fill_cylinder_array(emptyCylinderArray);
+    return cylinderArray;
+}
+
+double*** PrintShape::create_empty_cylinder_array()
+{
     int numberOfXCylindersPerLayer = get_number_of_cylinders_per_X_layer();
     int numberOfYCylindersPerLayer = get_number_of_cylinders_per_Y_layer();
     int numberOfCylindersPerLayer = numberOfXCylindersPerLayer+numberOfYCylindersPerLayer;
@@ -146,7 +146,17 @@ double*** PrintShape::create_center_of_cylinder_array()
             centerOfCylinderArray[r][c] = new double[numberOfOrthogonalDirections];
         }
     }
+    return centerOfCylinderArray;
+}
 
+double*** PrintShape::fill_cylinder_array(double*** &centerOfCylinderArray)
+{
+    int numberOfXCylindersPerLayer = get_number_of_cylinders_per_X_layer();
+    int numberOfYCylindersPerLayer = get_number_of_cylinders_per_Y_layer();
+    int numberOfCylindersPerLayer = numberOfXCylindersPerLayer+numberOfYCylindersPerLayer;
+    int numberOfXYLayers = get_number_of_XYlayers();
+
+    float diameterOfPrint = get_diameter_of_print();
     for (int r{0}; r<numberOfCylindersPerLayer; r++)
     {
         for(int c{0}; c<numberOfXYLayers; c++)
@@ -164,7 +174,8 @@ double*** PrintShape::create_center_of_cylinder_array()
             if (cylinderCount<numberOfXCylindersPerLayer)
             {
                 double alongSide{mShapeWidth/2-sizeAdjustForRadiusOfPrint};
-                double nextToPreviousCylinder{-cylinderCount*mExtrusionWidthCalculated};
+                double extrusionWidthModified = calculate_modified_extrusion_width();
+                double nextToPreviousCylinder{-cylinderCount*extrusionWidthModified};
                 yLocation = alongSide+nextToPreviousCylinder;
 
             }
@@ -172,7 +183,8 @@ double*** PrintShape::create_center_of_cylinder_array()
             {
                 int cylinderYCount = cylinderCount-numberOfXCylindersPerLayer;
                 double alongSide{mShapeLength/2-sizeAdjustForRadiusOfPrint};
-                double nextToPreviousCylinder{-cylinderYCount*mExtrusionWidthCalculated};
+                double extrusionWidthModified = calculate_modified_extrusion_width();
+                double nextToPreviousCylinder{-cylinderYCount*extrusionWidthModified};
                 xLocation = alongSide+nextToPreviousCylinder;
                 double aboveXLayer{mLayerHeight};
                 zLocation += aboveXLayer;
@@ -187,14 +199,32 @@ double*** PrintShape::create_center_of_cylinder_array()
 
 float PrintShape::get_diameter_of_print()
 {
+    double volumePrintPerLayer = calculate_volume_per_layer();
+    double modifiedExtrusionWidth = calculate_modified_extrusion_width();
+    float diameterOfPrint = sqrt(volumePrintPerLayer*4*modifiedExtrusionWidth/(mShapeWidth*mShapeLength*pi));
+    return diameterOfPrint;
+}
+
+double PrintShape::calculate_volume_per_layer()
+{
     double infillRatio = mInfillPercentage/100;
     double volumePrintPerLayer = mShapeWidth*mShapeLength*mLayerHeight*infillRatio*mExtrusionMultiplier;
+    return volumePrintPerLayer;
+}
+
+double PrintShape::calculate_modified_extrusion_width()
+{
+    double volumePrintPerLayer = calculate_volume_per_layer();
     double volumeSyringePerLayer = volumePrintPerLayer;
     double diameterOfSyringe{14.9};
     double areaSyringe = pi/4*diameterOfSyringe*diameterOfSyringe;
     double heightSyringePerLayerCalculated = volumeSyringePerLayer/areaSyringe;
-    mExtrusionWidthCalculated = mExtrusionWidth/infillRatio;
-    float diameterOfPrint = sqrt(volumePrintPerLayer*4*mExtrusionWidthCalculated/(mShapeWidth*mShapeLength*pi));
-    return diameterOfPrint;
+    double infillRatio = mInfillPercentage/100;
+    double extrusionWidthModified = mExtrusionWidth/infillRatio;
+    return extrusionWidthModified;
 }
 
+void PrintShape::toggle_auto_adjust(bool checked)
+{
+    mAutoAdjust = checked;
+}

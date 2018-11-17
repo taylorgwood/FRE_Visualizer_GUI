@@ -288,3 +288,8 @@ void MainWindow::reset_object_size_labels()
     mMainWindowUI->shapeLength->setText(QString::number(mShapeLength));
     mMainWindowUI->shapeHeight->setText(QString::number(mShapeHeight));
 }
+
+void MainWindow::on_autoAdjustButton_clicked(bool checked)
+{
+    mOSGWidget->toggle_auto_adjust(checked);
+}

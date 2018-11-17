@@ -190,6 +190,11 @@ void OSGWidget::toggle_stop(bool off)
     mSimulationOn = off;
 }
 
+void OSGWidget::toggle_auto_adjust(bool checked)
+{
+    mPrintShape->toggle_auto_adjust(checked);
+}
+
 void OSGWidget::create_osg_cylinder(const osg::Vec3& shapePosition, float radius, float height, const osg::Quat& rotation, const osg::Vec4& shapeRGBA)
 {
     osg::ShapeDrawable *newShape = create_graphic_cylinder(shapePosition, radius, height, rotation, shapeRGBA);

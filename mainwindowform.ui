@@ -164,7 +164,7 @@
        <x>0</x>
        <y>10</y>
        <width>301</width>
-       <height>377</height>
+       <height>404</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -286,6 +286,13 @@
            </layout>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="autoAdjustButton">
+          <property name="text">
+           <string>Auto-adjust</string>
+          </property>
+         </widget>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">

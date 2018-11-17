@@ -56,6 +56,8 @@ private slots:
     void reset_print_parameter_labels();
     void reset_object_size_labels();
 
+    void on_autoAdjustButton_clicked(bool checked);
+
 signals:
 
 private:

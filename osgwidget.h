@@ -24,6 +24,7 @@ public:
     virtual ~OSGWidget();
     void   toggle_start(bool on);
     void   toggle_stop(bool off);
+    void   toggle_auto_adjust(bool checked);
     void   set_view_along_x_axis();
     void   create_osg_cylinder(const osg::Vec3 &shapePosition, float radius, float height, const osg::Quat &rotation, const osg::Vec4 &shapeRGBA);
     void   create_cylinders();
