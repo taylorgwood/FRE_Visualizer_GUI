@@ -24,9 +24,13 @@ public:
     double   calculate_volume_per_layer();
     void   set_default_parameters();
     void   set_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight);
+    int    get_number_of_layers();
     int    get_number_of_XYlayers();
     int    get_number_of_cylinders_per_X_layer();
     int    get_number_of_cylinders_per_Y_layer();
+    double*** create_point_array();
+    double*** create_empty_point_array();
+    double*** fill_point_array(double*** &pointArray);
     double*** create_center_of_cylinder_array();
     double*** create_empty_cylinder_array();
     double*** fill_cylinder_array(double*** &centerOfCylinderArray);
