@@ -23,8 +23,6 @@ SET(MYSOURCE
     osgwidget.cpp
     wireframe.cpp
     wireframe.h
-#    shapeupdatecallback.cpp
-#    shapeupdatecallback.h
     printshape.cpp
     printshape.h
     )
@@ -37,8 +35,6 @@ target_link_libraries(${PROJECT_NAME}
     Qt5::Gui)
 
 IF (NOT TARGET gtest)
-# Prevent GoogleTest from overriding our compiler/linker options
-# when building with Visual Studio
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 add_subdirectory(libs/googletest)
 ENDIF()

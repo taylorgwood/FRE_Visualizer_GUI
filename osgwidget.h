@@ -9,7 +9,6 @@
 #include <osgGA/TrackballManipulator>
 #include <osg/ShapeDrawable>
 #include <osgText/Text>
-//#include "shapeupdatecallback.h"
 #include "printshape.h"
 class PrintShape;
 
@@ -18,8 +17,7 @@ class OSGWidget : public QOpenGLWidget
     Q_OBJECT
 
 public:
-    OSGWidget(QWidget* parent = 0,
-              Qt::WindowFlags f = 0);
+    OSGWidget(QWidget* parent = 0, Qt::WindowFlags f = 0);
 
     virtual ~OSGWidget();
     void   toggle_start(bool on);

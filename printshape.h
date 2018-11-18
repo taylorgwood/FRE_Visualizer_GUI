@@ -1,14 +1,14 @@
 #ifndef PRINTSHAPE_H
 #define PRINTSHAPE_H
 
-#include <osg/MatrixTransform>
-#include <osg/Matrix>
+//#include <osg/MatrixTransform>
+//#include <osg/Matrix>
 
 class PrintShape
 {
 public:
-    ~PrintShape();
     PrintShape();
+    ~PrintShape();
 
     void   set_needle_diameter(const double needleDiameter);
     double get_needle_diameter() const;
@@ -34,7 +34,6 @@ public:
     double*** create_center_of_cylinder_array();
     double*** create_empty_cylinder_array();
     double*** fill_cylinder_array(double*** &centerOfCylinderArray);
-//    void   create_all_cylinders(double*** &centerOfCylinderArray, double numberOfCylindersPerLayer, double numberOfLayers);
     void   set_shape_size(const double objectWidth, const double objectLength, const double objectHeight);
     float  get_shape_width() const;
     float  get_shape_length() const;
@@ -50,7 +49,6 @@ protected:
     double mExtrusionMultiplier{0.785};
     double mInfillPercentage{100};
     double mExtrusionWidth{0.26};
-//    double mExtrusionWidthCalculated{mExtrusionWidth};
     float  mLayerHeight{0.26f};
     float  mShapeWidth{10};
     float  mShapeHeight{10};

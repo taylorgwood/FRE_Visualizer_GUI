@@ -305,11 +305,6 @@ double PrintShape::calculate_volume_per_layer()
 
 double PrintShape::calculate_modified_extrusion_width()
 {
-    //    double volumePrintPerLayer = calculate_volume_per_layer();
-    //    double volumeSyringePerLayer = volumePrintPerLayer;
-    //    double diameterOfSyringe{14.9};
-    //    double areaSyringe = pi/4*diameterOfSyringe*diameterOfSyringe;
-    //    double heightSyringePerLayerCalculated = volumeSyringePerLayer/areaSyringe;
     double infillRatio = mInfillPercentage/100;
     double extrusionWidthModified = mExtrusionWidth/infillRatio;
     return extrusionWidthModified;
@@ -319,3 +314,11 @@ void PrintShape::toggle_auto_adjust(bool checked)
 {
     mAutoAdjust = checked;
 }
+
+//void PrintShape::adjust_parameters()
+//{
+//    if (mAutoAdjust==true)
+//    {
+//        mExtrusionWidth = number
+//    }
+//}
