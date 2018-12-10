@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QtCore>
+#include "shape.h"
 
 class OutputWindow;
 class OSGWidget;
@@ -28,7 +29,7 @@ public slots:
     void view_wireframe();
 
 private slots:
-//    void on_extrusionMultiplierSlider_sliderMoved(int position);
+    //    void on_extrusionMultiplierSlider_sliderMoved(int position);
     void on_needleGauge_valueChanged(int arg1);
     void set_needle_diameter(int needleGauge);
     void set_needle_diameter_label();
@@ -36,7 +37,7 @@ private slots:
     void on_applyParametersButton_clicked();
     void on_clearButton_clicked();
     void on_redrawButton_clicked();
-//    void on_autoUpdateButton_clicked(bool checked);
+    //    void on_autoUpdateButton_clicked(bool checked);
     void on_layerHeight_returnPressed();
     void on_extrusionMultiplier_returnPressed();
     void on_infillPercentage_returnPressed();
@@ -63,8 +64,9 @@ signals:
 private:
     Ui::MainWindowForm *mMainWindowUI;
     OSGWidget *mOSGWidget{nullptr};
-    PrintShape *mPrintShape{nullptr};
-    std::vector<PrintShape*> *mShapeList{nullptr};
+    Shape  *mShape{nullptr};
+    //    PrintShape *mPrintShape{nullptr};
+    //    std::vector<PrintShape*> *mShapeList{nullptr};
     double mNeedleDiameter{0.26};
     double mExtrusionMultiplier{0.785};
     double mInfillPercentage{100};
@@ -73,6 +75,7 @@ private:
     float  mShapeWidth{10};
     float  mShapeHeight{10};
     float  mShapeLength{10};
+
 };
 
 #endif // MAINWINDOW_H

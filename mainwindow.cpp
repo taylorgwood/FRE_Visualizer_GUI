@@ -9,7 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     mMainWindowUI{new Ui::MainWindowForm}
 {
     mMainWindowUI->setupUi(this);
-    mOSGWidget = new OSGWidget{this};
+    mShape = new Shape();
+    mOSGWidget = new OSGWidget{mShape, this};
     this->setCentralWidget(mOSGWidget);
     set_volume_label();
 }
@@ -186,7 +187,7 @@ void MainWindow::on_extrusionWidth_returnPressed()
 
 void MainWindow::apply_print_parameters()
 {
-    mOSGWidget->apply_print_parameters(mNeedleDiameter,mExtrusionMultiplier,mInfillPercentage,mExtrusionWidth,mLayerHeight);
+//    mOSGWidget->apply_print_parameters(mNeedleDiameter,mExtrusionMultiplier,mInfillPercentage,mExtrusionWidth,mLayerHeight);
 }
 
 void MainWindow::redraw_print_parameters()
@@ -218,7 +219,7 @@ void MainWindow::on_shapeHeight_returnPressed()
 
 void MainWindow::apply_object_size_parameters()
 {
-    MainWindow::mOSGWidget->apply_object_size(mShapeWidth,mShapeLength,mShapeHeight);
+//    MainWindow::mOSGWidget->apply_object_size(mShapeWidth,mShapeLength,mShapeHeight);
 }
 
 void MainWindow::redraw_object_size_parameters()
@@ -291,5 +292,5 @@ void MainWindow::reset_object_size_labels()
 
 void MainWindow::on_autoAdjustButton_clicked(bool checked)
 {
-    mOSGWidget->toggle_auto_adjust(checked);
+//    mOSGWidget->toggle_auto_adjust(checked);
 }
