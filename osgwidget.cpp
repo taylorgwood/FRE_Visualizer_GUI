@@ -24,7 +24,9 @@ void OSGWidget::set_up_environment()
     float aspectRatio = static_cast<float>( this->width() ) / static_cast<float>( this->height() );
     int pixelRatio   = this->devicePixelRatio();
     mView = create_scene(aspectRatio,pixelRatio);
-    create_manipulator();
+    osg::ref_ptr<osgGA::TrackballManipulator> manipulator = create_manipulator();
+    set_original_home_position(manipulator);
+    set_manipulator_to_viewer(manipulator);
 }
 
 osg::Camera *OSGWidget::create_camera(float aspectRatio, int pixelRatio)
@@ -39,27 +41,16 @@ osg::Camera *OSGWidget::create_camera(float aspectRatio, int pixelRatio)
     float viewingAngle{45};
     float nearestViewDistance{1};
     float farthestViewDistance{1000};
-//    double left{-3};
-//    double right{3};
-//    double bottom{-2};
-//    double top{2};
-//    double zNear{1};
-//    double zFar{20};
-//    camera->setProjectionMatrixAsOrtho2D(left,right,bottom,top);
-//    camera->setProjectionMatrixAsOrtho(left,right,bottom,top,zNear,zFar);
     camera->setProjectionMatrixAsPerspective(viewingAngle, aspectRatio, nearestViewDistance, farthestViewDistance);
     camera->setGraphicsContext(mGraphicsWindow);
-
     return camera;
 }
 
-void OSGWidget::create_manipulator()
+osg::ref_ptr<osgGA::TrackballManipulator> OSGWidget::create_manipulator()
 {
     osg::ref_ptr<osgGA::TrackballManipulator> manipulator = new osgGA::TrackballManipulator;
     manipulator->setAllowThrow(false);
-
-    set_original_home_position(manipulator);
-    set_manipulator_to_viewer(manipulator);
+    return manipulator;
 }
 
 void OSGWidget::set_original_home_position(osg::ref_ptr<osgGA::TrackballManipulator> manipulator)
@@ -89,18 +80,7 @@ void OSGWidget::set_view_along_x_axis()
     mat.makeLookAt(eye,center,up);
     osg::ref_ptr<osgGA::CameraManipulator> manipulator = mView->getCameraManipulator();
     manipulator->setByMatrix(mat);
-    //    this->mView->setCameraManipulator(manipulator,true);
     update();
-
-    //    osgGA::TrackballManipulator* man = (osgGA::TrackballManipulator*)this->mView->getCameraManipulator();
-    //    osg::Matrix trans;
-    //    trans.makeTranslate(osg::Vec3(position.x(),position.y(),position.z()));
-    //    osg::Matrix rot;
-    //    rot.makeRotate();
-    //    rot.makeRotate(Angle,osg::Vec3(Axis.x,Axis.y,Axis.z)));
-    //    osg::Matrix cam = rot*trans;
-    //    this->mView->setCameraManipulator();
-    //    this->mView->setByMatrix(cam)
 }
 
 void OSGWidget::set_up_min_graphics_window()
@@ -183,11 +163,6 @@ void OSGWidget::draw_wireframe()
 void OSGWidget::toggle_start(bool on)
 {
     mSimulationOn = on;
-}
-
-void OSGWidget::toggle_stop(bool off)
-{
-    mSimulationOn = off;
 }
 
 void OSGWidget::toggle_auto_adjust(bool checked)
@@ -552,29 +527,3 @@ void OSGWidget::repaint_osg_graphics_after_interaction(QEvent* event)
     }
 }
 
-// Move the call out of the create sphere loop.
-// So only make one sphere then reuse it.
-// still individualy do the position, scale, osg::PositionAttitudeTransform, ... transform -> addChild(geode)... root->addChild(transform);
-
-//OSG Widget has almost everything
-//  has set up scene that is a virtual function.
-// Each of the children would have the same set up scene function that is overloaded.
-// make more OSG widgets with other cameras.
-// heads up display - draw over the top of the window
-// swap cameras out or turn them off. There is a switch node that allows you to switch nodes.
-// KeySwitchManipulator
-
-
-// Class notes Nov 15, 2018
-// Made new widget which is pretty close to the same
-//osg::Group *SceneDate = create_scene_data(mFrameRate);
-//Created light source
-// create multiple views
-// create_view: criets view, stat handler, add view to viewer. Set trackball manipulator, set home. Return view.
-// can set it to be orthographic instead of projection
-// set manipulator to null - people can't move the window around.
-// you can lock the view by not using the manipulator
-// created camera layout class - treats window like a grid of some size. called mCameraLayout
-// osg::ref_ptr<osgViewer::View> topView = create_view(sceneData);
-
-// osgUtil::Optimizer

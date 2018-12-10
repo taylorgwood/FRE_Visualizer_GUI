@@ -1,3 +1,6 @@
 [submodule "libs/Vector3D"]
 	path = libs/Vector3D
 	url = https://github.com/taylorgwood/Vector3D.git
+[submodule "libs/FRE_Slicer"]
+	path = libs/FRE_Slicer
+	url = https://github.com/taylorgwood/FRE_Slicer.git

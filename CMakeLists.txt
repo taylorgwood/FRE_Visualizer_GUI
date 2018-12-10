@@ -5,7 +5,8 @@ FIND_PACKAGE(Qt5Widgets)
 FIND_PACKAGE(Qt5Gui)
 FIND_PACKAGE(OpenSceneGraph REQUIRED COMPONENTS osgDB osgGA osgUtil osgViewer osgText)
 
-INCLUDE_DIRECTORIES( ${OPENSCENEGRAPH_INCLUDE_DIRS} )
+add_subdirectory(libs/FRE_Slicer)
+INCLUDE_DIRECTORIES( ${OPENSCENEGRAPH_INCLUDE_DIRS} FRE_Slicer)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED 1)
@@ -32,7 +33,8 @@ add_executable(${PROJECT_NAME} ${MYSOURCE})
 target_link_libraries(${PROJECT_NAME}
     ${OPENSCENEGRAPH_LIBRARIES}
     Qt5::Widgets
-    Qt5::Gui)
+    Qt5::Gui
+    FRE_Slicer)
 
 IF (NOT TARGET gtest)
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
