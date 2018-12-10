@@ -7,9 +7,9 @@
 
 class OutputWindow;
 class OSGWidget;
-class PrintShape;
 
-namespace Ui {
+namespace Ui
+{
 class MainWindowForm;
 }
 

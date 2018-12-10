@@ -1,7 +1,6 @@
 #include <random>
 #include "osgwidget.h"
 #include "wireframe.h"
-#include "printshape.h"
 
 #include <osg/Camera>
 #include <osg/Geode>
@@ -164,12 +163,6 @@ void OSGWidget::toggle_start(bool on)
     mSimulationOn = on;
 }
 
-//void OSGWidget::toggle_auto_adjust(bool checked)
-//{
-//    mShape->set_auto_adjust(checked);
-//    mShape->set_auto_adjust_layer(checked);
-//}
-
 void OSGWidget::create_osg_cylinder(const osg::Vec3& shapePosition, float radius, float height, const osg::Quat& rotation, const osg::Vec4& shapeRGBA)
 {
     osg::ShapeDrawable *newShape = create_graphic_cylinder(shapePosition, radius, height, rotation, shapeRGBA);
@@ -299,18 +292,6 @@ void OSGWidget::redraw()
     update();
 }
 
-//void OSGWidget::apply_object_size(const double shapeWidth, const double shapeLength, const double shapeHeight)
-//{
-//    mPrintShape->set_shape_size(shapeWidth,shapeLength,shapeHeight);
-//    update();
-//}
-
-//void OSGWidget::apply_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight)
-//{
-//    mPrintShape->set_print_parameters(needleDiameter,extrusionMultiplier,infillPercentage,extrusionWidth,layerHeight);
-//    update();
-//}
-
 void OSGWidget::view_axes(bool On)
 {
     mAxesOn = On;
@@ -320,12 +301,6 @@ void OSGWidget::view_wireframe(bool On)
 {
     mWireframeOn = On;
 }
-
-//float OSGWidget::get_diameter_of_print()
-//{
-//    float  diameterOfPrint = mShape->get_diameter_of_print();
-//    return diameterOfPrint;
-//}
 
 OSGWidget::OSGWidget(Shape* newShape, QWidget* parent, Qt::WindowFlags flags):
     QOpenGLWidget{parent,flags},

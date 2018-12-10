@@ -9,9 +9,7 @@
 #include <osgGA/TrackballManipulator>
 #include <osg/ShapeDrawable>
 #include <osgText/Text>
-//#include "printshape.h"
 #include "shape.h"
-//class PrintShape;
 
 class OSGWidget : public QOpenGLWidget
 {
