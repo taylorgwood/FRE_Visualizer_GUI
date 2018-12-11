@@ -56,8 +56,8 @@ osg::Node* Wireframe::create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor
 osg::Node* Wireframe::draw_print_path(Shape* shape)
 {
     double shapeHeight = shape->get_height();
-    double shapeWidth  = shape->get_layer(0)->get_width();
-    double shapeLength = shape->get_layer(0)->get_length();
+    double shapeWidth  = shape->get_width();
+    double shapeLength = shape->get_length();
 
     std::vector<Point> pointList = shape->get_points();
     size_t totalNumberOfPoints = pointList.size();
@@ -74,8 +74,8 @@ osg::Node* Wireframe::draw_print_path(Shape* shape)
     for (int i{0}; i< totalNumberOfPoints; i++)
     {
         Point point = pointList[i];
-        float xLocation = point.get_x()-shapeWidth/2;
-        float yLocation = point.get_y()-shapeLength/2;
+        float xLocation = point.get_x()-shapeLength/2;
+        float yLocation = point.get_y()-shapeWidth/2;
         float zLocation = point.get_z()-shapeHeight/2;
         vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
         float  R = point.get_material();

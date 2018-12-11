@@ -150,8 +150,8 @@ osg::ShapeDrawable *OSGWidget::create_graphic_cylinder(const osg::Vec3& shapePos
 void OSGWidget::draw_wireframe()
 {
     osg::Vec4 wireframeColorRGBA{0.5f,0.5f,1.f,0.1f};
-    float scaleFactorX = mShape->get_layer(0)->get_length()/2;
-    float scaleFactorY = mShape->get_layer(0)->get_width()/2;
+    float scaleFactorX = mShape->get_length()/2;
+    float scaleFactorY = mShape->get_width()/2;
     float scaleFactorZ = mShape->get_height()/2;
     osg::Vec3d scaleFactor = {scaleFactorX,scaleFactorY,scaleFactorZ};
     Wireframe newWireframe;
@@ -178,8 +178,8 @@ void OSGWidget::create_axes()
     osg::Vec3 shapePosition1{height/2,0,0};
     osg::Vec3 shapePosition2{0,height/2,0};
     osg::Vec3 shapePosition3{0,0,height/2};
-    float moveDistanceX = mShape->get_layer(0)->get_length()/2;
-    float moveDistanceY = mShape->get_layer(0)->get_width()/2;
+    float moveDistanceX = mShape->get_length()/2;
+    float moveDistanceY = mShape->get_width()/2;
     float moveDistanceZ = mShape->get_height()/2;
     shapePosition1 += {moveDistanceX,0,0};
     shapePosition2 += {0,moveDistanceY,0};
