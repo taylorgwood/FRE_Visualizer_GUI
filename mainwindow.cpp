@@ -51,14 +51,6 @@ void MainWindow::view_wireframe()
     mOSGWidget->redraw();
 }
 
-//void MainWindow::on_extrusionMultiplierSlider_sliderMoved(int position)
-//{
-//    double extrusionMultiplierPercentage = mMainWindowUI->extrusionMultiplierSlider->value();
-//    mExtrusionMultiplier = extrusionMultiplierPercentage/100;
-//    apply_print_parameters();
-//    redraw_print_parameters();
-//}
-
 void MainWindow::on_needleGauge_valueChanged(int arg1)
 {    
     int needleGauge{arg1};
