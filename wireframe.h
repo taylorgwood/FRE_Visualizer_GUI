@@ -15,7 +15,7 @@ public:
 protected:
 
 private:
-    Point* mLastPoint{nullptr};
+    Point mLastPoint{0,0,0};
 
 };
 

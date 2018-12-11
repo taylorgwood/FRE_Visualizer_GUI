@@ -55,12 +55,10 @@ osg::Node* Wireframe::create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor
 
 osg::Node* Wireframe::create_line(Shape* shape)
 {
-    size_t totalNumberOfPoints = shape->get_points().size();
+    std::vector<Point> pointList = shape->get_points();
+    size_t totalNumberOfPoints = pointList.size();
 
 
-
-//    osg::Vec3Array* v = new osg::Vec3Array;
-//    v->resize(numberOfPoints);
     osg::Vec4Array* c = new osg::Vec4Array;
     c->resize(totalNumberOfPoints);
     osg::Geometry* linesGeom = new osg::Geometry;
@@ -69,67 +67,57 @@ osg::Node* Wireframe::create_line(Shape* shape)
     osg::Vec3Array* vertexData = new osg::Vec3Array;
     linesGeom->setVertexArray(vertexData);
 
-    std::vector<Layer*> layerList = shape->get_layer_list();
-    int numberOfLayers = shape->get_number_of_layers();
     int count{0};
-    for (int i{0}; i< numberOfLayers; i++)
+    for (int i{0}; i< totalNumberOfPoints; i++)
     {
-        Layer* layer = layerList[i];
-        std::vector<Path*> pathList = layer->get_path_list();
-        int numberOfPaths = layer->get_number_of_paths();
-        for (int j{0}; j<numberOfPaths; j++)
-        {
-            Path* path = pathList[j];
-            std::vector<Point*> pointList = path->get_point_list();
-            int numberOfPoints = path->get_number_of_points();
-            for (int k{0}; k<numberOfPoints; k++)
-            {
-                Point* point = pointList[k];
-                float xLocation = point->get_x();
-                float yLocation = point->get_y();
-                float zLocation = point->get_z();
-                vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
-        //        (*v)[i].set(xLocation, yLocation, zLocation);
-                float  R = 0;
-                float  G = 0;
-                float  B = point->get_material();
-                float  A = 0.5;
-                (*c)[count].set(R,G,B,A);
-                mLastPoint = point;
-                drawArrayLines->setFirst(0);
-                drawArrayLines->setCount(count);
-                count ++;
-            }
-        }
+                        Point point = pointList[i];
+                        float xLocation = point.get_x();
+                        float yLocation = point.get_y();
+                        float zLocation = point.get_z();
+                        vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
+                        float  R = 0.5f;
+                        float  G = 0.5f;
+                        float  B = point.get_material();
+                        float  A = 0.5;
+                        (*c)[count].set(R,G,B,A);
+                        mLastPoint = point;
+                        count ++;
     }
+    //    std::vector<Layer*> layerList = shape->get_layer_list();
+    //    int numberOfLayers = shape->get_number_of_layers();
+//        int count{0};
+    //    for (int i{0}; i< numberOfLayers; i++)
+    //    {
+    //        Layer* layer = layerList[i];
+    //        std::vector<Path*> pathList = layer->get_path_list();
+    //        int numberOfPaths = layer->get_number_of_paths();
+    //        for (int j{0}; j<numberOfPaths; j++)
+    //        {
+    //            Path* path = pathList[j];
+    //            std::vector<Point*> pointList = path->get_point_list();
+    //            int numberOfPoints = path->get_number_of_points();
+    //            for (int k{0}; k<numberOfPoints; k++)
+    //            {
+    //                Point* point = pointList[k];
+    //                float xLocation = point->get_x();
+    //                float yLocation = point->get_y();
+    //                float zLocation = point->get_z();
+    //                vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
+    //                float  R = 0.5f;
+    //                float  G = 0.5f;
+    //                float  B = point->get_material();
+    //                float  A = 0.5;
+    //                (*c)[count].set(R,G,B,A);
+    //                mLastPoint = point;
+    //                count ++;
+    //            }
+    //        }
+    //    }
 
-//    for (int i{0}; i<numberOfPoints; i++)
-//    {
+    drawArrayLines->setFirst(0);
+    drawArrayLines->setCount(totalNumberOfPoints);
 
-//    }
-
-
-//    geom->setUseDisplayList( false );
-//    geom->setVertexArray( v );
-//        for (int i{0}; i<numberOfPoints; i++)
-//        {
-//            if (i>1)
-//            {
-//                GLushort idxLines[2] = {i,(i-1)};
-//                geom->addPrimitiveSet( new osg::DrawElementsUShort( osg::PrimitiveSet::LINES, 2, idxLines) );
-//            }
-//        }
-
-    //    c->push_back( color );
-    //    geom->setColorArray( c, osg::Array::BIND_OVERALL );
     linesGeom->setColorArray(c, osg::Array::BIND_PER_VERTEX);
-
-    //    GLushort idxLines[8] = {0, 4, 1, 5, 2, 6, 3, 7};
-    //    GLushort idxLoop1[4] = {0, 1, 2, 3};
-    //    GLushort idxLoop2[4] = {4, 5, 6, 7};
-
-    //    geom->addPrimitiveSet( new osg::DrawElementsUShort( osg::PrimitiveSet::LINE_LOOP, 4, idxLoop1 ) );
-    //    geom->addPrimitiveSet( new osg::DrawElementsUShort( osg::PrimitiveSet::LINE_LOOP, 4, idxLoop2 ) );
 
     osg::Geode* geode = new osg::Geode;
     geode->addDrawable( linesGeom );
