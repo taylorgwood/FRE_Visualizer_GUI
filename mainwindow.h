@@ -53,8 +53,9 @@ private slots:
     void set_default_object_size();
     void reset_print_parameter_labels();
     void reset_object_size_labels();
+    void on_autoAdjustLayersButton_clicked(bool checked);
 
-    void on_autoAdjustButton_clicked(bool checked);
+    void on_autoAdjustWidthButton_clicked(bool checked);
 
 signals:
 
@@ -62,8 +63,6 @@ private:
     Ui::MainWindowForm *mMainWindowUI;
     OSGWidget *mOSGWidget{nullptr};
     Shape  *mShape{nullptr};
-    //    PrintShape *mPrintShape{nullptr};
-    //    std::vector<PrintShape*> *mShapeList{nullptr};
     double mNeedleDiameter{0.26};
     double mExtrusionMultiplier{0.785};
     double mInfillPercentage{100};

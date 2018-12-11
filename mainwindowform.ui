@@ -69,23 +69,23 @@
      <property name="geometry">
       <rect>
        <x>50</x>
-       <y>430</y>
+       <y>450</y>
        <width>195</width>
        <height>30</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QPushButton" name="clearButton">
+       <widget class="QPushButton" name="redrawButton">
         <property name="text">
-         <string>Clear</string>
+         <string>Redraw</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="redrawButton">
+       <widget class="QPushButton" name="clearButton">
         <property name="text">
-         <string>Redraw</string>
+         <string>Clear</string>
         </property>
        </widget>
       </item>
@@ -164,7 +164,7 @@
        <x>0</x>
        <y>10</y>
        <width>301</width>
-       <height>404</height>
+       <height>431</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -288,9 +288,28 @@
          </layout>
         </item>
         <item>
-         <widget class="QRadioButton" name="autoAdjustButton">
+         <widget class="QRadioButton" name="autoAdjustLayersButton">
           <property name="text">
-           <string>Auto-adjust</string>
+           <string>Auto-adjust layer height</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="autoExclusive">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="autoAdjustWidthButton">
+          <property name="text">
+           <string>Auto-adjust extrusion width</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="autoExclusive">
+           <bool>false</bool>
           </property>
          </widget>
         </item>

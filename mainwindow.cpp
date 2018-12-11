@@ -270,7 +270,14 @@ void MainWindow::reset_object_size_labels()
     mMainWindowUI->shapeHeight->setText(QString::number(mShapeHeight));
 }
 
-void MainWindow::on_autoAdjustButton_clicked(bool checked)
+void MainWindow::on_autoAdjustLayersButton_clicked(bool checked)
 {
-    //    mOSGWidget->toggle_auto_adjust(checked);
+    mShape->set_auto_adjust_layer(checked);
+    redraw_and_refresh_information();
+}
+
+void MainWindow::on_autoAdjustWidthButton_clicked(bool checked)
+{
+    mShape->set_auto_adjust_path(checked);
+    redraw_and_refresh_information();
 }
