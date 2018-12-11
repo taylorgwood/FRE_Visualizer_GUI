@@ -124,7 +124,7 @@ void MainWindow::on_applyParametersButton_clicked()
     double extrusionMultiplier = mMainWindowUI->extrusionMultiplier->text().toDouble();
     double infillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
     double extrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
-    mShape->set_layer_height(layerHeight);
+    mShape->reset_layer_height(layerHeight);
     mShape->set_extrusion_multiplier(extrusionMultiplier);
     mShape->set_infill_percentage(infillPercentage);
     mShape->set_extrusion_width(extrusionWidth); // change this to have auto adjust in the set function
@@ -153,7 +153,7 @@ void MainWindow::on_autoUpdateButton_clicked(bool checked)
 void MainWindow::on_layerHeight_returnPressed()
 {
     double layerHeight = mMainWindowUI->layerHeight->text().toDouble();
-    mShape->set_layer_height(layerHeight);
+    mShape->reset_layer_height(layerHeight);
     redraw_and_refresh_information();
 }
 
