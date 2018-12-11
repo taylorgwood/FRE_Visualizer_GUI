@@ -81,7 +81,7 @@ osg::Node* Wireframe::draw_print_path(Shape* shape)
         float  R = point.get_material();
         float  G = point.get_material();
         float  B = point.get_material();
-        float  A = 0.5;
+        float  A = 1.0;
         (*color)[count].set(R,G,B,A);
         mLastPoint = point;
         count ++;
