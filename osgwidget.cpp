@@ -154,9 +154,9 @@ void OSGWidget::draw_wireframe()
     float scaleFactorY = mShape->get_layer(0)->get_width()/2;
     float scaleFactorZ = mShape->get_height()/2;
     osg::Vec3d scaleFactor = {scaleFactorX,scaleFactorY,scaleFactorZ};
-    Wireframe newWireFrame;
-    osg::Node* wireFrame = newWireFrame.create_wireframe(wireframeColorRGBA, scaleFactor);
-    mRoot->addChild(wireFrame);
+    Wireframe newWireframe;
+    osg::Node* wireframe = newWireframe.create_wireframe(wireframeColorRGBA, scaleFactor);
+    mRoot->addChild(wireframe);
 }
 
 void OSGWidget::toggle_start(bool on)
@@ -315,6 +315,10 @@ OSGWidget::OSGWidget(Shape* newShape, QWidget* parent, Qt::WindowFlags flags):
     set_up_min_graphics_window();
     create_axes();
     create_cylinders();
+
+    Wireframe newWireframe;
+    osg::Node* wireframe = newWireframe.create_line(mShape);
+    mRoot->addChild(wireframe);
 
     mTimerId = set_up_timer();
 }

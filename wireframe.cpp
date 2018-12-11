@@ -53,25 +53,53 @@ osg::Node* Wireframe::create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor
     return transform;
 }
 
-//void Wireframe::set_object_size(const double objectWidth, const double objectLength, const double objectHeight)
-//{
-//    mShapeWidth  = objectWidth;
-//    mShapeLength = objectLength;
-//    mShapeHeight = objectHeight;
-//    //    update();
-//}
+osg::Node* Wireframe::create_line(Shape* shape)
+{
+    std::vector<Point> pointList = shape->get_points();
+    size_t numberOfPoints = pointList.size();
 
-//float Wireframe::get_shape_width() const
-//{
-//    return mShapeWidth;
-//}
+    osg::Vec3Array* v = new osg::Vec3Array;
+    v->resize(numberOfPoints);
+    osg::Vec4Array* c = new osg::Vec4Array;
+    c->resize(numberOfPoints);
+    for (int i{0}; i<numberOfPoints; i++)
+    {
+        Point point = pointList[i];
+        float xLocation = point.get_x();
+        float yLocation = point.get_y();
+        float zLocation = point.get_z();
+        (*v)[i].set(xLocation, yLocation, zLocation);
+        float  R = 1;
+        float  G = 1;
+        float  B = 1;
+        float  A = 0.5;
+        (*c)[i].set(R,G,B,A);
+    }
 
-//float Wireframe::get_shape_length() const
-//{
-//    return mShapeLength;
-//}
+    osg::Geometry* geom = new osg::Geometry;
+    geom->setUseDisplayList( false );
+    geom->setVertexArray( v );
 
-//float Wireframe::get_shape_height() const
-//{
-//    return mShapeHeight;
-//}
+
+//    c->push_back( color );
+//    geom->setColorArray( c, osg::Array::BIND_OVERALL );
+
+    GLushort idxLines[8] = {0, 4, 1, 5, 2, 6, 3, 7};
+    GLushort idxLoop1[4] = {0, 1, 2, 3};
+    GLushort idxLoop2[4] = {4, 5, 6, 7};
+    geom->addPrimitiveSet( new osg::DrawElementsUShort( osg::PrimitiveSet::LINES, 8, idxLines ) );
+    geom->addPrimitiveSet( new osg::DrawElementsUShort( osg::PrimitiveSet::LINE_LOOP, 4, idxLoop1 ) );
+    geom->addPrimitiveSet( new osg::DrawElementsUShort( osg::PrimitiveSet::LINE_LOOP, 4, idxLoop2 ) );
+
+    osg::Geode* geode = new osg::Geode;
+    geode->addDrawable( geom );
+
+    geode->getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED );
+    geode->getOrCreateStateSet()->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
+    osg::PositionAttitudeTransform* transform = new osg::PositionAttitudeTransform;
+    osg::Vec3d scaleFactor{1,1,1};
+    transform->setScale(scaleFactor);
+
+    transform->addChild(geode);
+    return transform;
+}
