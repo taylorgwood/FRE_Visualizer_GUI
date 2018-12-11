@@ -82,8 +82,8 @@ osg::Node* Wireframe::draw_print_path(Shape* shape)
         float  G = point.get_material();
         float  B = point.get_material();
         float  A = 1.0;
-        (*color)[count].set(R,G,B,A);
-//        osg::Vec4 currentColor{R,G,B,A};
+        osg::Vec4 currentColor{R,G,B,A};
+        (*color)[count] = currentColor;
 //        color->push_back(currentColor);
 //        mLastPoint = point;
         count ++;
