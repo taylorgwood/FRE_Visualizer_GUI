@@ -154,7 +154,8 @@ void OSGWidget::draw_wireframe()
     float scaleFactorY = mShape->get_layer(0)->get_width()/2;
     float scaleFactorZ = mShape->get_height()/2;
     osg::Vec3d scaleFactor = {scaleFactorX,scaleFactorY,scaleFactorZ};
-    osg::Node* wireFrame = create_wireframe(wireframeColorRGBA, scaleFactor);
+    Wireframe newWireFrame;
+    osg::Node* wireFrame = newWireFrame.create_wireframe(wireframeColorRGBA, scaleFactor);
     mRoot->addChild(wireFrame);
 }
 
@@ -306,8 +307,6 @@ OSGWidget::OSGWidget(Shape* newShape, QWidget* parent, Qt::WindowFlags flags):
     QOpenGLWidget{parent,flags},
     mGraphicsWindow{new osgViewer::GraphicsWindowEmbedded{this->x(),this->y(),this->width(),this->height()}},
     mViewer{new osgViewer::CompositeViewer}
-//    mShapeList{new std::vector<PrintShape*>},
-//    mPrintShape{new PrintShape()}
 {
     mRoot = new osg::Group;
     mShape = newShape;

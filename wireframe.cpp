@@ -5,7 +5,15 @@
 #include <osg/PositionAttitudeTransform>
 #include <osg/ShapeDrawable>
 
-osg::Node* create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor)
+Wireframe::Wireframe()
+{
+}
+
+Wireframe::~Wireframe()
+{
+}
+
+osg::Node* Wireframe::create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor)
 {
     osg::Vec3Array* v = new osg::Vec3Array;
     v->resize( 8 );
@@ -23,7 +31,7 @@ osg::Node* create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor)
     geom->setVertexArray( v );
 
     osg::Vec4Array* c = new osg::Vec4Array;
-    c->push_back( color );
+    c->push_back(color);
     geom->setColorArray( c, osg::Array::BIND_OVERALL );
 
     GLushort idxLines[8] = {0, 4, 1, 5, 2, 6, 3, 7};

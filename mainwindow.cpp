@@ -152,10 +152,10 @@ void MainWindow::on_redrawButton_clicked()
     mOSGWidget->redraw();
 }
 
-//void MainWindow::on_autoUpdateButton_clicked(bool checked)
-//{
+void MainWindow::on_autoUpdateButton_clicked(bool checked)
+{
 //    MainWindow::mOSGWidget->toggle_start(checked);
-//}
+}
 
 void MainWindow::on_layerHeight_returnPressed()
 {

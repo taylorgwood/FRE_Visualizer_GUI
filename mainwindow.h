@@ -37,7 +37,7 @@ private slots:
     void on_applyParametersButton_clicked();
     void on_clearButton_clicked();
     void on_redrawButton_clicked();
-    //    void on_autoUpdateButton_clicked(bool checked);
+    void on_autoUpdateButton_clicked(bool checked);
     void on_layerHeight_returnPressed();
     void on_extrusionMultiplier_returnPressed();
     void on_infillPercentage_returnPressed();
