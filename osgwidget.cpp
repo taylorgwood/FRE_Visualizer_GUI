@@ -290,6 +290,7 @@ void OSGWidget::redraw()
     }
 
     create_cylinders();
+    draw_print_path();
     update();
 }
 
@@ -301,6 +302,13 @@ void OSGWidget::view_axes(bool On)
 void OSGWidget::view_wireframe(bool On)
 {
     mWireframeOn = On;
+}
+
+void OSGWidget::draw_print_path()
+{
+    Wireframe newWireframe;
+    osg::Node* wireframe = newWireframe.draw_print_path(mShape);
+    mRoot->addChild(wireframe);
 }
 
 OSGWidget::OSGWidget(Shape* newShape, QWidget* parent, Qt::WindowFlags flags):
@@ -315,10 +323,7 @@ OSGWidget::OSGWidget(Shape* newShape, QWidget* parent, Qt::WindowFlags flags):
     set_up_min_graphics_window();
     create_axes();
     create_cylinders();
-
-    Wireframe newWireframe;
-    osg::Node* wireframe = newWireframe.create_line(mShape);
-    mRoot->addChild(wireframe);
+    draw_print_path();
 
     mTimerId = set_up_timer();
 }

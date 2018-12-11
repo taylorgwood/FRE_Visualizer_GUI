@@ -33,6 +33,7 @@ public:
     void   view_axes(bool On);
     void   view_wireframe(bool On);
 //    float  get_diameter_of_print();
+    void draw_print_path();
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);

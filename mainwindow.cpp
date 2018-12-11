@@ -63,7 +63,7 @@ void MainWindow::on_needleGauge_valueChanged(int arg1)
 {    
     int needleGauge{arg1};
     set_needle_diameter(needleGauge);
-    apply_print_parameters();
+    set_needle_diameter_label();
 }
 
 void MainWindow::set_needle_diameter(int needleGauge)
@@ -106,7 +106,6 @@ void MainWindow::set_needle_diameter(int needleGauge)
         needleDiameter = 0.159;
     }
     mNeedleDiameter = needleDiameter;
-    set_needle_diameter_label();
 }
 
 void MainWindow::set_needle_diameter_label()
@@ -118,24 +117,26 @@ void MainWindow::set_needle_diameter_label()
 
 void MainWindow::on_objectSizeButton_clicked()
 {
-    mShapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
-    mShapeLength = mMainWindowUI->shapeLength->text().toDouble();
-    mShapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
-    apply_object_size_parameters();
-    redraw_object_size_parameters();
-    set_volume_label();
+    double shapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
+    double shapeLength = mMainWindowUI->shapeLength->text().toDouble();
+    double shapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
+    mShape->set_width(shapeWidth);
+    mShape->set_length(shapeLength);
+    mShape->set_height(shapeHeight);
+    redraw_and_refresh_information();
 }
 
 void MainWindow::on_applyParametersButton_clicked()
-{
-
-    mLayerHeight = mMainWindowUI->layerHeight->text().toDouble();
-    mExtrusionMultiplier = mMainWindowUI->extrusionMultiplier->text().toDouble();
-    mInfillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
-    mExtrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
-    apply_print_parameters();
-    redraw_print_parameters();
-    set_volume_label();
+{ 
+    double layerHeight = mMainWindowUI->layerHeight->text().toDouble();
+    double extrusionMultiplier = mMainWindowUI->extrusionMultiplier->text().toDouble();
+    double infillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
+    double extrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
+    mShape->set_layer_height(layerHeight);
+    mShape->set_extrusion_multiplier(extrusionMultiplier);
+    mShape->set_infill_percentage(infillPercentage);
+    mShape->set_extrusion_width(extrusionWidth); // change this to have auto adjust in the set function
+    redraw_and_refresh_information();
 }
 
 void MainWindow::on_clearButton_clicked()
@@ -145,8 +146,8 @@ void MainWindow::on_clearButton_clicked()
 
 void MainWindow::on_redrawButton_clicked()
 {
-    redraw_print_parameters();
-    redraw_object_size_parameters();
+    redraw_and_refresh_information();
+    redraw_and_refresh_information();
     view_axes();
     view_wireframe();
     mOSGWidget->redraw();
@@ -154,75 +155,59 @@ void MainWindow::on_redrawButton_clicked()
 
 void MainWindow::on_autoUpdateButton_clicked(bool checked)
 {
-//    MainWindow::mOSGWidget->toggle_start(checked);
+    //    MainWindow::mOSGWidget->toggle_start(checked);
 }
 
 void MainWindow::on_layerHeight_returnPressed()
 {
-    mLayerHeight = mMainWindowUI->layerHeight->text().toDouble();
-    apply_print_parameters();
-    redraw_print_parameters();
+    double layerHeight = mMainWindowUI->layerHeight->text().toDouble();
+    mShape->set_layer_height(layerHeight);
+    redraw_and_refresh_information();
 }
 
 void MainWindow::on_extrusionMultiplier_returnPressed()
 {
-    mExtrusionMultiplier = mMainWindowUI->extrusionMultiplier->text().toDouble();
-    apply_print_parameters();
-    redraw_print_parameters();
+    double extrusionMultiplier = mMainWindowUI->extrusionMultiplier->text().toDouble();
+    mShape->set_extrusion_multiplier(extrusionMultiplier);
+    redraw_and_refresh_information();
 }
 
 void MainWindow::on_infillPercentage_returnPressed()
 {
-    mInfillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
-    apply_print_parameters();
-    redraw_print_parameters();
+    double infillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
+    mShape->set_infill_percentage(infillPercentage);
+    redraw_and_refresh_information();
 }
 
 void MainWindow::on_extrusionWidth_returnPressed()
 {
-    mExtrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
-    apply_print_parameters();
-    redraw_print_parameters();
-}
-
-void MainWindow::apply_print_parameters()
-{
-//    mOSGWidget->apply_print_parameters(mNeedleDiameter,mExtrusionMultiplier,mInfillPercentage,mExtrusionWidth,mLayerHeight);
-}
-
-void MainWindow::redraw_print_parameters()
-{
-    mOSGWidget->redraw();
-    set_volume_label();
+    double extrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
+    mShape->set_extrusion_width(extrusionWidth);
+    redraw_and_refresh_information();
 }
 
 void MainWindow::on_shapeWidth_returnPressed()
 {
-    mShapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
-    apply_object_size_parameters();
-    redraw_object_size_parameters();
+    double shapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
+    mShape->set_width(shapeWidth);
+    redraw_and_refresh_information();
 }
 
 void MainWindow::on_shapeLength_returnPressed()
 {
-    mShapeLength = mMainWindowUI->shapeLength->text().toDouble();
-    apply_object_size_parameters();
-    redraw_object_size_parameters();
+    double shapeLength = mMainWindowUI->shapeLength->text().toDouble();
+    mShape->set_length(shapeLength);
+    redraw_and_refresh_information();
 }
 
 void MainWindow::on_shapeHeight_returnPressed()
 {
-    mShapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
-    apply_object_size_parameters();
-    redraw_object_size_parameters();
+    double shapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
+    mShape->set_height(shapeHeight);
+    redraw_and_refresh_information();
 }
 
-void MainWindow::apply_object_size_parameters()
-{
-//    MainWindow::mOSGWidget->apply_object_size(mShapeWidth,mShapeLength,mShapeHeight);
-}
-
-void MainWindow::redraw_object_size_parameters()
+void MainWindow::redraw_and_refresh_information()
 {
     mOSGWidget->redraw();
     set_volume_label();
@@ -230,12 +215,17 @@ void MainWindow::redraw_object_size_parameters()
 
 void MainWindow::set_volume_label()
 {
-    double objectVolumeDouble = mShapeHeight*mShapeLength*mShapeWidth;
+    double shapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
+    double shapeLength = mMainWindowUI->shapeLength->text().toDouble();
+    double shapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
+    double objectVolumeDouble = shapeHeight*shapeLength*shapeWidth;
     QString objectVolumeText = QString::number(objectVolumeDouble);
     mMainWindowUI->objectVolume->setText(objectVolumeText);
 
-    double infillRatio = mInfillPercentage/100;
-    double extrudedVolumeDouble = objectVolumeDouble*infillRatio*mExtrusionMultiplier;
+    double infillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
+    double infillRatio = infillPercentage/100;
+    double extrusionMultiplier = mMainWindowUI->extrusionMultiplier->text().toDouble();
+    double extrudedVolumeDouble = objectVolumeDouble*infillRatio*extrusionMultiplier;
     QString extrudedVolumeText = QString::number(extrudedVolumeDouble);
     mMainWindowUI->extrudedVolume->setText(extrudedVolumeText);
 }
@@ -244,16 +234,14 @@ void MainWindow::set_volume_label()
 void MainWindow::on_resetParametersButton_clicked()
 {
     set_default_print_parameters();
-    apply_print_parameters();
-    redraw_print_parameters();
+    redraw_and_refresh_information();
     reset_print_parameter_labels();
 }
 
 void MainWindow::on_resetObjectSizeButton_clicked()
 {
     set_default_object_size();
-    apply_object_size_parameters();
-    redraw_object_size_parameters();
+    redraw_and_refresh_information();
     reset_object_size_labels();
 }
 
@@ -292,5 +280,5 @@ void MainWindow::reset_object_size_labels()
 
 void MainWindow::on_autoAdjustButton_clicked(bool checked)
 {
-//    mOSGWidget->toggle_auto_adjust(checked);
+    //    mOSGWidget->toggle_auto_adjust(checked);
 }

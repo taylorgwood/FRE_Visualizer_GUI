@@ -42,13 +42,10 @@ private slots:
     void on_extrusionMultiplier_returnPressed();
     void on_infillPercentage_returnPressed();
     void on_extrusionWidth_returnPressed();
-    void apply_print_parameters();
-    void redraw_print_parameters();
     void on_shapeWidth_returnPressed();
     void on_shapeLength_returnPressed();
     void on_shapeHeight_returnPressed();
-    void apply_object_size_parameters();
-    void redraw_object_size_parameters();
+    void redraw_and_refresh_information();
     void set_volume_label();
     void on_resetParametersButton_clicked();
     void on_resetObjectSizeButton_clicked();

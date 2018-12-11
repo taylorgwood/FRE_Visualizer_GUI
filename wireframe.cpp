@@ -53,9 +53,8 @@ osg::Node* Wireframe::create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor
     return transform;
 }
 
-osg::Node* Wireframe::create_line(Shape* shape)
+osg::Node* Wireframe::draw_print_path(Shape* shape)
 {
-
     double shapeHeight = shape->get_height();
     double shapeWidth  = shape->get_layer(0)->get_width();
     double shapeLength = shape->get_layer(0)->get_length();
@@ -79,8 +78,8 @@ osg::Node* Wireframe::create_line(Shape* shape)
         float yLocation = point.get_y()-shapeLength/2;
         float zLocation = point.get_z()-shapeHeight/2;
         vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
-        float  R = 0.5f;
-        float  G = 0.5f;
+        float  R = point.get_material();
+        float  G = point.get_material();
         float  B = point.get_material();
         float  A = 0.5;
         (*color)[count].set(R,G,B,A);
