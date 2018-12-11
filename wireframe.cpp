@@ -59,8 +59,8 @@ osg::Node* Wireframe::draw_print_path(Shape* shape)
     double shapeWidth  = shape->get_width();
     double shapeLength = shape->get_length();
 
-    std::vector<Point> pointList = shape->get_points();
-    size_t totalNumberOfPoints = pointList.size();
+    std::vector<Point> shapePointList = shape->get_points();
+    size_t totalNumberOfPoints = shapePointList.size();
 
     osg::Vec4Array* color = new osg::Vec4Array;
     color->resize(totalNumberOfPoints);
@@ -73,7 +73,7 @@ osg::Node* Wireframe::draw_print_path(Shape* shape)
     int count{0};
     for (int i{0}; i< totalNumberOfPoints; i++)
     {
-        Point point = pointList[i];
+        Point point = shapePointList[i];
         float xLocation = point.get_x()-shapeLength/2;
         float yLocation = point.get_y()-shapeWidth/2;
         float zLocation = point.get_z()-shapeHeight/2;
@@ -83,7 +83,9 @@ osg::Node* Wireframe::draw_print_path(Shape* shape)
         float  B = point.get_material();
         float  A = 1.0;
         (*color)[count].set(R,G,B,A);
-        mLastPoint = point;
+//        osg::Vec4 currentColor{R,G,B,A};
+//        color->push_back(currentColor);
+//        mLastPoint = point;
         count ++;
     }
 
