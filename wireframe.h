@@ -15,6 +15,7 @@ public:
 protected:
 
 private:
+    Point mLastPoint{0,0,0};
 
 };
 

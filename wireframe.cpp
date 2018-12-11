@@ -58,41 +58,59 @@ osg::Node* Wireframe::create_line(Shape* shape)
     std::vector<Point> pointList = shape->get_points();
     size_t numberOfPoints = pointList.size();
 
-    osg::Vec3Array* v = new osg::Vec3Array;
-    v->resize(numberOfPoints);
+//    osg::Vec3Array* v = new osg::Vec3Array;
+//    v->resize(numberOfPoints);
     osg::Vec4Array* c = new osg::Vec4Array;
     c->resize(numberOfPoints);
+    osg::Geometry* linesGeom = new osg::Geometry;
+    osg::DrawArrays* drawArrayLines = new osg::DrawArrays(osg::PrimitiveSet::LINE_STRIP);
+    linesGeom->addPrimitiveSet(drawArrayLines);
+    osg::Vec3Array* vertexData = new osg::Vec3Array;
+    linesGeom->setVertexArray(vertexData);
+
     for (int i{0}; i<numberOfPoints; i++)
     {
         Point point = pointList[i];
         float xLocation = point.get_x();
         float yLocation = point.get_y();
         float zLocation = point.get_z();
-        (*v)[i].set(xLocation, yLocation, zLocation);
-        float  R = 1;
-        float  G = 1;
-        float  B = 1;
+        vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
+//        (*v)[i].set(xLocation, yLocation, zLocation);
+        float  R = 0;
+        float  G = 0;
+        float  B = point.get_material();
         float  A = 0.5;
         (*c)[i].set(R,G,B,A);
+        mLastPoint = point;
+        drawArrayLines->setFirst(0);
+        drawArrayLines->setCount(i);
     }
 
-    osg::Geometry* geom = new osg::Geometry;
-    geom->setUseDisplayList( false );
-    geom->setVertexArray( v );
 
+//    geom->setUseDisplayList( false );
+//    geom->setVertexArray( v );
+//        for (int i{0}; i<numberOfPoints; i++)
+//        {
+//            if (i>1)
+//            {
+//                GLushort idxLines[2] = {i,(i-1)};
+//                geom->addPrimitiveSet( new osg::DrawElementsUShort( osg::PrimitiveSet::LINES, 2, idxLines) );
+//            }
+//        }
 
-//    c->push_back( color );
-//    geom->setColorArray( c, osg::Array::BIND_OVERALL );
+    //    c->push_back( color );
+    //    geom->setColorArray( c, osg::Array::BIND_OVERALL );
+    linesGeom->setColorArray(c, osg::Array::BIND_PER_VERTEX);
 
-    GLushort idxLines[8] = {0, 4, 1, 5, 2, 6, 3, 7};
-    GLushort idxLoop1[4] = {0, 1, 2, 3};
-    GLushort idxLoop2[4] = {4, 5, 6, 7};
-    geom->addPrimitiveSet( new osg::DrawElementsUShort( osg::PrimitiveSet::LINES, 8, idxLines ) );
-    geom->addPrimitiveSet( new osg::DrawElementsUShort( osg::PrimitiveSet::LINE_LOOP, 4, idxLoop1 ) );
-    geom->addPrimitiveSet( new osg::DrawElementsUShort( osg::PrimitiveSet::LINE_LOOP, 4, idxLoop2 ) );
+    //    GLushort idxLines[8] = {0, 4, 1, 5, 2, 6, 3, 7};
+    //    GLushort idxLoop1[4] = {0, 1, 2, 3};
+    //    GLushort idxLoop2[4] = {4, 5, 6, 7};
+
+    //    geom->addPrimitiveSet( new osg::DrawElementsUShort( osg::PrimitiveSet::LINE_LOOP, 4, idxLoop1 ) );
+    //    geom->addPrimitiveSet( new osg::DrawElementsUShort( osg::PrimitiveSet::LINE_LOOP, 4, idxLoop2 ) );
 
     osg::Geode* geode = new osg::Geode;
-    geode->addDrawable( geom );
+    geode->addDrawable( linesGeom );
 
     geode->getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED );
     geode->getOrCreateStateSet()->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
