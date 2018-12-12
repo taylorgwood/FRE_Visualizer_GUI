@@ -2,7 +2,6 @@
 #define MEEN_570_OSGWIDGET
 
 #include <QOpenGLWidget>
-
 #include <osg/ref_ptr>
 #include <osgViewer/GraphicsWindow>
 #include <osgViewer/CompositeViewer>
@@ -20,7 +19,6 @@ public:
 
     virtual ~OSGWidget();
     void   toggle_start(bool on);
-//    void   toggle_auto_adjust(bool checked);
     void   set_view_along_x_axis();
     void   create_osg_cylinder(const osg::Vec3 &shapePosition, float radius, float height, const osg::Quat &rotation, const osg::Vec4 &shapeRGBA);
     void   create_cylinders();
@@ -31,12 +29,9 @@ public:
     osg::Quat rotate_about_y_axis();
     void   clear_window();
     void   redraw();
-//    void   apply_object_size(const double shapeWidth, const double shapeLength, const double shapeHeight);
-//    void   apply_print_parameters(double needleDiameter, double extrusionMultiplier, double infillPercentage, double extrusionWidth, double layerHeight);
     void   view_axes(bool On);
     void   view_wireframe(bool On);
-//    float  get_diameter_of_print();
-    void draw_print_path();
+    void   draw_print_path();
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
@@ -78,13 +73,10 @@ private:
     int  set_up_timer();
 
     bool   mSimulationOn{false};
-    //    ShapeUpdateCallback *mShapeUpdateCallback{nullptr};
-//    PrintShape *mPrintShape{nullptr};
-//    std::vector<PrintShape*> *mShapeList;
     Shape *mShape{nullptr};
-    int mRedrawCount{0};
-    bool mAxesOn{1};
-    bool mWireframeOn{1};
+    int    mRedrawCount{0};
+    bool   mAxesOn{1};
+    bool   mWireframeOn{1};
     double const pi{3.14159};
 
 };
