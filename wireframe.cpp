@@ -55,39 +55,15 @@ osg::Node* Wireframe::create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor
 
 osg::Node* Wireframe::draw_print_path(Shape* shape)
 {
-    double shapeHeight = shape->get_height();
-    double shapeWidth  = shape->get_width();
-    double shapeLength = shape->get_length();
-
-    std::vector<Point> shapePointList = shape->get_points();
-    size_t totalNumberOfPoints = shapePointList.size();
-
-    osg::Vec4Array* color = new osg::Vec4Array;
-    color->resize(totalNumberOfPoints);
+    osg::Vec4Array* color = get_color_data(shape);
     osg::Geometry* linesGeom = new osg::Geometry;
     osg::DrawArrays* drawArrayLines = new osg::DrawArrays(osg::PrimitiveSet::LINE_STRIP);
     linesGeom->addPrimitiveSet(drawArrayLines);
     osg::Vec3Array* vertexData = get_vertex_data(shape);
     linesGeom->setVertexArray(vertexData);
 
-    int count{0};
-    for (int i{0}; i< totalNumberOfPoints; i++)
-    {
-        Point point = shapePointList[i];
-        float material = point.get_material();
-        float R = material;
-        float G = material;
-        float B = material;
-        float A = 1.0;
-        osg::Vec4 currentColor{R,G,B,A};
-        (*color)[count] = currentColor;
-        //        color->push_back(currentColor);
-        //        mLastPoint = point;
-        count ++;
-    }
-
     drawArrayLines->setFirst(0);
-    drawArrayLines->setCount(totalNumberOfPoints);
+    drawArrayLines->setCount(vertexData->size());
 
     linesGeom->setColorArray(color, osg::Array::BIND_PER_VERTEX);
 
@@ -123,4 +99,23 @@ osg::Vec3Array* Wireframe::get_vertex_data(Shape* shape)
         vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
     }
     return vertexData;
+}
+
+osg::Vec4Array* Wireframe::get_color_data(Shape* shape)
+{
+    std::vector<Point> shapePointList = shape->get_points();
+    size_t totalNumberOfPoints = shapePointList.size();
+    osg::Vec4Array* color = new osg::Vec4Array;
+    for (int i{0}; i< totalNumberOfPoints; i++)
+    {
+        Point point = shapePointList[i];
+        float material = point.get_material();
+        float R = material;
+        float G = material;
+        float B = material;
+        float A = 1.0;
+        osg::Vec4 currentColor{R,G,B,A};
+        color->push_back(currentColor);
+    }
+    return color;
 }
