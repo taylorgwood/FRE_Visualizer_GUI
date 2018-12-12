@@ -203,6 +203,53 @@ void OSGWidget::create_axes()
     update();
 }
 
+//osg::Node* OSGWidget::draw_cylinders()
+//{
+//    osg::Vec4Array* color = get_color_data(mShape);
+//    osg::Vec3Array* vertexData = get_vertex_data(mShape);
+
+//}
+
+osg::Vec3Array* OSGWidget::get_vertex_data(Shape* shape)
+{
+    double shapeHeight = shape->get_height();
+    double shapeWidth  = shape->get_width();
+    double shapeLength = shape->get_length();
+
+    std::vector<Point> shapePointList = shape->get_points();
+    size_t totalNumberOfPoints = shapePointList.size();
+    osg::Vec3Array* vertexData = new osg::Vec3Array;
+
+    for (int i{0}; i< totalNumberOfPoints; i++)
+    {
+        Point point = shapePointList[i];
+        float xLocation = point.get_x()-shapeLength/2;
+        float yLocation = point.get_y()-shapeWidth/2;
+        float zLocation = point.get_z()-shapeHeight/2;
+        vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
+    }
+    return vertexData;
+}
+
+osg::Vec4Array* OSGWidget::get_color_data(Shape* shape)
+{
+    std::vector<Point> shapePointList = shape->get_points();
+    size_t totalNumberOfPoints = shapePointList.size();
+    osg::Vec4Array* color = new osg::Vec4Array;
+    for (int i{0}; i< totalNumberOfPoints; i++)
+    {
+        Point point = shapePointList[i];
+        float material = point.get_material();
+        float R = material;
+        float G = material;
+        float B = material;
+        float A = 1.0;
+        osg::Vec4 currentColor{R,G,B,A};
+        color->push_back(currentColor);
+    }
+    return color;
+}
+
 void OSGWidget::create_cylinders()
 {
 //    float radiusOfPrint = mShape->get_diameter_of_print()/2;
@@ -307,7 +354,9 @@ void OSGWidget::view_wireframe(bool On)
 void OSGWidget::draw_print_path()
 {
     Wireframe newWireframe;
-    osg::Node* wireframe = newWireframe.draw_print_path(mShape);
+    osg::Vec4Array* color = get_color_data(mShape);
+    osg::Vec3Array* vertexData = get_vertex_data(mShape);
+    osg::Node* wireframe = newWireframe.draw_print_path(mShape, color, vertexData);
     mRoot->addChild(wireframe);
 }
 

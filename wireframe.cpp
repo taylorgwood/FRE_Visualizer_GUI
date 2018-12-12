@@ -53,15 +53,12 @@ osg::Node* Wireframe::create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor
     return transform;
 }
 
-osg::Node* Wireframe::draw_print_path(Shape* shape)
+osg::Node* Wireframe::draw_print_path(Shape* shape, osg::Vec4Array* color, osg::Vec3Array* vertexData)
 {
-    osg::Vec4Array* color = get_color_data(shape);
     osg::Geometry* linesGeom = new osg::Geometry;
     osg::DrawArrays* drawArrayLines = new osg::DrawArrays(osg::PrimitiveSet::LINE_STRIP);
     linesGeom->addPrimitiveSet(drawArrayLines);
-    osg::Vec3Array* vertexData = get_vertex_data(shape);
     linesGeom->setVertexArray(vertexData);
-
     drawArrayLines->setFirst(0);
     drawArrayLines->setCount(vertexData->size());
 
@@ -73,49 +70,6 @@ osg::Node* Wireframe::draw_print_path(Shape* shape)
     geode->getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED );
     geode->getOrCreateStateSet()->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
     osg::PositionAttitudeTransform* transform = new osg::PositionAttitudeTransform;
-    osg::Vec3d scaleFactor{1,1,1};
-    transform->setScale(scaleFactor);
-
     transform->addChild(geode);
     return transform;
-}
-
-osg::Vec3Array* Wireframe::get_vertex_data(Shape* shape)
-{
-    double shapeHeight = shape->get_height();
-    double shapeWidth  = shape->get_width();
-    double shapeLength = shape->get_length();
-
-    std::vector<Point> shapePointList = shape->get_points();
-    size_t totalNumberOfPoints = shapePointList.size();
-    osg::Vec3Array* vertexData = new osg::Vec3Array;
-
-    for (int i{0}; i< totalNumberOfPoints; i++)
-    {
-        Point point = shapePointList[i];
-        float xLocation = point.get_x()-shapeLength/2;
-        float yLocation = point.get_y()-shapeWidth/2;
-        float zLocation = point.get_z()-shapeHeight/2;
-        vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
-    }
-    return vertexData;
-}
-
-osg::Vec4Array* Wireframe::get_color_data(Shape* shape)
-{
-    std::vector<Point> shapePointList = shape->get_points();
-    size_t totalNumberOfPoints = shapePointList.size();
-    osg::Vec4Array* color = new osg::Vec4Array;
-    for (int i{0}; i< totalNumberOfPoints; i++)
-    {
-        Point point = shapePointList[i];
-        float material = point.get_material();
-        float R = material;
-        float G = material;
-        float B = material;
-        float A = 1.0;
-        osg::Vec4 currentColor{R,G,B,A};
-        color->push_back(currentColor);
-    }
-    return color;
 }

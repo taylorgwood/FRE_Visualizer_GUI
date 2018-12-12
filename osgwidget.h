@@ -24,6 +24,9 @@ public:
     void   set_view_along_x_axis();
     void   create_osg_cylinder(const osg::Vec3 &shapePosition, float radius, float height, const osg::Quat &rotation, const osg::Vec4 &shapeRGBA);
     void   create_cylinders();
+//    osg::Node* draw_cylinders();
+    osg::Vec3Array* get_vertex_data(Shape* shape);
+    osg::Vec4Array* get_color_data(Shape* shape);
     osg::Quat rotate_about_x_axis();
     osg::Quat rotate_about_y_axis();
     void   clear_window();
