@@ -18,15 +18,17 @@ public:
     OSGWidget(Shape *newShape, QWidget* parent = nullptr, Qt::WindowFlags f = 0);
 
     virtual ~OSGWidget();
+    osg::Geode *create_geometry_node(osg::ShapeDrawable* newShape);
     void   toggle_start(bool on);
     void   set_view_along_x_axis();
     void   create_osg_cylinder(const osg::Vec3 &shapePosition, float radius, float height, const osg::Quat &rotation, const osg::Vec4 &shapeRGBA);
     void   create_cylinders();
-//    osg::Node* draw_cylinders();
+    void   draw_cylinders();
     osg::Vec3Array* get_vertex_data(Shape* shape);
     osg::Vec4Array* get_color_data(Shape* shape);
-    osg::Quat rotate_about_x_axis();
-    osg::Quat rotate_about_y_axis();
+    std::vector<osg::Vec3d> get_scale_data(Shape* shape);
+    osg::Quat get_rotation_about_x_axis();
+    osg::Quat get_rotation_about_y_axis();
     void   clear_window();
     void   redraw();
     void   view_axes(bool On);
@@ -66,7 +68,8 @@ private:
     osg::Camera *create_camera(float aspectRatio, int pixelRatio);
     osgViewer::View *create_scene(float aspectRatio, int pixelRatio);
     osg::ShapeDrawable *create_graphic_cylinder(const osg::Vec3 &shapeLocation, float radius, float height, const osg::Quat &rotation, const osg::Vec4 &shapeRGBA);
-//    osg::Geode *create_geometry_node(osg::ShapeDrawable* newShape);
+    osg::ShapeDrawable *create_unit_cylinder();
+    //    osg::Geode *create_geometry_node(osg::ShapeDrawable* newShape);
     void create_axes();
     void draw_wireframe();
     void set_up_min_graphics_window();
