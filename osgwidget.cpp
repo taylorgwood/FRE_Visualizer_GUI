@@ -223,8 +223,8 @@ void OSGWidget::create_axes()
 
 void OSGWidget::draw_cylinders()
 {
-    osg::Vec4Array* colorArray = get_color_data_array(mShape);
-    osg::Vec3Array* vertexDataArray = get_vertex_data_array(mShape);
+//    osg::Vec4Array* colorArray = get_color_data_array(mShape);
+//    osg::Vec3Array* vertexDataArray = get_vertex_data_array(mShape);
     std::vector<osg::Vec3>* vertexData = get_vertex_data(mShape);
     std::vector<osg::Vec3>* scaleData = get_scale_data(mShape);
     std::vector<osg::Quat>* rotationData = get_rotation_data(mShape);
