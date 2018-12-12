@@ -25,10 +25,11 @@ public:
     void   create_cylinders();
     void   draw_cylinders();
     osg::Vec3Array* get_vertex_data_array(Shape* shape);
-    std::vector<osg::Vec3> *get_vertex_data(Shape* shape);
+    std::vector<osg::Vec3> *get_path_start_locations(Shape* shape);
     osg::Vec4Array* get_color_data_array(Shape* shape);
-    std::vector<osg::Vec3> *get_scale_data(Shape* shape);
-    std::vector<osg::Quat> *get_rotation_data(Shape* shape);
+    std::vector<osg::Vec3> *get_path_scale_data(Shape* shape);
+    std::vector<osg::Quat> *get_path_rotation_data(Shape* shape);
+    osg::Quat get_rotation(Point pointVector);
     osg::Quat get_rotation_about_x_axis();
     osg::Quat get_rotation_about_y_axis();
     void   clear_window();

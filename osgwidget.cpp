@@ -223,26 +223,24 @@ void OSGWidget::create_axes()
 
 void OSGWidget::draw_cylinders()
 {
-//    osg::Vec4Array* colorArray = get_color_data_array(mShape);
-//    osg::Vec3Array* vertexDataArray = get_vertex_data_array(mShape);
-    std::vector<osg::Vec3>* vertexData = get_vertex_data(mShape);
-    std::vector<osg::Vec3>* scaleData = get_scale_data(mShape);
-    std::vector<osg::Quat>* rotationData = get_rotation_data(mShape);
+    //    osg::Vec4Array* colorArray = get_color_data_array(mShape);
+    //    osg::Vec3Array* vertexDataArray = get_vertex_data_array(mShape);
+    std::vector<osg::Vec3>* pathStart = get_path_start_locations(mShape);
+    std::vector<osg::Vec3>* scaleData = get_path_scale_data(mShape);
+    std::vector<osg::Quat>* rotationData = get_path_rotation_data(mShape);
     osg::ShapeDrawable* unitCylinder = create_unit_cylinder();
 
-    std::vector<Point> shapePointList = mShape->get_points();
-    size_t totalNumberOfPoints = shapePointList.size();
+    std::vector<Path>* shapePathList = mShape->get_path_list();
+    size_t totalNumberOfPaths = shapePathList->size();
 
     float count{0};
-    for (int i{0}; i<totalNumberOfPoints; i++)
+    for (int i{0}; i<totalNumberOfPaths; i++)
     {
         //        osg::Geode* geode = create_geometry_node(unitCylinder);
         osg::PositionAttitudeTransform* transform = new osg::PositionAttitudeTransform;
         osg::Vec3 scaleFactor = scaleData->at(i);
-        osg::Vec3 position = vertexData->at(i);
-        //        osg::Vec3 position = {0,0,0};
-                osg::Quat rotation = rotationData->at(i);
-//        osg::Quat rotation = get_rotation_about_x_axis();
+        osg::Vec3 position = pathStart->at(i);
+        osg::Quat rotation = rotationData->at(i);
         transform->setScale(scaleFactor);
         transform->setPosition(position);
         transform->setAttitude(rotation);
@@ -276,25 +274,26 @@ osg::Vec3Array* OSGWidget::get_vertex_data_array(Shape* shape)
     return vertexData;
 }
 
-std::vector<osg::Vec3> *OSGWidget::get_vertex_data(Shape* shape)
+std::vector<osg::Vec3> *OSGWidget::get_path_start_locations(Shape* shape)
 {
     double shapeHeight = shape->get_height();
     double shapeWidth  = shape->get_width();
     double shapeLength = shape->get_length();
 
-    std::vector<Point> shapePointList = shape->get_points();
-    size_t totalNumberOfPoints = shapePointList.size();
-    std::vector<osg::Vec3>* vertexData = new std::vector<osg::Vec3>(totalNumberOfPoints);
+    std::vector<Path>* shapePathList = shape->get_path_list();
+    size_t totalNumberOfPaths = shapePathList->size();
+    std::vector<osg::Vec3>* pathStart = new std::vector<osg::Vec3>(totalNumberOfPaths);
 
-    for (int i{0}; i< totalNumberOfPoints; i++)
+    for (int i{0}; i< totalNumberOfPaths; i++)
     {
-        Point point = shapePointList[i];
-        float xLocation = point.get_x()-shapeLength/2;
-        float yLocation = point.get_y()-shapeWidth/2;
-        float zLocation = point.get_z()-shapeHeight/2;
-        vertexData->at(i) = osg::Vec3(xLocation,yLocation,zLocation);
+        Path  path  = shapePathList->at(i);
+        Point start = path.get_start();
+        float xLocation = start.get_x()-shapeLength;
+        float yLocation = start.get_y()-shapeWidth;
+        float zLocation = start.get_z()-shapeHeight;
+        pathStart->at(i) = osg::Vec3(xLocation,yLocation,zLocation);
     }
-    return vertexData;
+    return pathStart;
 }
 
 osg::Vec4Array* OSGWidget::get_color_data_array(Shape* shape)
@@ -316,51 +315,59 @@ osg::Vec4Array* OSGWidget::get_color_data_array(Shape* shape)
     return color;
 }
 
-std::vector<osg::Vec3>* OSGWidget::get_scale_data(Shape* shape)
+std::vector<osg::Vec3>* OSGWidget::get_path_scale_data(Shape* shape)
 {
-    std::vector<Point> shapePointList = shape->get_points();
-    size_t totalNumberOfPoints = shapePointList.size();
-    std::vector<osg::Vec3>* scaleData = new std::vector<osg::Vec3>(totalNumberOfPoints);
+    std::vector<Path>* shapePathList = shape->get_path_list();
+    size_t totalNumberOfPaths = shapePathList->size();
+    std::vector<osg::Vec3>* scaleData = new std::vector<osg::Vec3>(totalNumberOfPaths);
 
-    for (int i{0}; i< totalNumberOfPoints; i++)
+    for (int i{0}; i< totalNumberOfPaths; i++)
     {
-        Point point = shapePointList[i];
-        //        float diameter = point.get_diameter();
-        float diameter = point.get_diameter();
-        float radius = diameter/2;
-        float length{1};
+        Path path = shapePathList->at(i);
+        float diameter = path.get_diameter();
+        float length = path.get_length();
         osg::Vec3 scaleFactor{diameter,diameter,length};
         scaleData->at(i) = (scaleFactor);
     }
     return scaleData;
 }
 
-std::vector<osg::Quat>* OSGWidget::get_rotation_data(Shape* shape)
+std::vector<osg::Quat>* OSGWidget::get_path_rotation_data(Shape* shape)
 {
-    std::vector<Point> shapePointList = shape->get_points();
-    size_t totalNumberOfPoints = shapePointList.size();
-    std::vector<osg::Quat>* rotationData= new std::vector<osg::Quat>(totalNumberOfPoints);
+    std::vector<Path>* shapePathList = shape->get_path_list();
+    size_t totalNumberOfPaths = shapePathList->size();
+    std::vector<osg::Quat>* rotationData= new std::vector<osg::Quat>(totalNumberOfPaths);
 
-
-    for (int i{0}; i< totalNumberOfPoints; i++)
+    for (int i{0}; i< totalNumberOfPaths; i++)
     {
-        Point point = shapePointList[i];
-        Point lastPoint;
-        if (i!=0)
-        {
-            lastPoint = shapePointList[(i-1)];
-        }
-        Point pointVector = (point-lastPoint);
+        Path path = shapePathList->at(i);
+        Point start = path.get_start();
+        Point end = path.get_end();
+        Point pointVector = start-end;
         Point direction = pointVector.normalize();
-        osg::Quat rotation = get_rotation_about_x_axis();
-        if (direction.get_y() > 0.5)
-        {
-            rotation = get_rotation_about_y_axis();
-        }
-        //        float diameter = point.get_diameter();
+        osg::Quat rotation = get_rotation(pointVector);
         rotationData->at(i) = (rotation);
     }
     return rotationData;
+}
+
+osg::Quat OSGWidget::get_rotation(Point pointVector)
+{
+    double x = pointVector.get_x();
+    double y = pointVector.get_y();
+    osg::Vec3 rotationAxis;
+    if (x>y)
+    {
+        rotationAxis = {0,1,0};
+    }
+    else
+    {
+        rotationAxis = {1,0,0};
+    }
+    double angleInDegrees = 90;
+    double angleInRadians = osg::DegreesToRadians(angleInDegrees);
+    osg::Quat rotation{angleInRadians,rotationAxis};
+    return rotation;
 }
 
 void OSGWidget::create_cylinders()
