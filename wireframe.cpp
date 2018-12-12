@@ -67,25 +67,22 @@ osg::Node* Wireframe::draw_print_path(Shape* shape)
     osg::Geometry* linesGeom = new osg::Geometry;
     osg::DrawArrays* drawArrayLines = new osg::DrawArrays(osg::PrimitiveSet::LINE_STRIP);
     linesGeom->addPrimitiveSet(drawArrayLines);
-    osg::Vec3Array* vertexData = new osg::Vec3Array;
+    osg::Vec3Array* vertexData = get_vertex_data(shape);
     linesGeom->setVertexArray(vertexData);
 
     int count{0};
     for (int i{0}; i< totalNumberOfPoints; i++)
     {
         Point point = shapePointList[i];
-        float xLocation = point.get_x()-shapeLength/2;
-        float yLocation = point.get_y()-shapeWidth/2;
-        float zLocation = point.get_z()-shapeHeight/2;
-        vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
-        float  R = point.get_material();
-        float  G = point.get_material();
-        float  B = point.get_material();
-        float  A = 1.0;
+        float material = point.get_material();
+        float R = material;
+        float G = material;
+        float B = material;
+        float A = 1.0;
         osg::Vec4 currentColor{R,G,B,A};
         (*color)[count] = currentColor;
-//        color->push_back(currentColor);
-//        mLastPoint = point;
+        //        color->push_back(currentColor);
+        //        mLastPoint = point;
         count ++;
     }
 
@@ -105,4 +102,25 @@ osg::Node* Wireframe::draw_print_path(Shape* shape)
 
     transform->addChild(geode);
     return transform;
+}
+
+osg::Vec3Array* Wireframe::get_vertex_data(Shape* shape)
+{
+    double shapeHeight = shape->get_height();
+    double shapeWidth  = shape->get_width();
+    double shapeLength = shape->get_length();
+
+    std::vector<Point> shapePointList = shape->get_points();
+    size_t totalNumberOfPoints = shapePointList.size();
+    osg::Vec3Array* vertexData = new osg::Vec3Array;
+
+    for (int i{0}; i< totalNumberOfPoints; i++)
+    {
+        Point point = shapePointList[i];
+        float xLocation = point.get_x()-shapeLength/2;
+        float yLocation = point.get_y()-shapeWidth/2;
+        float zLocation = point.get_z()-shapeHeight/2;
+        vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
+    }
+    return vertexData;
 }

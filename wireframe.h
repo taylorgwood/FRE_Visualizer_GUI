@@ -11,6 +11,7 @@ public:
     ~Wireframe();
     osg::Node* create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor);
     osg::Node* draw_print_path(Shape *shape);
+    osg::Vec3Array* get_vertex_data(Shape* shape);
 
 protected:
 
