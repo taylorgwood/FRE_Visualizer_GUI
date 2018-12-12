@@ -96,8 +96,8 @@ osgViewer::View *OSGWidget::create_scene(float aspectRatio, int pixelRatio)
     osgViewer::View *view = new osgViewer::View;
     view->setCamera(camera);
     view->setSceneData(mRoot.get());
-    //    view->addEventHandler(new osgViewer::StatsHandler);
-    //    view->getEventQueue()->keyPress('s');
+    view->addEventHandler(new osgViewer::StatsHandler);
+    view->getEventQueue()->keyPress('s');
     return view;
 }
 
@@ -106,7 +106,7 @@ int OSGWidget::set_up_timer()
     double framesPerSecond{30};
     double timeStep = 1.0/framesPerSecond;
     double timerDurationInMilliSeconds{timeStep * 1000};
-    int timerID = startTimer(timerDurationInMilliSeconds);
+    int timerID = startTimer(timerDurationInMilliSeconds, Qt::TimerType::PreciseTimer);
     return timerID;
 }
 
@@ -136,7 +136,8 @@ osg::ShapeDrawable *OSGWidget::create_unit_cylinder()
     float height{1};
     osg::Quat rotation;
     osg::Vec4 shapeRGBA{1,1,1,1};
-    osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
+    osg::Box* cylinder = new osg::Box(shapePosition,1,1,1);
+    //    osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
     cylinder->setRotation(rotation);
     osg::ShapeDrawable* unitCylinder = new osg::ShapeDrawable(cylinder);
     unitCylinder->setColor(shapeRGBA);
@@ -224,9 +225,9 @@ void OSGWidget::draw_cylinders()
 {
     osg::Vec4Array* colorArray = get_color_data_array(mShape);
     osg::Vec3Array* vertexDataArray = get_vertex_data_array(mShape);
-    std::vector<osg::Vec3> vertexData = get_vertex_data(mShape);
-    std::vector<osg::Vec3> scaleData = get_scale_data(mShape);
-//    std::vector<osg::Quat> rotationData = get_rotation_data(mShape);
+    std::vector<osg::Vec3>* vertexData = get_vertex_data(mShape);
+    std::vector<osg::Vec3>* scaleData = get_scale_data(mShape);
+    std::vector<osg::Quat>* rotationData = get_rotation_data(mShape);
     osg::ShapeDrawable* unitCylinder = create_unit_cylinder();
 
     std::vector<Point> shapePointList = mShape->get_points();
@@ -235,13 +236,13 @@ void OSGWidget::draw_cylinders()
     float count{0};
     for (int i{0}; i<totalNumberOfPoints; i++)
     {
-//        osg::Geode* geode = create_geometry_node(unitCylinder);
+        //        osg::Geode* geode = create_geometry_node(unitCylinder);
         osg::PositionAttitudeTransform* transform = new osg::PositionAttitudeTransform;
-        osg::Vec3 scaleFactor = scaleData[i];
-        osg::Vec3 position = vertexData[i];
-//        osg::Vec3 position = {0,0,0};
-//        osg::Quat rotation = rotationData[i];
-        osg::Quat rotation = get_rotation_about_x_axis();
+        osg::Vec3 scaleFactor = scaleData->at(i);
+        osg::Vec3 position = vertexData->at(i);
+        //        osg::Vec3 position = {0,0,0};
+                osg::Quat rotation = rotationData->at(i);
+//        osg::Quat rotation = get_rotation_about_x_axis();
         transform->setScale(scaleFactor);
         transform->setPosition(position);
         transform->setAttitude(rotation);
@@ -249,6 +250,8 @@ void OSGWidget::draw_cylinders()
         mRoot->addChild(transform);
         count ++;
     }
+    osgUtil::Optimizer optimizer;
+    optimizer.optimize(mRoot);
 
 }
 
@@ -273,7 +276,7 @@ osg::Vec3Array* OSGWidget::get_vertex_data_array(Shape* shape)
     return vertexData;
 }
 
-std::vector<osg::Vec3> OSGWidget::get_vertex_data(Shape* shape)
+std::vector<osg::Vec3> *OSGWidget::get_vertex_data(Shape* shape)
 {
     double shapeHeight = shape->get_height();
     double shapeWidth  = shape->get_width();
@@ -281,7 +284,7 @@ std::vector<osg::Vec3> OSGWidget::get_vertex_data(Shape* shape)
 
     std::vector<Point> shapePointList = shape->get_points();
     size_t totalNumberOfPoints = shapePointList.size();
-    std::vector<osg::Vec3> vertexData;
+    std::vector<osg::Vec3>* vertexData = new std::vector<osg::Vec3>(totalNumberOfPoints);
 
     for (int i{0}; i< totalNumberOfPoints; i++)
     {
@@ -289,7 +292,7 @@ std::vector<osg::Vec3> OSGWidget::get_vertex_data(Shape* shape)
         float xLocation = point.get_x()-shapeLength/2;
         float yLocation = point.get_y()-shapeWidth/2;
         float zLocation = point.get_z()-shapeHeight/2;
-        vertexData.push_back(osg::Vec3(xLocation,yLocation,zLocation));
+        vertexData->at(i) = osg::Vec3(xLocation,yLocation,zLocation);
     }
     return vertexData;
 }
@@ -313,23 +316,51 @@ osg::Vec4Array* OSGWidget::get_color_data_array(Shape* shape)
     return color;
 }
 
-std::vector<osg::Vec3> OSGWidget::get_scale_data(Shape* shape)
+std::vector<osg::Vec3>* OSGWidget::get_scale_data(Shape* shape)
 {
     std::vector<Point> shapePointList = shape->get_points();
     size_t totalNumberOfPoints = shapePointList.size();
-    std::vector<osg::Vec3> scaleData;
-
+    std::vector<osg::Vec3>* scaleData = new std::vector<osg::Vec3>(totalNumberOfPoints);
 
     for (int i{0}; i< totalNumberOfPoints; i++)
     {
         Point point = shapePointList[i];
         //        float diameter = point.get_diameter();
-        float diameter{0.26};
+        float diameter = point.get_diameter();
+        float radius = diameter/2;
         float length{1};
         osg::Vec3 scaleFactor{diameter,diameter,length};
-        scaleData.push_back(scaleFactor);
+        scaleData->at(i) = (scaleFactor);
     }
     return scaleData;
+}
+
+std::vector<osg::Quat>* OSGWidget::get_rotation_data(Shape* shape)
+{
+    std::vector<Point> shapePointList = shape->get_points();
+    size_t totalNumberOfPoints = shapePointList.size();
+    std::vector<osg::Quat>* rotationData= new std::vector<osg::Quat>(totalNumberOfPoints);
+
+
+    for (int i{0}; i< totalNumberOfPoints; i++)
+    {
+        Point point = shapePointList[i];
+        Point lastPoint;
+        if (i!=0)
+        {
+            lastPoint = shapePointList[(i-1)];
+        }
+        Point pointVector = (point-lastPoint);
+        Point direction = pointVector.normalize();
+        osg::Quat rotation = get_rotation_about_x_axis();
+        if (direction.get_y() > 0.5)
+        {
+            rotation = get_rotation_about_y_axis();
+        }
+        //        float diameter = point.get_diameter();
+        rotationData->at(i) = (rotation);
+    }
+    return rotationData;
 }
 
 void OSGWidget::create_cylinders()
