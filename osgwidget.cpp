@@ -222,9 +222,11 @@ void OSGWidget::create_axes()
 
 void OSGWidget::draw_cylinders()
 {
-    osg::Vec4Array* color = get_color_data(mShape);
-    osg::Vec3Array* vertexData = get_vertex_data(mShape);
-    std::vector<osg::Vec3d> scaleData = get_scale_data(mShape);
+    osg::Vec4Array* colorArray = get_color_data_array(mShape);
+    osg::Vec3Array* vertexDataArray = get_vertex_data_array(mShape);
+    std::vector<osg::Vec3> vertexData = get_vertex_data(mShape);
+    std::vector<osg::Vec3> scaleData = get_scale_data(mShape);
+//    std::vector<osg::Quat> rotationData = get_rotation_data(mShape);
     osg::ShapeDrawable* unitCylinder = create_unit_cylinder();
 
     std::vector<Point> shapePointList = mShape->get_points();
@@ -233,23 +235,24 @@ void OSGWidget::draw_cylinders()
     float count{0};
     for (int i{0}; i<totalNumberOfPoints; i++)
     {
-        osg::Geode* geode = create_geometry_node(unitCylinder);
+//        osg::Geode* geode = create_geometry_node(unitCylinder);
         osg::PositionAttitudeTransform* transform = new osg::PositionAttitudeTransform;
-        osg::Vec3d scaleFactor = scaleData[i];
-//        osg::Vec3d position = vertexData[i];
-        osg::Vec3d position = {0,0,0};
+        osg::Vec3 scaleFactor = scaleData[i];
+        osg::Vec3 position = vertexData[i];
+//        osg::Vec3 position = {0,0,0};
+//        osg::Quat rotation = rotationData[i];
         osg::Quat rotation = get_rotation_about_x_axis();
         transform->setScale(scaleFactor);
         transform->setPosition(position);
         transform->setAttitude(rotation);
-        transform->addChild(geode);
+        transform->addChild(unitCylinder);
         mRoot->addChild(transform);
         count ++;
     }
 
 }
 
-osg::Vec3Array* OSGWidget::get_vertex_data(Shape* shape)
+osg::Vec3Array* OSGWidget::get_vertex_data_array(Shape* shape)
 {
     double shapeHeight = shape->get_height();
     double shapeWidth  = shape->get_width();
@@ -270,7 +273,28 @@ osg::Vec3Array* OSGWidget::get_vertex_data(Shape* shape)
     return vertexData;
 }
 
-osg::Vec4Array* OSGWidget::get_color_data(Shape* shape)
+std::vector<osg::Vec3> OSGWidget::get_vertex_data(Shape* shape)
+{
+    double shapeHeight = shape->get_height();
+    double shapeWidth  = shape->get_width();
+    double shapeLength = shape->get_length();
+
+    std::vector<Point> shapePointList = shape->get_points();
+    size_t totalNumberOfPoints = shapePointList.size();
+    std::vector<osg::Vec3> vertexData;
+
+    for (int i{0}; i< totalNumberOfPoints; i++)
+    {
+        Point point = shapePointList[i];
+        float xLocation = point.get_x()-shapeLength/2;
+        float yLocation = point.get_y()-shapeWidth/2;
+        float zLocation = point.get_z()-shapeHeight/2;
+        vertexData.push_back(osg::Vec3(xLocation,yLocation,zLocation));
+    }
+    return vertexData;
+}
+
+osg::Vec4Array* OSGWidget::get_color_data_array(Shape* shape)
 {
     std::vector<Point> shapePointList = shape->get_points();
     size_t totalNumberOfPoints = shapePointList.size();
@@ -289,11 +313,11 @@ osg::Vec4Array* OSGWidget::get_color_data(Shape* shape)
     return color;
 }
 
-std::vector<osg::Vec3d> OSGWidget::get_scale_data(Shape* shape)
+std::vector<osg::Vec3> OSGWidget::get_scale_data(Shape* shape)
 {
     std::vector<Point> shapePointList = shape->get_points();
     size_t totalNumberOfPoints = shapePointList.size();
-    std::vector<osg::Vec3d> scaleData;
+    std::vector<osg::Vec3> scaleData;
 
 
     for (int i{0}; i< totalNumberOfPoints; i++)
@@ -302,7 +326,7 @@ std::vector<osg::Vec3d> OSGWidget::get_scale_data(Shape* shape)
         //        float diameter = point.get_diameter();
         float diameter{0.26};
         float length{1};
-        osg::Vec3d scaleFactor{diameter,diameter,length};
+        osg::Vec3 scaleFactor{diameter,diameter,length};
         scaleData.push_back(scaleFactor);
     }
     return scaleData;
@@ -412,8 +436,8 @@ void OSGWidget::view_wireframe(bool On)
 void OSGWidget::draw_print_path()
 {
     Wireframe newWireframe;
-    osg::Vec4Array* color = get_color_data(mShape);
-    osg::Vec3Array* vertexData = get_vertex_data(mShape);
+    osg::Vec4Array* color = get_color_data_array(mShape);
+    osg::Vec3Array* vertexData = get_vertex_data_array(mShape);
     osg::Node* wireframe = newWireframe.draw_print_path(mShape, color, vertexData);
     mRoot->addChild(wireframe);
 }
