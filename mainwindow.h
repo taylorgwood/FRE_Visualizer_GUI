@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtCore>
 #include "shape.h"
+#include "gcode.h"
 
 class OutputWindow;
 class OSGWidget;

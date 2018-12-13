@@ -301,5 +301,9 @@ void MainWindow::view_print_path()
 
 void MainWindow::on_actionExport_G_code_triggered()
 {
+    Gcode newGode;
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr(""));
+    Shape exportShape = *mShape;
+    std::string exportFileName = fileName.toStdString();
+    newGode.generate_file(exportShape,exportFileName);
 }
