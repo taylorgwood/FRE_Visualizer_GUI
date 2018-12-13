@@ -261,15 +261,53 @@ osg::Vec3Array* OSGWidget::get_vertex_data_array(Shape* shape)
     size_t totalNumberOfPoints = shapePointList.size();
     osg::Vec3Array* vertexData = new osg::Vec3Array;
 
-    for (int i{0}; i< totalNumberOfPoints; i++)
+    //    for (int i{0}; i< totalNumberOfPoints; i++)
+    //    {
+    //        Point point = shapePointList[i];
+    //        float xLocation = point.get_x()-shapeLength/2;
+    //        float yLocation = point.get_y()-shapeWidth/2;
+    //        float zLocation = point.get_z()-shapeHeight/2;
+    //        vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
+    //    }
+    //    return vertexData;
+
+    int numberOfLayers = shape->get_number_of_layers();
+    for (int k{0}; k<numberOfLayers; k++)
     {
-        Point point = shapePointList[i];
-        float xLocation = point.get_x()-shapeLength/2;
-        float yLocation = point.get_y()-shapeWidth/2;
-        float zLocation = point.get_z()-shapeHeight/2;
-        vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
+        int layerNumber{k};
+        Layer* layer = shape->get_layer(layerNumber);
+        std::vector<Path*> layerPathList = layer->get_path_list();
+        size_t numberOfPaths = layerPathList.size();
+        for (int j{0}; j< numberOfPaths; j++)
+        {
+            int pathNumber{j};
+            Path* path = layer->get_path(pathNumber);
+            double radius = (path->get_diameter())/2;
+            std::vector<Point*> pathPointList = path->get_point_list();
+            size_t numberOfPoints = pathPointList.size();
+            for (int i{0}; i<numberOfPoints; i++)
+            {
+                Point* point = pathPointList.at(i);
+                float xLocation;
+                float yLocation;
+
+                if (layerNumber%2 == 0)
+                {
+                    xLocation = point->get_x()-shapeLength/2;
+                    yLocation = point->get_y()-shapeWidth/2+radius;
+                }
+                else
+                {
+                    xLocation = point->get_x()-shapeLength/2+radius;
+                    yLocation = point->get_y()-shapeWidth/2;
+                }
+                float zLocation = point->get_z()-shapeHeight/2-radius;
+                vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
+            }
+        }
     }
     return vertexData;
+
 }
 
 std::vector<osg::Vec3> *OSGWidget::get_path_start_locations(Shape* shape)
