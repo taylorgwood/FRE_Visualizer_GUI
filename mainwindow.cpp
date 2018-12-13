@@ -3,6 +3,7 @@
 #include "osgwidget.h"
 
 #include <QDockWidget>
+#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow{parent},
@@ -297,6 +298,8 @@ void MainWindow::view_print_path()
     MainWindow::mOSGWidget->view_print_path(viewPrintPath);
     mOSGWidget->redraw();
 }
-//{
-//QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr(""));
-//}
+
+void MainWindow::on_actionExport_G_code_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr(""));
+}
