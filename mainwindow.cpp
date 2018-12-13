@@ -38,6 +38,26 @@ void MainWindow::on_actionStop_triggered()
     MainWindow::mOSGWidget->toggle_start(Off);
 }
 
+void MainWindow::on_actionView_Cylinders_triggered()
+{
+    view_cylinders();
+}
+
+void MainWindow::on_actionView_Print_Path_triggered()
+{
+    view_print_path();
+}
+
+void MainWindow::on_actionView_Wireframe_triggered()
+{
+    view_wireframe();
+}
+
+void MainWindow::on_actionView_Axes_triggered()
+{
+    view_axes();
+}
+
 void MainWindow::view_axes()
 {
     bool viewAxes = mMainWindowUI->actionView_Axes->isChecked();
@@ -49,6 +69,20 @@ void MainWindow::view_wireframe()
 {
     bool viewWireframe = mMainWindowUI->actionView_Wireframe->isChecked();
     MainWindow::mOSGWidget->view_wireframe(viewWireframe);
+    mOSGWidget->redraw();
+}
+
+void MainWindow::view_cylinders()
+{
+    bool viewCylinders = mMainWindowUI->actionView_Cylinders->isChecked();
+    MainWindow::mOSGWidget->view_cylinders(viewCylinders);
+    mOSGWidget->redraw();
+}
+
+void MainWindow::view_print_path()
+{
+    bool viewPrintPath = mMainWindowUI->actionView_Print_Path->isChecked();
+    MainWindow::mOSGWidget->view_print_path(viewPrintPath);
     mOSGWidget->redraw();
 }
 
@@ -148,11 +182,6 @@ void MainWindow::on_redrawButton_clicked()
     mOSGWidget->redraw();
 }
 
-void MainWindow::on_autoUpdateButton_clicked(bool checked)
-{
-    //    MainWindow::mOSGWidget->toggle_start(checked);
-}
-
 void MainWindow::on_layerHeight_returnPressed()
 {
     double layerHeight = mMainWindowUI->layerHeight->text().toDouble();
@@ -225,7 +254,6 @@ void MainWindow::set_volume_label()
     mMainWindowUI->extrudedVolume->setText(extrudedVolumeText);
 }
 
-
 void MainWindow::on_resetParametersButton_clicked()
 {
     set_default_print_parameters();
@@ -285,20 +313,6 @@ void MainWindow::on_autoAdjustWidthButton_clicked(bool checked)
     redraw_and_refresh_information();
 }
 
-void MainWindow::view_cylinders()
-{
-    bool viewCylinders = mMainWindowUI->actionView_Cylinders->isChecked();
-    MainWindow::mOSGWidget->view_cylinders(viewCylinders);
-    mOSGWidget->redraw();
-}
-
-void MainWindow::view_print_path()
-{
-    bool viewPrintPath = mMainWindowUI->actionView_Print_Path->isChecked();
-    MainWindow::mOSGWidget->view_print_path(viewPrintPath);
-    mOSGWidget->redraw();
-}
-
 void MainWindow::on_actionExport_G_code_triggered()
 {
     Gcode newGode;
@@ -306,24 +320,4 @@ void MainWindow::on_actionExport_G_code_triggered()
     Shape exportShape = *mShape;
     std::string exportFileName = fileName.toStdString();
     newGode.generate_file(exportShape,exportFileName);
-}
-
-void MainWindow::on_actionView_Cylinders_triggered()
-{
-    view_cylinders();
-}
-
-void MainWindow::on_actionView_Print_Path_triggered()
-{
-    view_print_path();
-}
-
-void MainWindow::on_actionView_Wireframe_triggered()
-{
-    view_wireframe();
-}
-
-void MainWindow::on_actionView_Axes_triggered()
-{
-    view_axes();
 }

@@ -18,7 +18,6 @@ public:
     OSGWidget(Shape *newShape, QWidget* parent = nullptr, Qt::WindowFlags f = 0);
 
     virtual ~OSGWidget();
-    osg::Geode *create_geometry_node(osg::ShapeDrawable* newShape);
     void   toggle_start(bool on);
     void   set_view_along_x_axis();
     void   create_osg_cylinder(const osg::Vec3 &shapePosition, float radius, float height, const osg::Quat &rotation, const osg::Vec4 &shapeRGBA);
@@ -74,7 +73,6 @@ private:
     osgViewer::View *create_scene(float aspectRatio, int pixelRatio);
     osg::ShapeDrawable *create_graphic_cylinder(const osg::Vec3 &shapeLocation, float radius, float height, const osg::Quat &rotation, const osg::Vec4 &shapeRGBA);
     osg::ShapeDrawable *create_unit_cylinder();
-    //    osg::Geode *create_geometry_node(osg::ShapeDrawable* newShape);
     void create_axes();
     void draw_wireframe();
     void set_up_min_graphics_window();

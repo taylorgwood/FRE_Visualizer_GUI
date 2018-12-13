@@ -23,6 +23,8 @@ public:
     ~MainWindow();
 
 public slots:
+
+private slots:
     void on_actionExit_triggered();
     void on_actionStart_triggered();
     void on_actionStop_triggered();
@@ -30,9 +32,10 @@ public slots:
     void on_actionView_Print_Path_triggered();
     void on_actionView_Wireframe_triggered();
     void on_actionView_Axes_triggered();
-
-private slots:
-    //    void on_extrusionMultiplierSlider_sliderMoved(int position);
+    void view_axes();
+    void view_wireframe();
+    void view_cylinders();
+    void view_print_path();
     void on_needleGauge_valueChanged(int arg1);
     void set_needle_diameter(int needleGauge);
     void set_needle_diameter_label();
@@ -40,7 +43,6 @@ private slots:
     void on_applyParametersButton_clicked();
     void on_clearButton_clicked();
     void on_redrawButton_clicked();
-    void on_autoUpdateButton_clicked(bool checked);
     void on_layerHeight_returnPressed();
     void on_extrusionMultiplier_returnPressed();
     void on_infillPercentage_returnPressed();
@@ -59,10 +61,6 @@ private slots:
     void on_autoAdjustLayersButton_clicked(bool checked);
     void on_autoAdjustWidthButton_clicked(bool checked);
     void on_actionExport_G_code_triggered();
-    void view_axes();
-    void view_wireframe();
-    void view_cylinders();
-    void view_print_path();
 
 signals:
 

@@ -33,8 +33,7 @@ osg::Camera *OSGWidget::create_camera(float aspectRatio, int pixelRatio)
     int viewportOriginX{0};
     int viewportOriginY{0};
     camera->setViewport(viewportOriginX, viewportOriginY, this->width() * pixelRatio, this->height() * pixelRatio);
-    //    osg::Vec4 clearColorRGBA{0.95f,0.95f,0.95f,0.1f};
-    osg::Vec4 clearColorRGBA{0.0f,0.0f,1.0f,0.1f};
+    osg::Vec4 clearColorRGBA{0.15f,0.15f,0.35f,0.1f};
     camera->setClearColor(clearColorRGBA);
 
     float viewingAngle{45};
@@ -69,19 +68,6 @@ void OSGWidget::set_manipulator_to_viewer(osg::ref_ptr<osgGA::TrackballManipulat
     mView->home();
 }
 
-void OSGWidget::set_view_along_x_axis()
-{
-    osg::Vec3d eye{0,0,0};
-    osg::Vec3d center{0,0,0};
-    osg::Vec3d up{0,0,1};
-
-    osg::Matrix mat;
-    mat.makeLookAt(eye,center,up);
-    osg::ref_ptr<osgGA::CameraManipulator> manipulator = mView->getCameraManipulator();
-    manipulator->setByMatrix(mat);
-    update();
-}
-
 void OSGWidget::set_up_min_graphics_window()
 {
     this->setFocusPolicy(Qt::StrongFocus);
@@ -97,8 +83,8 @@ osgViewer::View *OSGWidget::create_scene(float aspectRatio, int pixelRatio)
     osgViewer::View *view = new osgViewer::View;
     view->setCamera(camera);
     view->setSceneData(mRoot.get());
-    view->addEventHandler(new osgViewer::StatsHandler);
-    view->getEventQueue()->keyPress('s');
+    //    view->addEventHandler(new osgViewer::StatsHandler);
+    //    view->getEventQueue()->keyPress('s');
     return view;
 }
 
@@ -136,8 +122,7 @@ osg::ShapeDrawable *OSGWidget::create_unit_cylinder()
     float radius{1};
     float height{1};
     osg::Quat rotation;
-    osg::Vec4 shapeRGBA{0.9,0.9,1,0.5};
-    //    osg::Box* cylinder = new osg::Box(shapePosition,1,1,1);
+    osg::Vec4 shapeRGBA{0.2,0.2,0.8,0.2};
     osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
     cylinder->setRotation(rotation);
     osg::ShapeDrawable* unitCylinder = new osg::ShapeDrawable(cylinder);
@@ -148,18 +133,12 @@ osg::ShapeDrawable *OSGWidget::create_unit_cylinder()
     stateSet->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA), osg::StateAttribute::ON);
 
     osg::Material* material = new osg::Material;
-    material->setColorMode( osg::Material::AMBIENT_AND_DIFFUSE );
+//    material->setColorMode( osg::Material::AMBIENT_AND_DIFFUSE );
+    material->setColorMode(osg::Material::EMISSION);
     stateSet->setAttributeAndModes( material, osg::StateAttribute::ON );
     stateSet->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
 
     return unitCylinder;
-}
-
-osg::Geode *OSGWidget::create_geometry_node(osg::ShapeDrawable* newShape)
-{
-    osg::Geode* geode = new osg::Geode;
-    geode->addDrawable(newShape);
-    return geode;
 }
 
 void OSGWidget::draw_wireframe()
@@ -182,14 +161,13 @@ void OSGWidget::toggle_start(bool on)
 void OSGWidget::create_osg_cylinder(const osg::Vec3& shapePosition, float radius, float height, const osg::Quat& rotation, const osg::Vec4& shapeRGBA)
 {
     osg::ShapeDrawable *newShape = create_graphic_cylinder(shapePosition, radius, height, rotation, shapeRGBA);
-    //osg::Geode *geode = create_geometry_node(newShape);
     mRoot->addChild(newShape);
 }
 
 void OSGWidget::create_axes()
 {
-    float radius{0.05};
-    float height{1};
+    float radius{0.1};
+    float height{.5};
     osg::Vec3 shapePosition1{height/2,0,0};
     osg::Vec3 shapePosition2{0,height/2,0};
     osg::Vec3 shapePosition3{0,0,height/2};
@@ -231,7 +209,6 @@ void OSGWidget::draw_cylinders()
     float count{0};
     for (int i{0}; i<totalNumberOfPaths; i++)
     {
-        //        osg::Geode* geode = create_geometry_node(unitCylinder);
         osg::PositionAttitudeTransform* transform = new osg::PositionAttitudeTransform;
         osg::Vec3 scaleFactor = scaleData->at(i);
         osg::Vec3 position = pathStart->at(i);
@@ -378,7 +355,6 @@ std::vector<osg::Vec3>* OSGWidget::get_path_scale_data(Shape* shape)
         float diameter = path.get_diameter();
         float radius = diameter/2;
         float length = path.get_length();
-        //        osg::Vec3 scaleFactor{diameter,diameter,length};
         osg::Vec3 scaleFactor{radius,radius,length};
         scaleData->at(i) = (scaleFactor);
     }
@@ -527,12 +503,7 @@ void OSGWidget::timerEvent(QTimerEvent *)
     if (mSimulationOn)
     {
         update();
-        //        mRedrawCount++;
-        //        if (mRedrawCount > 30)
-        //        {
         redraw();
-        //            mRedrawCount = 0;
-        //        }
     }
 }
 
@@ -569,12 +540,6 @@ void OSGWidget::keyPressEvent(QKeyEvent* event)
         mView->home();
         return;
     }
-    if(event->key() == Qt::Key_X)
-    {
-        set_view_along_x_axis();
-        return;
-    }
-
     this->getEventQueue()->keyPress(osgGA::GUIEventAdapter::KeySymbol(*keyData) );
 }
 
