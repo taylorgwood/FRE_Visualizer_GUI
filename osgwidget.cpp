@@ -135,9 +135,9 @@ osg::ShapeDrawable *OSGWidget::create_unit_cylinder()
     float radius{1};
     float height{1};
     osg::Quat rotation;
-    osg::Vec4 shapeRGBA{0.5,0.5,1,0.5};
-    osg::Box* cylinder = new osg::Box(shapePosition,1,1,1);
-    //    osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
+    osg::Vec4 shapeRGBA{0.5,0,1,0.5};
+//    osg::Box* cylinder = new osg::Box(shapePosition,1,1,1);
+        osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
     cylinder->setRotation(rotation);
     osg::ShapeDrawable* unitCylinder = new osg::ShapeDrawable(cylinder);
     unitCylinder->setColor(shapeRGBA);
@@ -294,19 +294,31 @@ std::vector<osg::Vec3> *OSGWidget::get_path_start_locations(Shape* shape)
         size_t numberOfPaths = layerPathList.size();
         for (int i{0}; i< numberOfPaths; i++)
         {
+            int pathNumber{i};
             Path* path  = layerPathList[i];
-            Point start = path->get_start();
-            float xLocation = start.get_x()-shapeLength/2;
-            float yLocation = start.get_y()-shapeWidth/2;
-            if (layerNumber%2 == 0)
+            float xLocation;
+            float yLocation;
+            Point startShape;
+            double radius = (path->get_diameter())/2;
+            if (pathNumber%2 != 0)
             {
-                xLocation = start.get_x()-shapeLength;
+                startShape = path->get_start();
             }
             else
             {
-                yLocation = start.get_y()-shapeWidth;
+                startShape = path->get_end();
             }
-            float zLocation = start.get_z()-shapeHeight/2;
+            if (layerNumber%2 == 0)
+            {
+                xLocation = startShape.get_x()-shapeLength;
+                yLocation = startShape.get_y()-shapeWidth/2+radius;
+            }
+            else
+            {
+                xLocation = startShape.get_x()-shapeLength/2+radius;
+                yLocation = startShape.get_y()-shapeWidth;
+            }
+            float zLocation = startShape.get_z()-shapeHeight/2-radius;
             pathStart->at(count) = osg::Vec3(xLocation,yLocation,zLocation);
             count++;
         }
@@ -353,8 +365,10 @@ std::vector<osg::Vec3>* OSGWidget::get_path_scale_data(Shape* shape)
     {
         Path path = shapePathList->at(i);
         float diameter = path.get_diameter();
+        float radius = diameter/2;
         float length = path.get_length();
-        osg::Vec3 scaleFactor{diameter,diameter,length};
+//        osg::Vec3 scaleFactor{diameter,diameter,length};
+        osg::Vec3 scaleFactor{radius,radius,length};
         scaleData->at(i) = (scaleFactor);
     }
     return scaleData;
@@ -383,8 +397,10 @@ osg::Quat OSGWidget::get_rotation(Point pointVector)
 {
     double x = pointVector.get_x();
     double y = pointVector.get_y();
+    double absoluteValueX = abs(x);
+    double absoluteValueY = abs(y);
     osg::Vec3 rotationAxis;
-    if (x>y)
+    if (absoluteValueX>absoluteValueY)
     {
         rotationAxis = {0,1,0};
     }
