@@ -33,7 +33,8 @@ osg::Camera *OSGWidget::create_camera(float aspectRatio, int pixelRatio)
     int viewportOriginX{0};
     int viewportOriginY{0};
     camera->setViewport(viewportOriginX, viewportOriginY, this->width() * pixelRatio, this->height() * pixelRatio);
-    osg::Vec4 clearColorRGBA{0.95f,0.95f,0.95f,0.1f};
+    //    osg::Vec4 clearColorRGBA{0.95f,0.95f,0.95f,0.1f};
+    osg::Vec4 clearColorRGBA{0.0f,0.0f,1.0f,0.1f};
     camera->setClearColor(clearColorRGBA);
 
     float viewingAngle{45};
@@ -135,9 +136,9 @@ osg::ShapeDrawable *OSGWidget::create_unit_cylinder()
     float radius{1};
     float height{1};
     osg::Quat rotation;
-    osg::Vec4 shapeRGBA{0.5,0,1,0.5};
-//    osg::Box* cylinder = new osg::Box(shapePosition,1,1,1);
-        osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
+    osg::Vec4 shapeRGBA{0.9,0.9,1,0.5};
+    //    osg::Box* cylinder = new osg::Box(shapePosition,1,1,1);
+    osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
     cylinder->setRotation(rotation);
     osg::ShapeDrawable* unitCylinder = new osg::ShapeDrawable(cylinder);
     unitCylinder->setColor(shapeRGBA);
@@ -223,8 +224,6 @@ void OSGWidget::create_axes()
 
 void OSGWidget::draw_cylinders()
 {
-    //    osg::Vec4Array* colorArray = get_color_data_array(mShape);
-    //    osg::Vec3Array* vertexDataArray = get_vertex_data_array(mShape);
     std::vector<osg::Vec3>* pathStart = get_path_start_locations(mShape);
     std::vector<osg::Vec3>* scaleData = get_path_scale_data(mShape);
     std::vector<osg::Quat>* rotationData = get_path_rotation_data(mShape);
@@ -250,7 +249,6 @@ void OSGWidget::draw_cylinders()
     }
     osgUtil::Optimizer optimizer;
     optimizer.optimize(mRoot);
-
 }
 
 osg::Vec3Array* OSGWidget::get_vertex_data_array(Shape* shape)
@@ -323,16 +321,6 @@ std::vector<osg::Vec3> *OSGWidget::get_path_start_locations(Shape* shape)
             count++;
         }
     }
-
-    //    for (int i{0}; i< totalNumberOfPaths; i++)
-    //    {
-    //        Path  path  = shapePathList->at(i);
-    //        Point start = path.get_start();
-    //        float xLocation = start.get_x()-shapeLength;
-    //        float yLocation = start.get_y()-shapeWidth;
-    //        float zLocation = start.get_z()-shapeHeight;
-    //        pathStart->at(i) = osg::Vec3(xLocation,yLocation,zLocation);
-    //    }
     return pathStart;
 }
 
@@ -367,7 +355,7 @@ std::vector<osg::Vec3>* OSGWidget::get_path_scale_data(Shape* shape)
         float diameter = path.get_diameter();
         float radius = diameter/2;
         float length = path.get_length();
-//        osg::Vec3 scaleFactor{diameter,diameter,length};
+        //        osg::Vec3 scaleFactor{diameter,diameter,length};
         osg::Vec3 scaleFactor{radius,radius,length};
         scaleData->at(i) = (scaleFactor);
     }
@@ -414,55 +402,6 @@ osg::Quat OSGWidget::get_rotation(Point pointVector)
     return rotation;
 }
 
-void OSGWidget::create_cylinders()
-{
-    //    float radiusOfPrint = mShape->get_diameter_of_print()/2;
-
-    //    double*** centerOfCylinderArray = mPrintShape->create_center_of_cylinder_array();
-    //    int numberOfXCylindersPerLayer = mPrintShape->get_number_of_cylinders_per_X_layer();
-    //    int numberOfYCylindersPerLayer = mPrintShape->get_number_of_cylinders_per_Y_layer();
-    //    int numberOfCylindersPerLayer = numberOfXCylindersPerLayer+numberOfYCylindersPerLayer;
-    //    int numberOfLayers = mPrintShape->get_number_of_XYlayers();
-
-    ////    create_osg_cylinder();
-    //    // create one cylinder, then transform and color it differently.
-
-
-    //    for (int r{0}; r<numberOfCylindersPerLayer; r++)
-    //    {
-    //        for(int c{0}; c<numberOfLayers; c++)
-    //        {
-    //            int cylinderCount{r};
-    //            int layerCount{c};
-    //            float xLocation = centerOfCylinderArray[r][c][1];
-    //            float yLocation = centerOfCylinderArray[r][c][2];
-    //            float zLocation = centerOfCylinderArray[r][c][3];
-    //            osg::Vec3 shapePosition{xLocation,yLocation,zLocation};
-    //            if (cylinderCount<numberOfXCylindersPerLayer)
-    //            {
-    //                osg::Vec4 shapeRGBA = {1.0,0,0,0.5};
-    //                osg::Quat rotation = rotate_about_y_axis();
-    //                float cylinderLength = mPrintShape->get_shape_length();
-    //                // transform here. Call transform function that sets the color
-    //                create_osg_cylinder(shapePosition, radiusOfPrint, cylinderLength, rotation, shapeRGBA);
-    //            }
-    //            else
-    //            {
-    //                osg::Vec4 shapeRGBA = {0,0,1.0,0.5};
-    //                osg::Quat rotation = rotate_about_x_axis();
-    //                float cylinderLength = mPrintShape->get_shape_width();
-    //                create_osg_cylinder(shapePosition, radiusOfPrint, cylinderLength, rotation, shapeRGBA);
-    //            }
-    ////            mShapeList->push_back(mPrintShape);
-    //        }
-    //    }
-
-    ////    osgUtil::Optimizer optimizer;
-    ////    optimizer.optimize(mRoot);
-
-    update();
-}
-
 osg::Quat OSGWidget::get_rotation_about_x_axis()
 {
     double angleInDegrees = 90;
@@ -499,8 +438,7 @@ void OSGWidget::redraw()
     {
         create_axes();
     }
-
-    create_cylinders();
+    draw_cylinders();
     draw_print_path();
     update();
 }
@@ -535,8 +473,7 @@ OSGWidget::OSGWidget(Shape* newShape, QWidget* parent, Qt::WindowFlags flags):
     set_up_min_graphics_window();
     draw_wireframe();
     create_axes();
-    //    create_cylinders();
-    //    draw_print_path();
+    draw_print_path();
     draw_cylinders();
 
     mTimerId = set_up_timer();

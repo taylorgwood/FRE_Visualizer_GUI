@@ -22,7 +22,6 @@ public:
     void   toggle_start(bool on);
     void   set_view_along_x_axis();
     void   create_osg_cylinder(const osg::Vec3 &shapePosition, float radius, float height, const osg::Quat &rotation, const osg::Vec4 &shapeRGBA);
-    void   create_cylinders();
     void   draw_cylinders();
     osg::Vec3Array* get_vertex_data_array(Shape* shape);
     std::vector<osg::Vec3> *get_path_start_locations(Shape* shape);
