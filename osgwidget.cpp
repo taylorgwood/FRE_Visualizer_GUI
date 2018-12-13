@@ -293,14 +293,17 @@ osg::Vec3Array* OSGWidget::get_vertex_data_array(Shape* shape)
                 if (layerNumber%2 == 0)
                 {
                     xLocation = point->get_x()-shapeLength/2;
-                    yLocation = point->get_y()-shapeWidth/2+radius;
+//                    yLocation = point->get_y()-shapeWidth/2+radius;
+                    yLocation = point->get_y()-shapeWidth/2;
                 }
                 else
                 {
-                    xLocation = point->get_x()-shapeLength/2+radius;
+//                    xLocation = point->get_x()-shapeLength/2+radius;
+                    xLocation = point->get_x()-shapeLength/2;
                     yLocation = point->get_y()-shapeWidth/2;
                 }
-                float zLocation = point->get_z()-shapeHeight/2-radius;
+//                float zLocation = point->get_z()-shapeHeight/2-radius;
+                float zLocation = point->get_z()-shapeHeight/2;
                 vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
             }
         }
@@ -346,14 +349,17 @@ std::vector<osg::Vec3> *OSGWidget::get_path_start_locations(Shape* shape)
             if (layerNumber%2 == 0)
             {
                 xLocation = startShape.get_x()-shapeLength;
-                yLocation = startShape.get_y()-shapeWidth/2+radius;
+//                yLocation = startShape.get_y()-shapeWidth/2+radius;
+                yLocation = startShape.get_y()-shapeWidth/2;
             }
             else
             {
-                xLocation = startShape.get_x()-shapeLength/2+radius;
+//                xLocation = startShape.get_x()-shapeLength/2+radius;
+                xLocation = startShape.get_x()-shapeLength/2;
                 yLocation = startShape.get_y()-shapeWidth;
             }
-            float zLocation = startShape.get_z()-shapeHeight/2-radius;
+//            float zLocation = startShape.get_z()-shapeHeight/2-radius;
+            float zLocation = startShape.get_z()-shapeHeight/2;
             pathStart->at(count) = osg::Vec3(xLocation,yLocation,zLocation);
             count++;
         }
