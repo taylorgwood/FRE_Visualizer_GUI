@@ -27,6 +27,8 @@ public slots:
     void on_actionStop_triggered();
     void view_axes();
     void view_wireframe();
+    void view_cylinders();
+    void view_print_path();
 
 private slots:
     //    void on_extrusionMultiplierSlider_sliderMoved(int position);

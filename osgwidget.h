@@ -36,6 +36,9 @@ public:
     void   view_axes(bool On);
     void   view_wireframe(bool On);
     void   draw_print_path();
+    void   view_cylinders(bool On);
+    void   view_print_path(bool On);
+
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
@@ -80,8 +83,10 @@ private:
     bool   mSimulationOn{false};
     Shape *mShape{nullptr};
     int    mRedrawCount{0};
-    bool   mAxesOn{1};
-    bool   mWireframeOn{1};
+    bool   mViewAxes{1};
+    bool   mViewWireframe{1};
+    bool   mViewCylinders{1};
+    bool   mViewPrintPath{1};
     double const pi{3.14159};
 
 };

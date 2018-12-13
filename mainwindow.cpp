@@ -142,6 +142,8 @@ void MainWindow::on_redrawButton_clicked()
     redraw_and_refresh_information();
     view_axes();
     view_wireframe();
+    view_cylinders();
+    view_print_path();
     mOSGWidget->redraw();
 }
 
@@ -281,3 +283,20 @@ void MainWindow::on_autoAdjustWidthButton_clicked(bool checked)
     mShape->set_auto_adjust_path(checked);
     redraw_and_refresh_information();
 }
+
+void MainWindow::view_cylinders()
+{
+    bool viewCylinders = mMainWindowUI->actionView_Cylinders->isChecked();
+    MainWindow::mOSGWidget->view_cylinders(viewCylinders);
+    mOSGWidget->redraw();
+}
+
+void MainWindow::view_print_path()
+{
+    bool viewPrintPath = mMainWindowUI->actionView_Print_Path->isChecked();
+    MainWindow::mOSGWidget->view_print_path(viewPrintPath);
+    mOSGWidget->redraw();
+}
+//{
+//QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr(""));
+//}

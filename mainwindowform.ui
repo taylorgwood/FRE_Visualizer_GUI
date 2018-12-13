@@ -48,6 +48,8 @@
     </property>
     <addaction name="actionView_axes"/>
     <addaction name="actionView_wireframe"/>
+    <addaction name="actionView_Cylinders"/>
+    <addaction name="actionView_Print_Path"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuRun"/>
@@ -522,6 +524,28 @@
    </property>
    <property name="text">
     <string>View Wireframe</string>
+   </property>
+  </action>
+  <action name="actionView_Cylinders">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>View Cylinders</string>
+   </property>
+  </action>
+  <action name="actionView_Print_Path">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>View Print Path</string>
    </property>
   </action>
  </widget>

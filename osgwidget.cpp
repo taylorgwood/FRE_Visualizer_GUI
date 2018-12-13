@@ -446,34 +446,49 @@ osg::Quat OSGWidget::get_rotation_about_y_axis()
 void OSGWidget::clear_window()
 {
     mRoot->removeChildren(0, mRoot->getNumChildren());
-    //    mShapeList->clear();
     this->update();
 }
 
 void OSGWidget::redraw()
 {
     clear_window();
-    if (mWireframeOn)
+    if (mViewWireframe)
     {
         draw_wireframe();
     }
-    if (mAxesOn)
+    if (mViewAxes)
     {
         create_axes();
     }
-    draw_cylinders();
-    draw_print_path();
+    if (mViewCylinders)
+    {
+        draw_cylinders();
+    }
+    if (mViewPrintPath)
+    {
+        draw_print_path();
+    }
     update();
 }
 
 void OSGWidget::view_axes(bool On)
 {
-    mAxesOn = On;
+    mViewAxes = On;
 }
 
 void OSGWidget::view_wireframe(bool On)
 {
-    mWireframeOn = On;
+    mViewWireframe = On;
+}
+
+void OSGWidget::view_cylinders(bool On)
+{
+    mViewCylinders = On;
+}
+
+void OSGWidget::view_print_path(bool On)
+{
+    mViewPrintPath = On;
 }
 
 void OSGWidget::draw_print_path()
