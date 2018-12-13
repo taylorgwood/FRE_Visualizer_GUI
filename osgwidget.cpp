@@ -135,7 +135,7 @@ osg::ShapeDrawable *OSGWidget::create_unit_cylinder()
     float radius{1};
     float height{1};
     osg::Quat rotation;
-    osg::Vec4 shapeRGBA{1,1,1,1};
+    osg::Vec4 shapeRGBA{0.5,0.5,1,0.5};
     osg::Box* cylinder = new osg::Box(shapePosition,1,1,1);
     //    osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
     cylinder->setRotation(rotation);
@@ -284,15 +284,43 @@ std::vector<osg::Vec3> *OSGWidget::get_path_start_locations(Shape* shape)
     size_t totalNumberOfPaths = shapePathList->size();
     std::vector<osg::Vec3>* pathStart = new std::vector<osg::Vec3>(totalNumberOfPaths);
 
-    for (int i{0}; i< totalNumberOfPaths; i++)
+    int numberOfLayers = shape->get_number_of_layers();
+    int count{0};
+    for (int j{0}; j<numberOfLayers; j++)
     {
-        Path  path  = shapePathList->at(i);
-        Point start = path.get_start();
-        float xLocation = start.get_x()-shapeLength;
-        float yLocation = start.get_y()-shapeWidth;
-        float zLocation = start.get_z()-shapeHeight;
-        pathStart->at(i) = osg::Vec3(xLocation,yLocation,zLocation);
+        int layerNumber{j};
+        Layer* layer = shape->get_layer(j);
+        std::vector<Path*> layerPathList = layer->get_path_list();
+        size_t numberOfPaths = layerPathList.size();
+        for (int i{0}; i< numberOfPaths; i++)
+        {
+            Path* path  = layerPathList[i];
+            Point start = path->get_start();
+            float xLocation = start.get_x()-shapeLength/2;
+            float yLocation = start.get_y()-shapeWidth/2;
+            if (layerNumber%2 == 0)
+            {
+                xLocation = start.get_x()-shapeLength;
+            }
+            else
+            {
+                yLocation = start.get_y()-shapeWidth;
+            }
+            float zLocation = start.get_z()-shapeHeight/2;
+            pathStart->at(count) = osg::Vec3(xLocation,yLocation,zLocation);
+            count++;
+        }
     }
+
+    //    for (int i{0}; i< totalNumberOfPaths; i++)
+    //    {
+    //        Path  path  = shapePathList->at(i);
+    //        Point start = path.get_start();
+    //        float xLocation = start.get_x()-shapeLength;
+    //        float yLocation = start.get_y()-shapeWidth;
+    //        float zLocation = start.get_z()-shapeHeight;
+    //        pathStart->at(i) = osg::Vec3(xLocation,yLocation,zLocation);
+    //    }
     return pathStart;
 }
 
