@@ -155,10 +155,6 @@ osg::ShapeDrawable *OSGWidget::create_unit_cylinder()
     return unitCylinder;
 }
 
-// create unit shape drawable
-// geode to specify the color
-// transform to scale, rotate, and set position. Add to root here.
-
 osg::Geode *OSGWidget::create_geometry_node(osg::ShapeDrawable* newShape)
 {
     osg::Geode* geode = new osg::Geode;
@@ -261,16 +257,6 @@ osg::Vec3Array* OSGWidget::get_vertex_data_array(Shape* shape)
     size_t totalNumberOfPoints = shapePointList.size();
     osg::Vec3Array* vertexData = new osg::Vec3Array;
 
-    //    for (int i{0}; i< totalNumberOfPoints; i++)
-    //    {
-    //        Point point = shapePointList[i];
-    //        float xLocation = point.get_x()-shapeLength/2;
-    //        float yLocation = point.get_y()-shapeWidth/2;
-    //        float zLocation = point.get_z()-shapeHeight/2;
-    //        vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
-    //    }
-    //    return vertexData;
-
     int numberOfLayers = shape->get_number_of_layers();
     for (int k{0}; k<numberOfLayers; k++)
     {
@@ -293,16 +279,13 @@ osg::Vec3Array* OSGWidget::get_vertex_data_array(Shape* shape)
                 if (layerNumber%2 == 0)
                 {
                     xLocation = point->get_x()-shapeLength/2;
-//                    yLocation = point->get_y()-shapeWidth/2+radius;
                     yLocation = point->get_y()-shapeWidth/2;
                 }
                 else
                 {
-//                    xLocation = point->get_x()-shapeLength/2+radius;
                     xLocation = point->get_x()-shapeLength/2;
                     yLocation = point->get_y()-shapeWidth/2;
                 }
-//                float zLocation = point->get_z()-shapeHeight/2-radius;
                 float zLocation = point->get_z()-shapeHeight/2;
                 vertexData->push_back(osg::Vec3(xLocation,yLocation,zLocation));
             }
@@ -349,16 +332,13 @@ std::vector<osg::Vec3> *OSGWidget::get_path_start_locations(Shape* shape)
             if (layerNumber%2 == 0)
             {
                 xLocation = startShape.get_x()-shapeLength;
-//                yLocation = startShape.get_y()-shapeWidth/2+radius;
                 yLocation = startShape.get_y()-shapeWidth/2;
             }
             else
             {
-//                xLocation = startShape.get_x()-shapeLength/2+radius;
                 xLocation = startShape.get_x()-shapeLength/2;
                 yLocation = startShape.get_y()-shapeWidth;
             }
-//            float zLocation = startShape.get_z()-shapeHeight/2-radius;
             float zLocation = startShape.get_z()-shapeHeight/2;
             pathStart->at(count) = osg::Vec3(xLocation,yLocation,zLocation);
             count++;
