@@ -290,7 +290,6 @@ osg::Vec3Array* OSGWidget::get_vertex_data_array(Shape* shape)
                 Point* point = pathPointList.at(i);
                 float xLocation;
                 float yLocation;
-
                 if (layerNumber%2 == 0)
                 {
                     xLocation = point->get_x()-shapeLength/2;
