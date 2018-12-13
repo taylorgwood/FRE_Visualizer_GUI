@@ -40,14 +40,14 @@ void MainWindow::on_actionStop_triggered()
 
 void MainWindow::view_axes()
 {
-    bool viewAxes = mMainWindowUI->actionView_axes->isChecked();
+    bool viewAxes = mMainWindowUI->actionView_Axes->isChecked();
     MainWindow::mOSGWidget->view_axes(viewAxes);
     mOSGWidget->redraw();
 }
 
 void MainWindow::view_wireframe()
 {
-    bool viewWireframe = mMainWindowUI->actionView_wireframe->isChecked();
+    bool viewWireframe = mMainWindowUI->actionView_Wireframe->isChecked();
     MainWindow::mOSGWidget->view_wireframe(viewWireframe);
     mOSGWidget->redraw();
 }
@@ -306,4 +306,24 @@ void MainWindow::on_actionExport_G_code_triggered()
     Shape exportShape = *mShape;
     std::string exportFileName = fileName.toStdString();
     newGode.generate_file(exportShape,exportFileName);
+}
+
+void MainWindow::on_actionView_Cylinders_triggered()
+{
+    view_cylinders();
+}
+
+void MainWindow::on_actionView_Print_Path_triggered()
+{
+    view_print_path();
+}
+
+void MainWindow::on_actionView_Wireframe_triggered()
+{
+    view_wireframe();
+}
+
+void MainWindow::on_actionView_Axes_triggered()
+{
+    view_axes();
 }

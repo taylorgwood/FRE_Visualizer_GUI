@@ -26,10 +26,10 @@ public slots:
     void on_actionExit_triggered();
     void on_actionStart_triggered();
     void on_actionStop_triggered();
-    void view_axes();
-    void view_wireframe();
-    void view_cylinders();
-    void view_print_path();
+    void on_actionView_Cylinders_triggered();
+    void on_actionView_Print_Path_triggered();
+    void on_actionView_Wireframe_triggered();
+    void on_actionView_Axes_triggered();
 
 private slots:
     //    void on_extrusionMultiplierSlider_sliderMoved(int position);
@@ -59,6 +59,10 @@ private slots:
     void on_autoAdjustLayersButton_clicked(bool checked);
     void on_autoAdjustWidthButton_clicked(bool checked);
     void on_actionExport_G_code_triggered();
+    void view_axes();
+    void view_wireframe();
+    void view_cylinders();
+    void view_print_path();
 
 signals:
 

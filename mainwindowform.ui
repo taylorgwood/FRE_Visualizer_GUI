@@ -49,8 +49,8 @@
     <addaction name="actionView_Cylinders"/>
     <addaction name="actionView_Print_Path"/>
     <addaction name="separator"/>
-    <addaction name="actionView_wireframe"/>
-    <addaction name="actionView_axes"/>
+    <addaction name="actionView_Wireframe"/>
+    <addaction name="actionView_Axes"/>
    </widget>
    <widget class="QMenu" name="menuG_Code">
     <property name="title">
@@ -512,7 +512,7 @@
     <string>Stop</string>
    </property>
   </action>
-  <action name="actionView_axes">
+  <action name="actionView_Axes">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -523,7 +523,7 @@
     <string>View Axes</string>
    </property>
   </action>
-  <action name="actionView_wireframe">
+  <action name="actionView_Wireframe">
    <property name="checkable">
     <bool>true</bool>
    </property>
