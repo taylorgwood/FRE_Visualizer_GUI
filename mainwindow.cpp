@@ -330,3 +330,4 @@ void MainWindow::on_animationSlider_sliderMoved(int position)
     int    animationCount = floor(scaledPosition*numberOfPoints);
     mOSGWidget->set_animation_count(animationCount);
 }
+

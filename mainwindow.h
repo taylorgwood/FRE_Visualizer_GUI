@@ -61,7 +61,6 @@ private slots:
     void on_autoAdjustLayersButton_clicked(bool checked);
     void on_autoAdjustWidthButton_clicked(bool checked);
     void on_actionExport_G_code_triggered();
-
     void on_animationSlider_sliderMoved(int position);
 
 signals:

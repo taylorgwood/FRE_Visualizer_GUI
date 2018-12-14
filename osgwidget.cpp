@@ -484,6 +484,7 @@ void OSGWidget::set_animation_count(int animationCount)
         animationCount = 0;
     }
     mAnimationCount = animationCount;
+    draw_print_path();
 }
 
 OSGWidget::OSGWidget(Shape* newShape, QWidget* parent, Qt::WindowFlags flags):
