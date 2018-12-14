@@ -37,7 +37,7 @@ public:
     void   draw_print_path();
     void   view_cylinders(bool On);
     void   view_print_path(bool On);
-
+    void   set_animation_count(int animationCount);
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);

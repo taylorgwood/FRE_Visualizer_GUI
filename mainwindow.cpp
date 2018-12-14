@@ -321,3 +321,12 @@ void MainWindow::on_actionExport_G_code_triggered()
     std::string exportFileName = fileName.toStdString();
     newGode.generate_file(exportShape,exportFileName);
 }
+
+void MainWindow::on_animationSlider_sliderMoved(int position)
+{
+    double doublePosition = static_cast<double>(position);
+    double scaledPosition = doublePosition/100;
+    size_t numberOfPoints = mShape->get_points().size();
+    int    animationCount = floor(scaledPosition*numberOfPoints);
+    mOSGWidget->set_animation_count(animationCount);
+}

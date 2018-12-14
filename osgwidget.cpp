@@ -476,6 +476,16 @@ void OSGWidget::draw_print_path()
     mRoot->addChild(wireframe);
 }
 
+void OSGWidget::set_animation_count(int animationCount)
+{
+    size_t numberOfPoints = mShape->get_points().size();
+    if (animationCount > numberOfPoints)
+    {
+        animationCount = 0;
+    }
+    mAnimationCount = animationCount;
+}
+
 OSGWidget::OSGWidget(Shape* newShape, QWidget* parent, Qt::WindowFlags flags):
     QOpenGLWidget{parent,flags},
     mGraphicsWindow{new osgViewer::GraphicsWindowEmbedded{this->x(),this->y(),this->width(),this->height()}},
