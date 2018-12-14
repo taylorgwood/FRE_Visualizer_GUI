@@ -26,13 +26,13 @@ void MainWindow::on_actionExit_triggered()
     QApplication::quit();
 }
 
-void MainWindow::on_actionStart_triggered()
+void MainWindow::on_actionStart_2_triggered()
 {
     bool On{1};
     MainWindow::mOSGWidget->toggle_start(On);
 }
 
-void MainWindow::on_actionStop_triggered()
+void MainWindow::on_actionStop_2_triggered()
 {
     bool Off{0};
     MainWindow::mOSGWidget->toggle_start(Off);

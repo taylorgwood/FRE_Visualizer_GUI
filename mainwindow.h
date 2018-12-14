@@ -26,8 +26,8 @@ public slots:
 
 private slots:
     void on_actionExit_triggered();
-    void on_actionStart_triggered();
-    void on_actionStop_triggered();
+    void on_actionStart_2_triggered();
+    void on_actionStop_2_triggered();
     void on_actionView_Cylinders_triggered();
     void on_actionView_Print_Path_triggered();
     void on_actionView_Wireframe_triggered();

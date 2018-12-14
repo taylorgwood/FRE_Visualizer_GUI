@@ -37,7 +37,7 @@
    </widget>
    <widget class="QMenu" name="menuRun">
     <property name="title">
-     <string>Run</string>
+     <string>Animate</string>
     </property>
     <addaction name="actionStart_2"/>
     <addaction name="actionStop_2"/>
@@ -59,9 +59,9 @@
     <addaction name="actionExport_G_code"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuRun"/>
    <addaction name="menuView"/>
    <addaction name="menuG_Code"/>
+   <addaction name="menuRun"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
