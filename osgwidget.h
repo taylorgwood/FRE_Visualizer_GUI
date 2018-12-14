@@ -85,6 +85,7 @@ private:
     bool   mViewWireframe{1};
     bool   mViewCylinders{1};
     bool   mViewPrintPath{1};
+    int    mAnimationCount{0};
     double const pi{3.14159};
 
 };

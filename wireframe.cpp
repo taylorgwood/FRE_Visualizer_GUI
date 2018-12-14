@@ -53,14 +53,14 @@ osg::Node* Wireframe::create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor
     return transform;
 }
 
-osg::Node* Wireframe::draw_print_path(Shape* shape, osg::Vec4Array* color, osg::Vec3Array* vertexData)
+osg::Node* Wireframe::draw_print_path(Shape* shape, osg::Vec4Array* color, osg::Vec3Array* vertexData, int animationCount)
 {
     osg::Geometry* linesGeom = new osg::Geometry;
     osg::DrawArrays* drawArrayLines = new osg::DrawArrays(osg::PrimitiveSet::LINE_STRIP);
     linesGeom->addPrimitiveSet(drawArrayLines);
     linesGeom->setVertexArray(vertexData);
     drawArrayLines->setFirst(0);
-    drawArrayLines->setCount(vertexData->size());
+    drawArrayLines->setCount(animationCount);
 
     linesGeom->setColorArray(color, osg::Array::BIND_PER_VERTEX);
 
