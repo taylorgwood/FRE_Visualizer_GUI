@@ -334,8 +334,8 @@ osg::Vec4Array* OSGWidget::get_color_data_array(Shape* shape)
         Point point = shapePointList[i];
         float material = point.get_material();
         float R = material;
-        float G = material;
-        float B = material;
+        float G = 0;
+        float B = (1-material);
         float A = 1.0;
         osg::Vec4 currentColor{R,G,B,A};
         color->push_back(currentColor);
