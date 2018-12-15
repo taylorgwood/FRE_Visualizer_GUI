@@ -18,26 +18,18 @@ public:
     OSGWidget(Shape *newShape, QWidget* parent = nullptr, Qt::WindowFlags f = 0);
 
     virtual ~OSGWidget();
-    void   toggle_start(bool on);
-    void   set_view_along_x_axis();
-    void   create_osg_cylinder(const osg::Vec3 &shapePosition, float radius, float height, const osg::Quat &rotation, const osg::Vec4 &shapeRGBA);
-    void   draw_cylinders();
+    void toggle_start(bool on);
+    void clear_window();
+    void redraw();
+    void view_axes(bool On);
+    void view_wireframe(bool On);
+    void view_cylinders(bool On);
+    void view_print_path(bool On);
+    void set_animation_count(int animationCount);
+    void draw_print_path();
+    void draw_cylinders();
     osg::Vec3Array* get_vertex_data_array(Shape* shape);
-    std::vector<osg::Vec3> *get_path_start_locations(Shape* shape);
     osg::Vec4Array* get_color_data_array(Shape* shape);
-    std::vector<osg::Vec3> *get_path_scale_data(Shape* shape);
-    std::vector<osg::Quat> *get_path_rotation_data(Shape* shape);
-    osg::Quat get_rotation(Point pointVector);
-    osg::Quat get_rotation_about_x_axis();
-    osg::Quat get_rotation_about_y_axis();
-    void   clear_window();
-    void   redraw();
-    void   view_axes(bool On);
-    void   view_wireframe(bool On);
-    void   draw_print_path();
-    void   view_cylinders(bool On);
-    void   view_print_path(bool On);
-    void   set_animation_count(int animationCount);
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
@@ -54,30 +46,34 @@ protected:
     void repaint_osg_graphics_after_interaction(QEvent* event);
     void timerEvent(QTimerEvent *);
 
-
 private:
+    void set_up_environment();
+    void set_up_min_graphics_window();
+    osg::Camera *create_camera(float aspectRatio, int pixelRatio);
+    osg::ref_ptr<osgGA::TrackballManipulator> create_manipulator();
+    void set_manipulator_to_viewer(osg::ref_ptr<osgGA::TrackballManipulator> manipulator);
+    void set_original_home_position(osg::ref_ptr<osgGA::TrackballManipulator> manipulator);
+    osgViewer::View *create_scene(float aspectRatio, int pixelRatio);
+    int  set_up_timer();
+
+    std::vector<osg::Vec3> *get_path_start_locations(Shape* shape);
+    std::vector<osg::Vec3> *get_path_scale_data(Shape* shape);
+    std::vector<osg::Quat> *get_path_rotation_data(Shape* shape);
+    osg::Quat get_rotation(Point pointVector);
+    osg::Quat get_rotation_about_x_axis();
+    osg::Quat get_rotation_about_y_axis();
+    osg::ShapeDrawable *create_unit_graphic_cylinder();
+    void create_axes();
+    void create_axis(const osg::Vec3 &shapePosition, float radius, float height, const osg::Quat &rotation, const osg::Vec4 &shapeRGBA);
+    void draw_wireframe();
+
     virtual void on_resize(int width, int height);
     osgGA::EventQueue* getEventQueue() const;
-
     osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> mGraphicsWindow;
     osg::ref_ptr<osgViewer::CompositeViewer> mViewer;
     osg::ref_ptr<osgViewer::View> mView;
     osg::ref_ptr<osg::Group> mRoot;
-    int mTimerId{0};
-
-    void set_up_environment();
-    osg::ref_ptr<osgGA::TrackballManipulator> create_manipulator();
-    void set_original_home_position(osg::ref_ptr<osgGA::TrackballManipulator> manipulator);
-    void set_manipulator_to_viewer(osg::ref_ptr<osgGA::TrackballManipulator> manipulator);
-    osg::Camera *create_camera(float aspectRatio, int pixelRatio);
-    osgViewer::View *create_scene(float aspectRatio, int pixelRatio);
-    osg::ShapeDrawable *create_graphic_cylinder(const osg::Vec3 &shapeLocation, float radius, float height, const osg::Quat &rotation, const osg::Vec4 &shapeRGBA);
-    osg::ShapeDrawable *create_unit_cylinder();
-    void create_axes();
-    void draw_wireframe();
-    void set_up_min_graphics_window();
-    int  set_up_timer();
-
+    int    mTimerId{0};
     bool   mSimulationOn{false};
     Shape *mShape{nullptr};
     int    mRedrawCount{0};
