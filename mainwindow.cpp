@@ -149,7 +149,7 @@ void MainWindow::on_objectSizeButton_clicked()
     double shapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
     mShape->set_width(shapeWidth);
     mShape->set_length(shapeLength);
-    mShape->set_height(shapeHeight);
+    mShape->reset_height(shapeHeight);
     redraw_and_refresh_information();
 }
 
@@ -227,7 +227,7 @@ void MainWindow::on_shapeLength_returnPressed()
 void MainWindow::on_shapeHeight_returnPressed()
 {
     double shapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
-    mShape->set_height(shapeHeight);
+    mShape->reset_height(shapeHeight);
     redraw_and_refresh_information();
 }
 
@@ -256,6 +256,8 @@ void MainWindow::set_volume_label()
 
 void MainWindow::on_resetParametersButton_clicked()
 {
+    mShape = new Shape();
+    mOSGWidget->reset_shape(mShape);
     set_default_print_parameters();
     redraw_and_refresh_information();
     reset_print_parameter_labels();

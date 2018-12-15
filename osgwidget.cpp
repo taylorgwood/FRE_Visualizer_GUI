@@ -149,6 +149,11 @@ void OSGWidget::view_print_path(bool On)
     mViewPrintPath = On;
 }
 
+void OSGWidget::reset_shape(Shape* newShape)
+{
+    mShape = newShape;
+}
+
 void OSGWidget::set_animation_count(int animationCount)
 {
     size_t numberOfPoints = mShape->get_points().size();
@@ -476,6 +481,7 @@ osg::Quat OSGWidget::get_rotation_about_y_axis()
     osg::Quat rotation{angleInRadians,rotationAxis};
     return rotation;
 }
+
 
 OSGWidget::OSGWidget(Shape* newShape, QWidget* parent, Qt::WindowFlags flags):
     QOpenGLWidget{parent,flags},

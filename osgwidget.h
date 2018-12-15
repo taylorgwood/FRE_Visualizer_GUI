@@ -30,6 +30,7 @@ public:
     void draw_cylinders();
     osg::Vec3Array* get_vertex_data_array(Shape* shape);
     osg::Vec4Array* get_color_data_array(Shape* shape);
+    void reset_shape(Shape* newShape);
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);

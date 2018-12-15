@@ -244,19 +244,6 @@
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="autoAdjustWidthButton">
-          <property name="text">
-           <string>Auto-adjust extrusion width</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="autoExclusive">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="QPushButton" name="applyParametersButton">
