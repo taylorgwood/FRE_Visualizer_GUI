@@ -33,12 +33,3 @@ target_link_libraries(${PROJECT_NAME}
     Qt5::Widgets
     Qt5::Gui
     FRE_Slicer)
-
-IF (NOT TARGET gtest)
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-add_subdirectory(libs/googletest)
-ENDIF()
-
-set(TEST_NAME ${PROJECT_NAME}_UnitTest)
-add_executable(${TEST_NAME} layercalculations_unittests.cpp)
-target_link_libraries(${TEST_NAME} gtest gtest_main)
