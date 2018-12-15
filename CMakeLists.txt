@@ -24,8 +24,6 @@ SET(MYSOURCE
     osgwidget.cpp
     wireframe.cpp
     wireframe.h
-    printshape.cpp
-    printshape.h
     )
 
 add_executable(${PROJECT_NAME} ${MYSOURCE})
