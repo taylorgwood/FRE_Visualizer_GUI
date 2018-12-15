@@ -208,7 +208,7 @@
             <item>
              <widget class="QLineEdit" name="extrusionMultiplier">
               <property name="text">
-               <string>0.785</string>
+               <string>1.0</string>
               </property>
              </widget>
             </item>
@@ -476,7 +476,7 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>2</x>

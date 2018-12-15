@@ -203,7 +203,7 @@ osg::ShapeDrawable *OSGWidget::create_unit_graphic_cylinder()
     float radius{1};
     float height{1};
     osg::Quat rotation;
-    osg::Vec4 shapeRGBA{0.2,0.2,0.5,0.5};
+    osg::Vec4 shapeRGBA{0.6,0.6,1.0,0.5};
     osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
     cylinder->setRotation(rotation);
     osg::ShapeDrawable* unitCylinder = new osg::ShapeDrawable(cylinder);
@@ -214,7 +214,7 @@ osg::ShapeDrawable *OSGWidget::create_unit_graphic_cylinder()
     stateSet->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA), osg::StateAttribute::ON);
 
     osg::Material* material = new osg::Material;
-    material->setColorMode(osg::Material::EMISSION);
+    material->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
     stateSet->setAttributeAndModes( material, osg::StateAttribute::ON );
     stateSet->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
 
@@ -264,9 +264,9 @@ void OSGWidget::create_axes()
     shapePosition1 += {moveDistanceX,0,0};
     shapePosition2 += {0,moveDistanceY,0};
     shapePosition3 += {0,0,moveDistanceZ};
-    osg::Vec4 red = {0.8,0,0,1};
-    osg::Vec4 green = {0,0.8,0,1};
-    osg::Vec4 blue = {0,0,0.8,1};
+    osg::Vec4 red = {0.5,0,0,0.5};
+    osg::Vec4 green = {0,0.5,0,0.5};
+    osg::Vec4 blue = {0,0,0.5,0.5};
 
     double angleInDegrees = 90;
     double angleInRadians = osg::DegreesToRadians(angleInDegrees);
