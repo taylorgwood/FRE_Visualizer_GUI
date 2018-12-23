@@ -63,6 +63,9 @@ private slots:
     void on_autoAdjustWidthButton_clicked(bool checked);
     void on_actionExport_G_code_triggered();
     void on_animationSlider_sliderMoved(int position);
+    void on_animateButton_toggled(bool checked);
+
+    void on_tabWidget_tabBarClicked(int index);
 
 signals:
 

@@ -338,5 +338,32 @@ void MainWindow::on_animationSlider_sliderMoved(int position)
     size_t numberOfPoints = mShape->get_points().size();
     int    animationCount = floor(scaledPosition*numberOfPoints);
     mOSGWidget->set_animation_count(animationCount);
+    mOSGWidget->redraw();
 }
 
+void MainWindow::on_animateButton_toggled(bool checked)
+{
+    MainWindow::mOSGWidget->toggle_start(checked);
+}
+
+void MainWindow::on_tabWidget_tabBarClicked(int index)
+{
+    int printParameters{0};
+    int printPath{1};
+    bool unchecked{0};
+    bool checked{1};
+    if (index == printParameters)
+    {
+        mMainWindowUI->actionView_Print_Path->setChecked(unchecked);
+        mMainWindowUI->actionView_Cylinders->setChecked(checked);
+    }
+    if (index == printPath)
+    {
+        mMainWindowUI->actionView_Print_Path->setChecked(checked);
+        mMainWindowUI->actionView_Cylinders->setChecked(unchecked);
+    }
+    view_cylinders();
+    view_print_path();
+    redraw_and_refresh_information();
+
+}
