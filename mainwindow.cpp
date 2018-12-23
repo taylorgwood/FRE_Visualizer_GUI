@@ -235,6 +235,7 @@ void MainWindow::redraw_and_refresh_information()
 {
     mOSGWidget->redraw();
     set_volume_label();
+    set_layer_height_label();
 }
 
 void MainWindow::set_volume_label()
@@ -252,6 +253,12 @@ void MainWindow::set_volume_label()
     double extrudedVolumeDouble = objectVolumeDouble*infillRatio*extrusionMultiplier;
     QString extrudedVolumeText = QString::number(extrudedVolumeDouble);
     mMainWindowUI->extrudedVolume->setText(extrudedVolumeText);
+}
+
+void MainWindow::set_layer_height_label()
+{
+    double trueLayerHeight = mShape->get_layer_height();
+    mMainWindowUI->adjustedLayerHeightDisplay->setText(QString::number(trueLayerHeight));
 }
 
 void MainWindow::on_resetParametersButton_clicked()

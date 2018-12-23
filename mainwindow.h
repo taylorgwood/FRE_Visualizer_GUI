@@ -52,6 +52,7 @@ private slots:
     void on_shapeHeight_returnPressed();
     void redraw_and_refresh_information();
     void set_volume_label();
+    void set_layer_height_label();
     void on_resetParametersButton_clicked();
     void on_resetObjectSizeButton_clicked();
     void set_default_print_parameters();
