@@ -85,7 +85,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -593,6 +593,32 @@
        </property>
        <property name="text">
         <string>Animate</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="colorButtonA">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>100</y>
+         <width>93</width>
+         <height>28</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Color A</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="selectedColor">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>110</y>
+         <width>55</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>selectedColor</string>
        </property>
       </widget>
      </widget>

@@ -4,6 +4,9 @@
 
 #include <QDockWidget>
 #include <QFileDialog>
+#include <QColorDialog>
+#include <QColor>
+#include <QPalette>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow{parent},
@@ -366,4 +369,19 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
     view_print_path();
     redraw_and_refresh_information();
 
+}
+
+void MainWindow::on_colorButtonA_clicked()
+{
+//    QColor color = QColorDialog::getColor();
+//    ui->selectedColor->setText(color.name());
+//    ui->selectedColor->setPalette(QPalette(color));
+//    ui->selectedColor->setAutoFillBackground(true);
+//    emit(change_color_of_ball(color));
+    QColor color = QColorDialog::getColor();
+    mMainWindowUI->selectedColor->setText(color.name());
+    mMainWindowUI->selectedColor->setPalette(QPalette(color));
+    mMainWindowUI->selectedColor->setAutoFillBackground(true);
+//    mOSGWidget->set_color_A(color);
+//    emit(change_color_of_ball(color));
 }

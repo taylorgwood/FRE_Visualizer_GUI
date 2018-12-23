@@ -67,6 +67,8 @@ private slots:
 
     void on_tabWidget_tabBarClicked(int index);
 
+    void on_colorButtonA_clicked();
+
 signals:
 
 private:
