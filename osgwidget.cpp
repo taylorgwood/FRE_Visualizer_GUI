@@ -170,6 +170,11 @@ void OSGWidget::draw_print_path()
     Wireframe newWireframe;
     osg::Vec4Array* color = get_color_data_array(mShape);
     osg::Vec3Array* vertexData = get_vertex_data_array(mShape);
+    size_t numberOfPoints = mShape->get_points().size();
+    if (mAnimationCount > numberOfPoints)
+    {
+        mAnimationCount = 0;
+    }
     osg::Node* wireframe = newWireframe.draw_print_path(mShape, color, vertexData,mAnimationCount);
     mRoot->addChild(wireframe);
 }
