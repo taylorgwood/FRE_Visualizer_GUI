@@ -85,13 +85,13 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>Parameters</string>
       </attribute>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -595,31 +595,59 @@
         <string>Animate</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="colorButtonA">
+      <widget class="QWidget" name="">
        <property name="geometry">
         <rect>
-         <x>80</x>
-         <y>100</y>
-         <width>93</width>
-         <height>28</height>
+         <x>11</x>
+         <y>96</y>
+         <width>211</width>
+         <height>81</height>
         </rect>
        </property>
-       <property name="text">
-        <string>Color A</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="selectedColor">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>110</y>
-         <width>55</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>selectedColor</string>
-       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_16">
+          <item>
+           <widget class="QLabel" name="selectedColorA">
+            <property name="text">
+             <string>A</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="selectedColorB">
+            <property name="text">
+             <string>B</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_17">
+          <item>
+           <widget class="QPushButton" name="colorButtonA">
+            <property name="text">
+             <string>Set color A</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="colorButtonB">
+            <property name="text">
+             <string>Set color B</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </widget>
      </widget>
     </widget>

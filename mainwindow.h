@@ -64,10 +64,12 @@ private slots:
     void on_actionExport_G_code_triggered();
     void on_animationSlider_sliderMoved(int position);
     void on_animateButton_toggled(bool checked);
-
     void on_tabWidget_tabBarClicked(int index);
-
     void on_colorButtonA_clicked();
+    void on_colorButtonB_clicked();
+    void set_color_A(QColor color);
+    void set_color_B(QColor color);
+    void set_default_colors();
 
 signals:
 
@@ -83,6 +85,8 @@ private:
     float  mShapeWidth{10};
     float  mShapeHeight{10};
     float  mShapeLength{10};
+    QColor mColorA{238, 244, 66, 255};
+    QColor mColorB{51, 33, 209, 255};
 
 };
 

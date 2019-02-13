@@ -154,6 +154,26 @@ void OSGWidget::reset_shape(Shape* newShape)
     mShape = newShape;
 }
 
+void OSGWidget::set_color_A(QColor color)
+{
+    mColorA = color;
+}
+
+QColor OSGWidget::get_color_A()
+{
+    return mColorA;
+}
+
+void OSGWidget::set_color_B(QColor color)
+{
+    mColorB = color;
+}
+
+QColor OSGWidget::get_color_B()
+{
+    return mColorB;
+}
+
 void OSGWidget::set_animation_count(int animationCount)
 {
     size_t numberOfPoints = mShape->get_points().size();
@@ -168,14 +188,14 @@ void OSGWidget::set_animation_count(int animationCount)
 void OSGWidget::draw_print_path()
 {
     Wireframe newWireframe;
-    osg::Vec4Array* color = get_color_data_array(mShape);
+    osg::Vec4Array* colorArray = get_color_data_array(mShape);
     osg::Vec3Array* vertexData = get_vertex_data_array(mShape);
     size_t numberOfPoints = mShape->get_points().size();
     if (mAnimationCount > numberOfPoints)
     {
         mAnimationCount = 0;
     }
-    osg::Node* wireframe = newWireframe.draw_print_path(mShape, color, vertexData,mAnimationCount);
+    osg::Node* wireframe = newWireframe.draw_print_path(mShape, colorArray, vertexData, mAnimationCount);
     mRoot->addChild(wireframe);
 }
 
@@ -345,13 +365,17 @@ osg::Vec4Array* OSGWidget::get_color_data_array(Shape* shape)
     std::vector<Point> shapePointList = shape->get_points();
     size_t totalNumberOfPoints = shapePointList.size();
     osg::Vec4Array* color = new osg::Vec4Array;
+    QColor colorA = get_color_A();
+    QColor colorB = get_color_B();
     for (int i{0}; i< totalNumberOfPoints; i++)
     {
         Point point = shapePointList[i];
         float material = point.get_material();
-        float R = material;
-        float G = material;
-        float B = (1-material);
+        float multiplierColorA = material/255;
+        float multiplierColorB = (1-material)/255;
+        float R = colorA.red()*multiplierColorA + colorB.red()*multiplierColorB;
+        float G = colorA.green()*multiplierColorA + colorB.green()*multiplierColorB;
+        float B = colorA.blue()*multiplierColorA + colorB.blue()*multiplierColorB;
         float A = 1.0;
         osg::Vec4 currentColor{R,G,B,A};
         color->push_back(currentColor);
@@ -678,4 +702,3 @@ void OSGWidget::repaint_osg_graphics_after_interaction(QEvent* event)
         }
     }
 }
-

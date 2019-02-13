@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mOSGWidget = new OSGWidget{mShape, this};
     this->setCentralWidget(mOSGWidget);
     set_volume_label();
+    set_default_colors();
 }
 
 MainWindow::~MainWindow()
@@ -368,20 +369,38 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
     view_cylinders();
     view_print_path();
     redraw_and_refresh_information();
-
 }
 
 void MainWindow::on_colorButtonA_clicked()
 {
-//    QColor color = QColorDialog::getColor();
-//    ui->selectedColor->setText(color.name());
-//    ui->selectedColor->setPalette(QPalette(color));
-//    ui->selectedColor->setAutoFillBackground(true);
-//    emit(change_color_of_ball(color));
-    QColor color = QColorDialog::getColor();
-    mMainWindowUI->selectedColor->setText(color.name());
-    mMainWindowUI->selectedColor->setPalette(QPalette(color));
-    mMainWindowUI->selectedColor->setAutoFillBackground(true);
-//    mOSGWidget->set_color_A(color);
-//    emit(change_color_of_ball(color));
+    mColorA = QColorDialog::getColor();
+    set_color_A(mColorA);
+}
+
+void MainWindow::on_colorButtonB_clicked()
+{
+    mColorB = QColorDialog::getColor();
+    set_color_B(mColorB);
+}
+
+void MainWindow::set_color_A(QColor color)
+{
+    mOSGWidget->set_color_A(color);
+//    mMainWindowUI->selectedColorA->setText(color.name());
+    mMainWindowUI->selectedColorA->setPalette(QPalette(color));
+    mMainWindowUI->selectedColorA->setAutoFillBackground(true);
+}
+
+void MainWindow::set_color_B(QColor color)
+{
+    mOSGWidget->set_color_B(color);
+//    mMainWindowUI->selectedColorB->setText(color.name());
+    mMainWindowUI->selectedColorB->setPalette(QPalette(color));
+    mMainWindowUI->selectedColorB->setAutoFillBackground(true);
+}
+
+void MainWindow::set_default_colors()
+{
+    set_color_A(mColorA);
+    set_color_B(mColorB);
 }

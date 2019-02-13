@@ -31,6 +31,10 @@ public:
     osg::Vec3Array* get_vertex_data_array(Shape* shape);
     osg::Vec4Array* get_color_data_array(Shape* shape);
     void reset_shape(Shape* newShape);
+    void set_color_A(QColor color);
+    QColor get_color_A();
+    void set_color_B(QColor color);
+    QColor get_color_B();
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
@@ -84,6 +88,8 @@ private:
     bool   mViewPrintPath{1};
     int    mAnimationCount{0};
     double const pi{3.14159};
+    QColor mColorA{1,0,0,1};
+    QColor mColorB{0,1,0,1};
 
 };
 
