@@ -419,13 +419,13 @@ std::vector<osg::Vec3> *OSGWidget::get_path_start_locations(Shape* shape)
             }
             if (layerNumber%2 == 0)
             {
-                xLocation = startShape.get_x()-shapeLength;
+                xLocation = startShape.get_x()-shapeLength+radius;
                 yLocation = startShape.get_y()-shapeWidth/2;
             }
             else
             {
                 xLocation = startShape.get_x()-shapeLength/2;
-                yLocation = startShape.get_y()-shapeWidth;
+                yLocation = startShape.get_y()-shapeWidth+radius;
             }
             float zLocation = startShape.get_z()-shapeHeight/2;
             pathStart->at(count) = osg::Vec3(xLocation,yLocation,zLocation);
