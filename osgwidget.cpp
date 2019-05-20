@@ -194,6 +194,10 @@ void OSGWidget::draw_print_path()
     if (mAnimationCount > numberOfPoints)
     {
         mAnimationCount = 0;
+        if (mSimulationOn == false)
+        {
+            mAnimationCount = numberOfPoints;
+        }
     }
     osg::Node* wireframe = newWireframe.draw_print_path(mShape, colorArray, vertexData, mAnimationCount);
     mRoot->addChild(wireframe);
@@ -245,7 +249,7 @@ osg::ShapeDrawable *OSGWidget::create_unit_graphic_cylinder()
     osg::Vec3 shapePosition{0,0,0};
     float radius{1};
     float height{1};
-    osg::Vec4 shapeRGBA{0.6,0.6,1.0,0.5};
+    osg::Vec4 shapeRGBA{0.8,0.8,1.0,0.5};
     osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
     osg::ShapeDrawable* unitCylinder = new osg::ShapeDrawable(cylinder);
     unitCylinder->setColor(shapeRGBA);
@@ -254,7 +258,7 @@ osg::ShapeDrawable *OSGWidget::create_unit_graphic_cylinder()
 
 void OSGWidget::draw_wireframe()
 {
-    osg::Vec4 wireframeColorRGBA{0.5f,0.5f,1.f,0.1f};
+    osg::Vec4 wireframeColorRGBA{0.8f,0.8f,1.f,0.1f};
     float scaleFactorX = mShape->get_length()/2;
     float scaleFactorY = mShape->get_width()/2;
     float scaleFactorZ = mShape->get_height()/2;
@@ -522,10 +526,7 @@ OSGWidget::OSGWidget(Shape* newShape, QWidget* parent, Qt::WindowFlags flags):
     mShape = newShape;
     set_up_environment();
     set_up_min_graphics_window();
-    draw_wireframe();
-    create_axes();
-    draw_print_path();
-    draw_cylinders();
+    redraw();
 
     mTimerId = set_up_timer();
 }

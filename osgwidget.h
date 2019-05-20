@@ -85,8 +85,8 @@ private:
     bool   mViewAxes{1};
     bool   mViewWireframe{1};
     bool   mViewCylinders{1};
-    bool   mViewPrintPath{1};
-    int    mAnimationCount{0};
+    bool   mViewPrintPath{0};
+    int    mAnimationCount{100000};
     double const pi{3.14159};
     QColor mColorA{1,0,0,1};
     QColor mColorB{0,1,0,1};

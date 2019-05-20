@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setCentralWidget(mOSGWidget);
     set_volume_label();
     set_default_colors();
+    redraw_and_refresh_information();
 }
 
 MainWindow::~MainWindow()
@@ -167,6 +168,7 @@ void MainWindow::on_applyParametersButton_clicked()
     mShape->set_extrusion_multiplier(extrusionMultiplier);
     mShape->set_infill_percentage(infillPercentage);
     mShape->set_extrusion_width(extrusionWidth); // change this to have auto adjust in the set function
+    on_objectSizeButton_clicked();
     redraw_and_refresh_information();
 }
 
@@ -240,6 +242,7 @@ void MainWindow::redraw_and_refresh_information()
     mOSGWidget->redraw();
     set_volume_label();
     set_layer_height_label();
+    set_extrusion_width_label();
 }
 
 void MainWindow::set_volume_label()
@@ -265,11 +268,18 @@ void MainWindow::set_layer_height_label()
     mMainWindowUI->adjustedLayerHeightDisplay->setText(QString::number(trueLayerHeight));
 }
 
+void MainWindow::set_extrusion_width_label()
+{
+    double trueExtrusionWidth = mShape->get_layer(1)->get_extrusion_width();
+    mMainWindowUI->adjustedExtrusionWidthDisplay->setText(QString::number(trueExtrusionWidth));
+}
+
 void MainWindow::on_resetParametersButton_clicked()
 {
     mShape = new Shape();
     mOSGWidget->reset_shape(mShape);
     set_default_print_parameters();
+    on_objectSizeButton_clicked();
     redraw_and_refresh_information();
     reset_print_parameter_labels();
 }
@@ -317,12 +327,14 @@ void MainWindow::reset_object_size_labels()
 void MainWindow::on_autoAdjustLayersButton_clicked(bool checked)
 {
     mShape->set_auto_adjust_layer(checked);
+    on_applyParametersButton_clicked();
     redraw_and_refresh_information();
 }
 
 void MainWindow::on_autoAdjustWidthButton_clicked(bool checked)
 {
     mShape->set_auto_adjust_path(checked);
+    on_applyParametersButton_clicked();
     redraw_and_refresh_information();
 }
 
