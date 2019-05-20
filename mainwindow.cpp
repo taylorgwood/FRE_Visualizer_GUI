@@ -13,8 +13,10 @@ MainWindow::MainWindow(QWidget *parent) :
     mMainWindowUI{new Ui::MainWindowForm}
 {
     mMainWindowUI->setupUi(this);
+    QWidget::setWindowIcon(QIcon(":/myicons/myicon.ico"));
     mShape = new Shape();
     mOSGWidget = new OSGWidget{mShape, this};
+
     this->setCentralWidget(mOSGWidget);
     set_volume_label();
     set_default_colors();
@@ -398,7 +400,7 @@ void MainWindow::on_colorButtonB_clicked()
 void MainWindow::set_color_A(QColor color)
 {
     mOSGWidget->set_color_A(color);
-//    mMainWindowUI->selectedColorA->setText(color.name());
+    //    mMainWindowUI->selectedColorA->setText(color.name());
     mMainWindowUI->selectedColorA->setPalette(QPalette(color));
     mMainWindowUI->selectedColorA->setAutoFillBackground(true);
 }
@@ -406,7 +408,7 @@ void MainWindow::set_color_A(QColor color)
 void MainWindow::set_color_B(QColor color)
 {
     mOSGWidget->set_color_B(color);
-//    mMainWindowUI->selectedColorB->setText(color.name());
+    //    mMainWindowUI->selectedColorB->setText(color.name());
     mMainWindowUI->selectedColorB->setPalette(QPalette(color));
     mMainWindowUI->selectedColorB->setAutoFillBackground(true);
 }

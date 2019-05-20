@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.4)
-project(FRE_Visualizer)
+project(EDP_Visualizer)
 
 FIND_PACKAGE(Qt5Widgets)
 FIND_PACKAGE(Qt5Gui)
@@ -27,8 +27,11 @@ SET(MYSOURCE
     wireframe.h
     )
 
+SET(MYRESOURCES icons/icons.qrc)
+
 add_executable(${PROJECT_NAME} WIN32
     ${MYSOURCE}
+    ${MYRESOURCES}
     )
 
 target_link_libraries(${PROJECT_NAME}
