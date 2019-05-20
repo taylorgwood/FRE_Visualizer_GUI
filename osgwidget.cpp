@@ -83,8 +83,8 @@ osgViewer::View *OSGWidget::create_scene(float aspectRatio, int pixelRatio)
     osgViewer::View *view = new osgViewer::View;
     view->setCamera(camera);
     view->setSceneData(mRoot.get());
-    //    view->addEventHandler(new osgViewer::StatsHandler);
-    //    view->getEventQueue()->keyPress('s');
+    view->addEventHandler(new osgViewer::StatsHandler);
+    view->getEventQueue()->keyPress('s');
     return view;
 }
 
@@ -208,6 +208,7 @@ void OSGWidget::draw_cylinders()
 
     std::vector<Path>* shapePathList = mShape->get_path_list();
     size_t totalNumberOfPaths = shapePathList->size();
+    osg::Group *allShapes = new osg::Group();
 
     float count{0};
     for (int i{0}; i<totalNumberOfPaths; i++)
@@ -220,9 +221,21 @@ void OSGWidget::draw_cylinders()
         transform->setPosition(position);
         transform->setAttitude(rotation);
         transform->addChild(unitCylinder);
-        mRoot->addChild(transform);
+        allShapes->addChild(transform);
         count ++;
     }
+
+    osg::StateSet* stateSet = allShapes->getOrCreateStateSet();
+    stateSet->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+    stateSet->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA), osg::StateAttribute::ON);
+
+    osg::Material* material = new osg::Material;
+    material->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+    stateSet->setAttributeAndModes( material, osg::StateAttribute::ON );
+    stateSet->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
+
+    mRoot->addChild(allShapes);
+
     osgUtil::Optimizer optimizer;
     optimizer.optimize(mRoot);
 }
@@ -232,22 +245,10 @@ osg::ShapeDrawable *OSGWidget::create_unit_graphic_cylinder()
     osg::Vec3 shapePosition{0,0,0};
     float radius{1};
     float height{1};
-    osg::Quat rotation;
     osg::Vec4 shapeRGBA{0.6,0.6,1.0,0.5};
     osg::Cylinder* cylinder = new osg::Cylinder(shapePosition, radius, height);
-    cylinder->setRotation(rotation);
     osg::ShapeDrawable* unitCylinder = new osg::ShapeDrawable(cylinder);
     unitCylinder->setColor(shapeRGBA);
-
-    osg::StateSet* stateSet = unitCylinder->getOrCreateStateSet();
-    stateSet->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
-    stateSet->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA), osg::StateAttribute::ON);
-
-    osg::Material* material = new osg::Material;
-    material->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
-    stateSet->setAttributeAndModes( material, osg::StateAttribute::ON );
-    stateSet->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
-
     return unitCylinder;
 }
 
