@@ -25,7 +25,7 @@ public:
     void view_wireframe(bool On);
     void view_cylinders(bool On);
     void view_print_path(bool On);
-    void set_animation_count(int animationCount);
+    void set_animation_count(unsigned int animationCount);
     void draw_print_path();
     void draw_cylinders();
     osg::Vec3Array* get_vertex_data_array(Shape* shape);
@@ -61,10 +61,10 @@ private:
     osgViewer::View *create_scene(float aspectRatio, int pixelRatio);
     int  set_up_timer();
 
-    std::vector<osg::Vec3> *get_path_start_locations(Shape* shape);
+    std::vector<osg::Vec3> *get_path_midpoint_locations(Shape* shape);
     std::vector<osg::Vec3> *get_path_scale_data(Shape* shape);
     std::vector<osg::Quat> *get_path_rotation_data(Shape* shape);
-    osg::Quat get_rotation(Point pointVector);
+    osg::Quat get_rotation(Point orthogonalVector);
     osg::Quat get_rotation_about_x_axis();
     osg::Quat get_rotation_about_y_axis();
     osg::ShapeDrawable *create_unit_graphic_cylinder();
@@ -86,7 +86,7 @@ private:
     bool   mViewWireframe{1};
     bool   mViewCylinders{1};
     bool   mViewPrintPath{0};
-    int    mAnimationCount{100000};
+    unsigned int mAnimationCount{100000};
     double const pi{3.14159};
     QColor mColorA{1,0,0,1};
     QColor mColorB{0,1,0,1};

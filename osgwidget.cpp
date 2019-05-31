@@ -174,9 +174,9 @@ QColor OSGWidget::get_color_B()
     return mColorB;
 }
 
-void OSGWidget::set_animation_count(int animationCount)
+void OSGWidget::set_animation_count(unsigned int animationCount)
 {
-    int numberOfPoints = static_cast<int>(mShape->get_points().size());
+    unsigned int numberOfPoints = static_cast<unsigned int>(mShape->get_points().size());
     if (animationCount > numberOfPoints)
     {
         animationCount = 0;
@@ -190,7 +190,7 @@ void OSGWidget::draw_print_path()
     Wireframe newWireframe;
     osg::Vec4Array* colorArray = get_color_data_array(mShape);
     osg::Vec3Array* vertexData = get_vertex_data_array(mShape);
-    int numberOfPoints = static_cast<int>(mShape->get_points().size());
+    unsigned int numberOfPoints = static_cast<unsigned int>(mShape->get_points().size());
     if (mAnimationCount > numberOfPoints)
     {
         mAnimationCount = 0;
@@ -199,16 +199,35 @@ void OSGWidget::draw_print_path()
             mAnimationCount = numberOfPoints;
         }
     }
-    osg::Node* wireframe = newWireframe.draw_print_path(mShape, colorArray, vertexData, mAnimationCount);
-    mRoot->addChild(wireframe);
+
+    for (unsigned int i{mAnimationCount}; i<numberOfPoints; i++)
+    {
+//        float R{1.0f};
+//        float G{1.0f};
+//        float B{1.0f};
+//        float R = colorArray->at(i).r();
+//        float G = colorArray->at(i).g();
+//        float B = colorArray->at(i).b();
+        float A{0.2f};
+//        osg::Vec4 currentColor{R,G,B,A};
+        colorArray->at(i).a() = A;
+    }
+
+    osg::Node* animatedPrintPath = newWireframe.draw_print_path(colorArray, vertexData, mAnimationCount);
+    mRoot->addChild(animatedPrintPath);
 }
 
 void OSGWidget::draw_cylinders()
 {
-    std::vector<osg::Vec3>* pathStart = get_path_start_locations(mShape);
+    std::vector<osg::Vec3>* pathMidpoint = get_path_midpoint_locations(mShape);
     std::vector<osg::Vec3>* scaleData = get_path_scale_data(mShape);
     std::vector<osg::Quat>* rotationData = get_path_rotation_data(mShape);
     osg::ShapeDrawable* unitCylinder = create_unit_graphic_cylinder();
+    float xLocation{0};
+    float yLocation{0};
+    float zLocation{0};
+    osg::Vec3f center(xLocation,yLocation,zLocation);
+
 
     std::vector<Path>* shapePathList = mShape->get_path_list();
     unsigned int totalNumberOfPaths = static_cast<unsigned int>(shapePathList->size());
@@ -219,12 +238,15 @@ void OSGWidget::draw_cylinders()
     {
         osg::PositionAttitudeTransform* transform = new osg::PositionAttitudeTransform;
         osg::Vec3 scaleFactor = scaleData->at(i);
-        osg::Vec3 position = pathStart->at(i);
+        osg::Vec3 position = pathMidpoint->at(i);
         osg::Quat rotation = rotationData->at(i);
         transform->setScale(scaleFactor);
-        transform->setPosition(position);
+//        transform->setPosition(centerUnitCylinder);
+        transform->setPivotPoint(center);
         transform->setAttitude(rotation);
+        transform->setPosition(position);
         transform->addChild(unitCylinder);
+//        transform->setPosition()
         allShapes->addChild(transform);
         count ++;
     }
@@ -326,12 +348,12 @@ osg::Vec3Array* OSGWidget::get_vertex_data_array(Shape* shape)
     std::vector<Point> shapePointList = shape->get_points();
     unsigned int numberOfPoints = static_cast<unsigned int>(shapePointList.size());
     osg::Vec3Array* vertexData = new osg::Vec3Array{numberOfPoints};
-    for (int i{0}; i<numberOfPoints; i++)
+    for (unsigned int i{0}; i<numberOfPoints; i++)
     {
         Point point = shapePointList.at(i);
-        float xLocation = point.get_x()-shapeLength/2;
-        float yLocation = point.get_y()-shapeWidth/2;
-        float zLocation = point.get_z()-shapeHeight/2;
+        float xLocation = static_cast<float>(point.get_x()-shapeLength/2);
+        float yLocation = static_cast<float>(point.get_y()-shapeWidth/2);
+        float zLocation = static_cast<float>(point.get_z()-shapeHeight/2);
         vertexData->at(i) = (osg::Vec3(xLocation,yLocation,zLocation));
     }
     return vertexData;
@@ -345,23 +367,23 @@ osg::Vec4Array* OSGWidget::get_color_data_array(Shape* shape)
     osg::Vec4Array* color = new osg::Vec4Array{numberOfPoints};
     QColor colorA = get_color_A();
     QColor colorB = get_color_B();
-    for (int i{0}; i< numberOfPoints; i++)
+    for (unsigned int i{0}; i< numberOfPoints; i++)
     {
         Point point = shapePointList[i];
-        float material = point.get_material();
+        float material = static_cast<float>(point.get_material());
         float multiplierColorA = material/255;
         float multiplierColorB = (1-material)/255;
         float R = colorA.red()*multiplierColorA + colorB.red()*multiplierColorB;
         float G = colorA.green()*multiplierColorA + colorB.green()*multiplierColorB;
         float B = colorA.blue()*multiplierColorA + colorB.blue()*multiplierColorB;
-        float A = 1.0;
+        float A = 0.9f;
         osg::Vec4 currentColor{R,G,B,A};
         color->at(i) = (currentColor);
     }
     return color;
 }
 
-std::vector<osg::Vec3> *OSGWidget::get_path_start_locations(Shape* shape)
+std::vector<osg::Vec3> *OSGWidget::get_path_midpoint_locations(Shape* shape)
 {
     double shapeHeight = shape->get_height();
     double shapeWidth  = shape->get_width();
@@ -369,48 +391,33 @@ std::vector<osg::Vec3> *OSGWidget::get_path_start_locations(Shape* shape)
 
     std::vector<Path>* shapePathList = shape->get_path_list();
     unsigned int totalNumberOfPaths = static_cast<unsigned int>(shapePathList->size());
-    std::vector<osg::Vec3>* pathStart = new std::vector<osg::Vec3>(totalNumberOfPaths);
+    std::vector<osg::Vec3>* midpoint = new std::vector<osg::Vec3>(totalNumberOfPaths);
 
     int numberOfLayers = shape->get_number_of_layers();
     unsigned int count{0};
     for (int j{0}; j<numberOfLayers; j++)
     {
         int layerNumber{j};
-        Layer* layer = shape->get_layer(j);
+        Layer* layer = shape->get_layer(layerNumber);
         std::vector<Path*> layerPathList = layer->get_path_list();
         unsigned int numberOfPaths = static_cast<unsigned int> (layerPathList.size());
         for (unsigned int i{0}; i< numberOfPaths; i++)
         {
             unsigned int pathNumber{i};
-            Path* path  = layerPathList[i];
-            float xLocation;
-            float yLocation;
-            Point startShape;
-            double radius = (path->get_diameter())/2;
-            if (pathNumber%2 != 0)
-            {
-                startShape = path->get_start();
-            }
-            else
-            {
-                startShape = path->get_end();
-            }
-            if (layerNumber%2 == 0)
-            {
-                xLocation = static_cast<float>(startShape.get_x()-shapeLength+radius);
-                yLocation = static_cast<float>(startShape.get_y()-shapeWidth/2);
-            }
-            else
-            {
-                xLocation = static_cast<float>(startShape.get_x()-shapeLength/2);
-                yLocation = static_cast<float>(startShape.get_y()-shapeWidth+radius);
-            }
-            float zLocation = static_cast<float>(startShape.get_z()-shapeHeight/2);
-            pathStart->at(count) = osg::Vec3(xLocation,yLocation,zLocation);
+            Path* path  = layerPathList[pathNumber];
+            Point start = path->get_start();
+            Point end = path->get_end();
+            float xMidpoint = static_cast<float>(start.get_x()-end.get_x());
+            float yMidpoint = static_cast<float>(start.get_y()-end.get_y());
+//            float zMidpoint = static_cast<float>(start.get_z()-end.get_z());
+            float xLocation = (xMidpoint)-shapeWidth/2;
+            float yLocation = (yMidpoint)-shapeLength/2;
+            float zLocation = static_cast<float>(start.get_z())-shapeHeight/2;
+            midpoint->at(count) = osg::Vec3(xLocation,yLocation,zLocation);
             count++;
         }
     }
-    return pathStart;
+    return midpoint;
 }
 
 std::vector<osg::Vec3>* OSGWidget::get_path_scale_data(Shape* shape)
@@ -444,30 +451,36 @@ std::vector<osg::Quat>* OSGWidget::get_path_rotation_data(Shape* shape)
         Point end = path.get_end();
         Point pointVector = start-end;
         Point direction = pointVector.normalize();
-        osg::Quat rotation = get_rotation(pointVector);
+        Point initialOrientation(0,0,1);
+        Point orthogonalVector = initialOrientation.cross(direction);
+        osg::Quat rotation = get_rotation(orthogonalVector);
         rotationData->at(i) = (rotation);
     }
     return rotationData;
 }
 
-osg::Quat OSGWidget::get_rotation(Point pointVector)
+osg::Quat OSGWidget::get_rotation(Point orthogonalVector)
 {
-    double x = pointVector.get_x();
-    double y = pointVector.get_y();
-    double absoluteValueX = abs(x);
-    double absoluteValueY = abs(y);
-    osg::Vec3 rotationAxis;
-    if (absoluteValueX>absoluteValueY)
-    {
-        rotationAxis = {0,1,0};
-    }
-    else
-    {
-        rotationAxis = {1,0,0};
-    }
+    float x = static_cast<float>(orthogonalVector.get_x());
+    float y = static_cast<float>(orthogonalVector.get_y());
+    float z = static_cast<float>(orthogonalVector.get_z());
+//    double absoluteValueX = abs(x);
+//    double absoluteValueY = abs(y);
+    osg::Vec3 rotationAxis = {x,y,z};
+//    if (absoluteValueX>absoluteValueY)
+//    {
+//        rotationAxis = {0,1,0};
+//    }
+//    else
+//    {
+//        rotationAxis = {1,0,0};
+//    }
     double angleInDegrees = 90;
     double angleInRadians = osg::DegreesToRadians(angleInDegrees);
     osg::Quat rotation{angleInRadians,rotationAxis};
+//    double w{0};
+//    osg::Vec4d vec4d(pointVector.get_x(),pointVector.get_y(),pointVector.get_z(),w);
+//    osg::Quat rotation2{vec4d};
     return rotation;
 }
 
