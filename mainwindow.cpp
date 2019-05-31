@@ -333,12 +333,12 @@ void MainWindow::on_autoAdjustLayersButton_clicked(bool checked)
     redraw_and_refresh_information();
 }
 
-void MainWindow::on_autoAdjustWidthButton_clicked(bool checked)
-{
-    mShape->set_auto_adjust_path(checked);
-    on_applyParametersButton_clicked();
-    redraw_and_refresh_information();
-}
+//void MainWindow::on_autoAdjustWidthButton_clicked(bool checked)
+//{
+//    mShape->set_auto_adjust_path(checked);
+//    on_applyParametersButton_clicked();
+//    redraw_and_refresh_information();
+//}
 
 void MainWindow::on_actionExport_G_code_triggered()
 {

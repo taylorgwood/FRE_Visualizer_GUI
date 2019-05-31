@@ -61,7 +61,7 @@ private slots:
     void reset_print_parameter_labels();
     void reset_object_size_labels();
     void on_autoAdjustLayersButton_clicked(bool checked);
-    void on_autoAdjustWidthButton_clicked(bool checked);
+//    void on_autoAdjustWidthButton_clicked(bool checked);
     void on_actionExport_G_code_triggered();
     void on_animationSlider_sliderMoved(int position);
     void on_animateButton_toggled(bool checked);
