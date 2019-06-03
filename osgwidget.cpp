@@ -202,14 +202,7 @@ void OSGWidget::draw_print_path()
 
     for (unsigned int i{mAnimationCount}; i<numberOfPoints; i++)
     {
-//        float R{1.0f};
-//        float G{1.0f};
-//        float B{1.0f};
-//        float R = colorArray->at(i).r();
-//        float G = colorArray->at(i).g();
-//        float B = colorArray->at(i).b();
         float A{0.2f};
-//        osg::Vec4 currentColor{R,G,B,A};
         colorArray->at(i).a() = A;
     }
 
@@ -241,12 +234,10 @@ void OSGWidget::draw_cylinders()
         osg::Vec3 position = pathMidpoint->at(i);
         osg::Quat rotation = rotationData->at(i);
         transform->setScale(scaleFactor);
-//        transform->setPosition(centerUnitCylinder);
-        transform->setPivotPoint(center);
+//        transform->setPivotPoint(center);
         transform->setAttitude(rotation);
         transform->setPosition(position);
         transform->addChild(unitCylinder);
-//        transform->setPosition()
         allShapes->addChild(transform);
         count ++;
     }
@@ -281,8 +272,8 @@ osg::ShapeDrawable *OSGWidget::create_unit_graphic_cylinder()
 void OSGWidget::draw_wireframe()
 {
     osg::Vec4 wireframeColorRGBA{0.8f,0.8f,1.0f,0.1f};
-    float scaleFactorX = mShape->get_length()/2;
-    float scaleFactorY = mShape->get_width()/2;
+    float scaleFactorX = mShape->get_width()/2;
+    float scaleFactorY = mShape->get_length()/2;
     float scaleFactorZ = mShape->get_height()/2;
     osg::Vec3d scaleFactor = {scaleFactorX,scaleFactorY,scaleFactorZ};
     Wireframe newWireframe;
@@ -407,11 +398,23 @@ std::vector<osg::Vec3> *OSGWidget::get_path_midpoint_locations(Shape* shape)
             Path* path  = layerPathList[pathNumber];
             Point start = path->get_start();
             Point end = path->get_end();
-            float xMidpoint = static_cast<float>(start.get_x()-end.get_x());
-            float yMidpoint = static_cast<float>(start.get_y()-end.get_y());
-//            float zMidpoint = static_cast<float>(start.get_z()-end.get_z());
-            float xLocation = (xMidpoint)-shapeWidth/2;
-            float yLocation = (yMidpoint)-shapeLength/2;
+            float xLocation{0};
+            float yLocation{0};
+            if (layerNumber%2 == 0)
+            {
+                xLocation = 0;//-shapeLength/2;
+                yLocation = end.get_y()-shapeLength/2;
+            }
+            else
+            {
+                xLocation = start.get_x()-shapeWidth/2;
+                yLocation = 0;//-shapeWidth/2;
+            }
+            //            float xMidpoint = static_cast<float>(start.get_x()-end.get_x());
+            //            float yMidpoint = static_cast<float>(start.get_y()-end.get_y());
+            //            float zMidpoint = static_cast<float>(start.get_z()-end.get_z());
+            //            float xLocation = 0; //(xMidpoint)+shapeWidth/2;
+            //            float yLocation = -shapeWidth/2;
             float zLocation = static_cast<float>(start.get_z())-shapeHeight/2;
             midpoint->at(count) = osg::Vec3(xLocation,yLocation,zLocation);
             count++;
@@ -459,28 +462,34 @@ std::vector<osg::Quat>* OSGWidget::get_path_rotation_data(Shape* shape)
     return rotationData;
 }
 
-osg::Quat OSGWidget::get_rotation(Point orthogonalVector)
+osg::Quat OSGWidget::get_rotation(Point orthagonalVector)
 {
-    float x = static_cast<float>(orthogonalVector.get_x());
-    float y = static_cast<float>(orthogonalVector.get_y());
-    float z = static_cast<float>(orthogonalVector.get_z());
-//    double absoluteValueX = abs(x);
-//    double absoluteValueY = abs(y);
+    float x = static_cast<float>(orthagonalVector.get_x());
+    float y = static_cast<float>(orthagonalVector.get_y());
+    float z = static_cast<float>(orthagonalVector.get_z());
+    //    double absoluteValueX = abs(x);
+    //    double absoluteValueY = abs(y);
     osg::Vec3 rotationAxis = {x,y,z};
-//    if (absoluteValueX>absoluteValueY)
-//    {
-//        rotationAxis = {0,1,0};
-//    }
-//    else
-//    {
-//        rotationAxis = {1,0,0};
-//    }
+    //    if (absoluteValueX>absoluteValueY)
+    //    {
+    //        rotationAxis = {0,1,0};
+    //    }
+    //    else
+    //    {
+    //        rotationAxis = {1,0,0};
+    //    }
+    // a.dot(^b) = |a|cos(theta)
+    // theta = acos(a.dot(^b)/|a|)
+//    Point a = direction;
+//    Point b(0,1,0);
+//    double magA = a.get_magnitude();
+//    double angleInRadians = std::acos(a.dot(b)/(magA));
     double angleInDegrees = 90;
     double angleInRadians = osg::DegreesToRadians(angleInDegrees);
     osg::Quat rotation{angleInRadians,rotationAxis};
-//    double w{0};
-//    osg::Vec4d vec4d(pointVector.get_x(),pointVector.get_y(),pointVector.get_z(),w);
-//    osg::Quat rotation2{vec4d};
+    //    double w{0};
+    //    osg::Vec4d vec4d(pointVector.get_x(),pointVector.get_y(),pointVector.get_z(),w);
+    //    osg::Quat rotation2{vec4d};
     return rotation;
 }
 

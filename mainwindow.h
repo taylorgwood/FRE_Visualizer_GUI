@@ -72,6 +72,10 @@ private slots:
     void set_color_B(QColor color);
     void set_default_colors();
 
+    void on_topWidth_returnPressed();
+
+    void on_infillAngle_returnPressed();
+
 signals:
 
 private:
@@ -84,6 +88,7 @@ private:
     double mExtrusionWidth{0.26};
     float  mLayerHeight{0.26f};
     float  mShapeWidth{10};
+    float  mTopWidth{10};
     float  mShapeHeight{10};
     float  mShapeLength{10};
     QColor mColorA{238, 244, 66, 255};

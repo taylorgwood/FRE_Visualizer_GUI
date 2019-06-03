@@ -49,6 +49,7 @@ osg::Node* Wireframe::create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor
     geode->getOrCreateStateSet()->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
     osg::PositionAttitudeTransform* transform = new osg::PositionAttitudeTransform;
     transform->setScale(scaleFactor);
+    transform->setPosition(osg::Vec3d(0,0,0));
 
     transform->addChild(geode);
     return transform;

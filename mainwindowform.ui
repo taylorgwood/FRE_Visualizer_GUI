@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>1282</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -67,7 +67,7 @@
   <widget class="QDockWidget" name="dockWidget">
    <property name="minimumSize">
     <size>
-     <width>307</width>
+     <width>315</width>
      <height>703</height>
     </size>
    </property>
@@ -96,7 +96,7 @@
         <rect>
          <x>0</x>
          <y>12</y>
-         <width>291</width>
+         <width>309</width>
          <height>661</height>
         </rect>
        </property>
@@ -162,6 +162,13 @@
                    </widget>
                   </item>
                   <item>
+                   <widget class="QLabel" name="label_19">
+                    <property name="text">
+                     <string>Infill Angle</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
                    <widget class="QLabel" name="label_10">
                     <property name="text">
                      <string>Extrusion Width (mm)</string>
@@ -214,6 +221,13 @@
                    </widget>
                   </item>
                   <item>
+                   <widget class="QLineEdit" name="infillAngle">
+                    <property name="text">
+                     <string>0</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
                    <widget class="QLineEdit" name="extrusionWidth">
                     <property name="text">
                      <string>0.26</string>
@@ -241,30 +255,6 @@
                 </item>
                 <item>
                  <widget class="QLabel" name="adjustedLayerHeightDisplay">
-                  <property name="text">
-                   <string>0.26</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_11">
-                <item>
-                 <widget class="QRadioButton" name="autoAdjustWidthButton">
-                  <property name="text">
-                   <string>Auto-adjust extrusion width:</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                  <property name="autoExclusive">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="adjustedExtrusionWidthDisplay">
                   <property name="text">
                    <string>0.26</string>
                   </property>
@@ -345,6 +335,27 @@
                   </item>
                   <item>
                    <widget class="QLineEdit" name="shapeWidth">
+                    <property name="text">
+                     <string>10</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_18">
+                  <item>
+                   <widget class="QLabel" name="label_18">
+                    <property name="text">
+                     <string>Top Width</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="topWidth">
                     <property name="text">
                      <string>10</string>
                     </property>

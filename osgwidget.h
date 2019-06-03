@@ -64,7 +64,7 @@ private:
     std::vector<osg::Vec3> *get_path_midpoint_locations(Shape* shape);
     std::vector<osg::Vec3> *get_path_scale_data(Shape* shape);
     std::vector<osg::Quat> *get_path_rotation_data(Shape* shape);
-    osg::Quat get_rotation(Point orthogonalVector);
+    osg::Quat get_rotation(Point direction);
     osg::Quat get_rotation_about_x_axis();
     osg::Quat get_rotation_about_y_axis();
     osg::ShapeDrawable *create_unit_graphic_cylinder();
