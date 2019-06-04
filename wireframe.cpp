@@ -14,18 +14,18 @@ Wireframe::~Wireframe()
 {
 }
 
-osg::Node* Wireframe::create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor)
+osg::Node* Wireframe::create_wireframe(osg::Vec4 &color, float height, float width, float topWidth, float length)
 {
     osg::Vec3Array* v = new osg::Vec3Array;
     v->resize( 8 );
-    (*v)[0].set( -1.f, -1.f, -1.f );
-    (*v)[1].set(  1.f, -1.f, -1.f );
-    (*v)[2].set(  1.f,  1.f, -1.f );
-    (*v)[3].set( -1.f,  1.f, -1.f );
-    (*v)[4].set( -1.f, -1.f,  1.f );
-    (*v)[5].set(  1.f, -1.f,  1.f );
-    (*v)[6].set(  1.f,  1.f,  1.f );
-    (*v)[7].set( -1.f,  1.f,  1.f );
+    (*v)[0].set( -width/2,    -length/2, -height/2 );
+    (*v)[1].set(  width/2,    -length/2, -height/2 );
+    (*v)[2].set(  width/2,     length/2, -height/2 );
+    (*v)[3].set( -width/2,     length/2, -height/2 );
+    (*v)[4].set( -width/2,    -length/2,  height/2 );
+    (*v)[5].set(  width/2-(width-topWidth), -length/2,  height/2 );
+    (*v)[6].set(  width/2-(width-topWidth),  length/2,  height/2 );
+    (*v)[7].set( -width/2,     length/2,  height/2 );
 
     osg::Geometry* geom = new osg::Geometry;
     geom->setUseDisplayList( false );
@@ -43,19 +43,29 @@ osg::Node* Wireframe::create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor
     geom->addPrimitiveSet( new osg::DrawElementsUShort( osg::PrimitiveSet::LINE_LOOP, 4, idxLoop2 ) );
 
     osg::Geode* geode = new osg::Geode;
-    geode->addDrawable( geom );
+    geode->addDrawable(geom);
+
+//    osg::StateSet* stateSet = geode->getOrCreateStateSet();
+//    stateSet->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
+//    stateSet->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA), osg::StateAttribute::ON);
+//    osg::Material* material = new osg::Material;
+//    material->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+//    stateSet->setAttributeAndModes( material, osg::StateAttribute::ON );
+//    stateSet->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
+//    geode->getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED );
+//    geode->getOrCreateStateSet()->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
 
     geode->getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED );
     geode->getOrCreateStateSet()->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
     osg::PositionAttitudeTransform* transform = new osg::PositionAttitudeTransform;
-    transform->setScale(scaleFactor);
+//    transform->setScale(scaleFactor);
     transform->setPosition(osg::Vec3d(0,0,0));
 
     transform->addChild(geode);
     return transform;
 }
 
-osg::Node* Wireframe::draw_print_path(osg::Vec4Array* color, osg::Vec3Array* vertexData, int animationCount)
+osg::Node* Wireframe::draw_print_path(osg::Vec4Array* color, osg::Vec3Array* vertexData, double shapeWidth, double shapeLength, double shapeHeight)
 {
     osg::Geometry* animatedLinesGeom = new osg::Geometry;
     osg::DrawArrays* drawAnimatedArrayLines = new osg::DrawArrays(osg::PrimitiveSet::LINE_STRIP);
@@ -82,6 +92,7 @@ osg::Node* Wireframe::draw_print_path(osg::Vec4Array* color, osg::Vec3Array* ver
     animatedGeode->getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED );
     animatedGeode->getOrCreateStateSet()->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
     osg::PositionAttitudeTransform* transform = new osg::PositionAttitudeTransform;
+//    transform->setPosition(osg::Vec3d(0,0,0));
     transform->addChild(animatedGeode);
     return transform;
 }

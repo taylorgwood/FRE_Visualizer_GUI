@@ -83,8 +83,9 @@ private:
     OSGWidget *mOSGWidget{nullptr};
     Shape  *mShape{nullptr};
     double mNeedleDiameter{0.26};
-    double mExtrusionMultiplier{0.785};
+    double mExtrusionMultiplier{1.0};
     double mInfillPercentage{100};
+    double mInfillAngle{0};
     double mExtrusionWidth{0.26};
     float  mLayerHeight{0.26f};
     float  mShapeWidth{10};

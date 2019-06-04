@@ -152,7 +152,7 @@ void MainWindow::set_needle_diameter_label()
 void MainWindow::on_objectSizeButton_clicked()
 {
     double shapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
-    double topWidth    = mMainWindowUI->shapeWidth->text().toDouble();
+    double topWidth    = mMainWindowUI->topWidth->text().toDouble();
     double shapeLength = mMainWindowUI->shapeLength->text().toDouble();
     double shapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
     mShape->set_width(shapeWidth);
@@ -317,6 +317,7 @@ void MainWindow::set_default_print_parameters()
     mNeedleDiameter = 0.26;
     mExtrusionMultiplier = 0.785;
     mInfillPercentage = 100;
+    mInfillAngle = 0;
     mExtrusionWidth = 0.26;
     mLayerHeight = 0.26;
 }
@@ -335,6 +336,7 @@ void MainWindow::reset_print_parameter_labels()
     mMainWindowUI->needleGauge->setValue(25);
     mMainWindowUI->extrusionMultiplier->setText(QString::number(mExtrusionMultiplier));
     mMainWindowUI->infillPercentage->setText(QString::number(mInfillPercentage));
+    mMainWindowUI->infillAngle->setText(QString::number(mInfillAngle));
     mMainWindowUI->extrusionWidth->setText(QString::number(mExtrusionWidth));
     mMainWindowUI->layerHeight->setText(QString::number(mLayerHeight));
 }
@@ -393,8 +395,8 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
     bool checked{1};
     if (index == printParameters)
     {
-        mMainWindowUI->actionView_Print_Path->setChecked(unchecked);
-        mMainWindowUI->actionView_Cylinders->setChecked(checked);
+        mMainWindowUI->actionView_Print_Path->setChecked(checked);
+        mMainWindowUI->actionView_Cylinders->setChecked(unchecked);
     }
     if (index == printPath)
     {

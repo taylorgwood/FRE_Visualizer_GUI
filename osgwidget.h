@@ -28,8 +28,8 @@ public:
     void set_animation_count(unsigned int animationCount);
     void draw_print_path();
     void draw_cylinders();
-    osg::Vec3Array* get_vertex_data_array(Shape* shape);
-    osg::Vec4Array* get_color_data_array(Shape* shape);
+    osg::Vec3Array* get_vertex_data_array(Shape *shape);
+    osg::Vec4Array* get_color_data_array(Shape *shape);
     void reset_shape(Shape* newShape);
     void set_color_A(QColor color);
     QColor get_color_A();
@@ -61,9 +61,9 @@ private:
     osgViewer::View *create_scene(float aspectRatio, int pixelRatio);
     int  set_up_timer();
 
-    std::vector<osg::Vec3> *get_path_midpoint_locations(Shape* shape);
-    std::vector<osg::Vec3> *get_path_scale_data(Shape* shape);
-    std::vector<osg::Quat> *get_path_rotation_data(Shape* shape);
+    std::vector<osg::Vec3> *get_path_midpoint_locations(Shape *shape);
+    std::vector<osg::Vec3> *get_path_scale_data(Shape *shape);
+    std::vector<osg::Quat> *get_path_rotation_data(Shape *shape);
     osg::Quat get_rotation(Point direction);
     osg::Quat get_rotation_about_x_axis();
     osg::Quat get_rotation_about_y_axis();
@@ -84,8 +84,8 @@ private:
     int    mRedrawCount{0};
     bool   mViewAxes{1};
     bool   mViewWireframe{1};
-    bool   mViewCylinders{1};
-    bool   mViewPrintPath{0};
+    bool   mViewCylinders{0};
+    bool   mViewPrintPath{1};
     unsigned int mAnimationCount{100000};
     double const pi{3.14159};
     QColor mColorA{1,0,0,1};

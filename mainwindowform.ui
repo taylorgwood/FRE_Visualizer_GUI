@@ -26,7 +26,7 @@
      <x>0</x>
      <y>0</y>
      <width>1282</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -164,7 +164,7 @@
                   <item>
                    <widget class="QLabel" name="label_19">
                     <property name="text">
-                     <string>Infill Angle</string>
+                     <string>Infill Angle (deg.)</string>
                     </property>
                    </widget>
                   </item>
@@ -555,7 +555,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>20</width>
-            <height>40</height>
+            <height>20</height>
            </size>
           </property>
          </spacer>
@@ -794,7 +794,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
     <string>View Cylinders</string>
@@ -805,7 +805,7 @@
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>View Print Path</string>

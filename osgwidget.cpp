@@ -205,8 +205,11 @@ void OSGWidget::draw_print_path()
         float A{0.2f};
         colorArray->at(i).a() = A;
     }
+    double shapeWidth = mShape->get_width();
+    double shapeLength = mShape->get_length();
+    double shapeHeight = mShape->get_height();
 
-    osg::Node* animatedPrintPath = newWireframe.draw_print_path(colorArray, vertexData, mAnimationCount);
+    osg::Node* animatedPrintPath = newWireframe.draw_print_path(colorArray, vertexData, shapeWidth, shapeLength, shapeHeight);
     mRoot->addChild(animatedPrintPath);
 }
 
@@ -271,13 +274,14 @@ osg::ShapeDrawable *OSGWidget::create_unit_graphic_cylinder()
 
 void OSGWidget::draw_wireframe()
 {
-    osg::Vec4 wireframeColorRGBA{0.8f,0.8f,1.0f,0.1f};
-    float scaleFactorX = mShape->get_width()/2;
-    float scaleFactorY = mShape->get_length()/2;
-    float scaleFactorZ = mShape->get_height()/2;
-    osg::Vec3d scaleFactor = {scaleFactorX,scaleFactorY,scaleFactorZ};
+    osg::Vec4 wireframeColorRGBA{0.8f,0.8f,1.0f,0.4f};
+    float width = static_cast<float>(mShape->get_width());
+    float topWidth = static_cast<float>(mShape->get_top_width());
+    float length = static_cast<float>(mShape->get_length());
+    float height = static_cast<float>(mShape->get_height());
+//    osg::Vec3d scaleFactor = {scaleFactorX,scaleFactorY,scaleFactorZ};
     Wireframe newWireframe;
-    osg::Node* wireframe = newWireframe.create_wireframe(wireframeColorRGBA, scaleFactor);
+    osg::Node* wireframe = newWireframe.create_wireframe(wireframeColorRGBA, height, width, topWidth, length);
     mRoot->addChild(wireframe);
 }
 
@@ -303,15 +307,12 @@ void OSGWidget::create_axes()
 {
     float radius{0.1};
     float height{.5};
-    osg::Vec3 shapePosition1{height/2,0,0};
-    osg::Vec3 shapePosition2{0,height/2,0};
-    osg::Vec3 shapePosition3{0,0,height/2};
-    float moveDistanceX = mShape->get_length()/2;
-    float moveDistanceY = mShape->get_width()/2;
-    float moveDistanceZ = mShape->get_height()/2;
-    shapePosition1 += {moveDistanceX,0,0};
-    shapePosition2 += {0,moveDistanceY,0};
-    shapePosition3 += {0,0,moveDistanceZ};
+    float shapeWidth = static_cast<float>(mShape->get_width());
+    float shapeLength = static_cast<float>(mShape->get_length());
+    float shapeHeight = static_cast<float>(mShape->get_height());
+    osg::Vec3 shapePosition1 = {shapeWidth/2,0,0};
+    osg::Vec3 shapePosition2 = {0,shapeLength/2,0};
+    osg::Vec3 shapePosition3 = {0,0,shapeHeight/2};
     osg::Vec4 red = {0.5,0,0,0.5};
     osg::Vec4 green = {0,0.5,0,0.5};
     osg::Vec4 blue = {0,0,0.5,0.5};

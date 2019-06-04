@@ -9,8 +9,8 @@ class Wireframe
 public:
     Wireframe();
     ~Wireframe();
-    osg::Node* create_wireframe(osg::Vec4 &color, osg::Vec3d &scaleFactor);
-    osg::Node* draw_print_path(osg::Vec4Array *color, osg::Vec3Array *vertexData, int animationCount);
+    osg::Node* create_wireframe(osg::Vec4 &color, float height, float width, float topWidth, float length);
+    osg::Node* draw_print_path(osg::Vec4Array *color, osg::Vec3Array *vertexData, double shapeWidth, double shapeLength, double shapeHeight);
 
 protected:
 
