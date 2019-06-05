@@ -202,7 +202,7 @@ void OSGWidget::draw_print_path()
 
     for (unsigned int i{mAnimationCount}; i<numberOfPoints; i++)
     {
-        float A{0.2f};
+        float A{0.1f};
         colorArray->at(i).a() = A;
     }
     double shapeWidth = mShape->get_width();
