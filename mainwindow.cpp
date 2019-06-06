@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mMainWindowUI->setupUi(this);
     QWidget::setWindowIcon(QIcon(":/myicons/myicon.ico"));
     mShape = new Shape();
+    mGcode = new Gcode();
     mOSGWidget = new OSGWidget{mShape, this};
 
     this->setCentralWidget(mOSGWidget);
@@ -169,11 +170,13 @@ void MainWindow::on_applyParametersButton_clicked()
     double infillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
     double infillAngle = mMainWindowUI->infillAngle->text().toDouble();
     double extrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
+    double materialResolution = mMainWindowUI->materialResolution->text().toDouble();
     mShape->reset_layer_height(layerHeight);
     mShape->set_extrusion_multiplier(extrusionMultiplier);
     mShape->set_infill_percentage(infillPercentage);
     mShape->set_infill_angle(infillAngle);
     mShape->set_extrusion_width(extrusionWidth); // change this to have auto adjust in the set function
+    mShape->set_resolution(materialResolution);
     on_objectSizeButton_clicked();
     redraw_and_refresh_information();
 }
@@ -227,6 +230,12 @@ void MainWindow::on_extrusionWidth_returnPressed()
     double extrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
     mShape->set_extrusion_width(extrusionWidth);
     redraw_and_refresh_information();
+}
+
+void MainWindow::on_materialResolution_returnPressed()
+{
+    double materialResolution = mMainWindowUI->materialResolution->text().toDouble();
+    mShape->set_resolution(materialResolution);
 }
 
 void MainWindow::on_shapeWidth_returnPressed()
@@ -290,8 +299,8 @@ void MainWindow::set_layer_height_label()
 
 void MainWindow::set_extrusion_width_label()
 {
-    double trueExtrusionWidth = mShape->get_layer(1)->get_extrusion_width();
-//    mMainWindowUI->adjustedExtrusionWidthDisplay->setText(QString::number(trueExtrusionWidth));
+//    double trueExtrusionWidth = mShape->get_layer(1)->get_extrusion_width();
+    //    mMainWindowUI->adjustedExtrusionWidthDisplay->setText(QString::number(trueExtrusionWidth));
 }
 
 void MainWindow::on_resetParametersButton_clicked()
@@ -308,18 +317,19 @@ void MainWindow::on_resetObjectSizeButton_clicked()
 {
     set_default_object_size();
     on_objectSizeButton_clicked();
-//    redraw_and_refresh_information();
+    //    redraw_and_refresh_information();
     reset_object_size_labels();
 }
 
 void MainWindow::set_default_print_parameters()
 {
     mNeedleDiameter = 0.26;
+    mLayerHeight = 0.26;
     mExtrusionMultiplier = 0.785;
     mInfillPercentage = 100;
     mInfillAngle = 0;
     mExtrusionWidth = 0.26;
-    mLayerHeight = 0.26;
+    mMaterialResolution = 1;
 }
 
 void MainWindow::set_default_object_size()
@@ -334,11 +344,12 @@ void MainWindow::reset_print_parameter_labels()
 {
     mMainWindowUI->needleDiameterDisplay->setText(QString::number(mNeedleDiameter));
     mMainWindowUI->needleGauge->setValue(25);
+    mMainWindowUI->layerHeight->setText(QString::number(mLayerHeight));
     mMainWindowUI->extrusionMultiplier->setText(QString::number(mExtrusionMultiplier));
     mMainWindowUI->infillPercentage->setText(QString::number(mInfillPercentage));
     mMainWindowUI->infillAngle->setText(QString::number(mInfillAngle));
     mMainWindowUI->extrusionWidth->setText(QString::number(mExtrusionWidth));
-    mMainWindowUI->layerHeight->setText(QString::number(mLayerHeight));
+    mMainWindowUI->materialResolution->setText(QString::number(mMaterialResolution));
 }
 
 void MainWindow::reset_object_size_labels()
@@ -365,11 +376,10 @@ void MainWindow::on_autoAdjustLayersButton_clicked(bool checked)
 
 void MainWindow::on_actionExport_G_code_triggered()
 {
-    Gcode newGode;
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr(""));
     Shape exportShape = *mShape;
     std::string exportFileName = fileName.toStdString();
-    newGode.generate_file(exportShape,exportFileName);
+    mGcode->generate_file(exportShape,exportFileName);
 }
 
 void MainWindow::on_animationSlider_sliderMoved(int position)
@@ -440,4 +450,76 @@ void MainWindow::set_default_colors()
 {
     set_color_A(mColorA);
     set_color_B(mColorB);
+}
+
+void MainWindow::on_layerRetraction_returnPressed()
+{
+    double layerRetractionDistance = mMainWindowUI->layerRetraction->text().toDouble();
+    mGcode->set_layer_retraction_distance(layerRetractionDistance);
+}
+
+void MainWindow::on_materialSwitchRetraction_returnPressed()
+{
+    double materialSwitchRetractionDistance = mMainWindowUI->materialSwitchRetraction->text().toDouble();
+    mGcode->set_material_switch_retraction_distance(materialSwitchRetractionDistance);
+}
+
+void MainWindow::on_syringeDiameter_returnPressed()
+{
+    double syringeDiameter = mMainWindowUI->syringeDiameter->text().toDouble();
+    mGcode->set_syringe_diameter(syringeDiameter);
+}
+
+void MainWindow::on_layerJump_returnPressed()
+{
+    double layerJumpDistance = mMainWindowUI->layerJump->text().toDouble();
+    mGcode->set_print_speed(layerJumpDistance);
+}
+
+void MainWindow::on_printSpeed_returnPressed()
+{
+    double printSpeed = mMainWindowUI->printSpeed->text().toDouble();
+    mGcode->set_print_speed(printSpeed);
+}
+
+void MainWindow::on_travelSpeed_returnPressed()
+{
+    double travelSpeed = mMainWindowUI->travelSpeed->text().toDouble();
+    mGcode->set_translation_speed(travelSpeed);
+}
+
+void MainWindow::on_applySettingsButton_clicked()
+{
+    on_layerRetraction_returnPressed();
+    on_materialSwitchRetraction_returnPressed();
+    on_layerJump_returnPressed();
+    on_syringeDiameter_returnPressed();
+    on_printSpeed_returnPressed();
+    on_travelSpeed_returnPressed();
+}
+
+void MainWindow::on_resetSettingsButton_clicked()
+{
+    set_default_settings();
+    reset_settings_labels();
+}
+
+void MainWindow::set_default_settings()
+{
+    mLayerRetractionDistance = 0;
+    mMaterialSwitchRetractionDistance = 0;
+    mLayerJumpDistance = 0;
+    mSyringeDiameter = 14.9;
+    mPrintSpeed = 720;
+    mTravelSpeed = 720;
+}
+
+void MainWindow::reset_settings_labels()
+{
+    mMainWindowUI->layerRetraction->setText(QString::number(mLayerRetractionDistance));
+    mMainWindowUI->materialSwitchRetraction->setText(QString::number(mMaterialSwitchRetractionDistance));
+    mMainWindowUI->layerJump->setText(QString::number(mLayerJumpDistance));
+    mMainWindowUI->syringeDiameter->setText(QString::number(mSyringeDiameter));
+    mMainWindowUI->printSpeed->setText(QString::number(mPrintSpeed));
+    mMainWindowUI->travelSpeed->setText(QString::number(mTravelSpeed));
 }

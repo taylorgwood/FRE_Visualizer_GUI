@@ -47,6 +47,7 @@ private slots:
     void on_extrusionMultiplier_returnPressed();
     void on_infillPercentage_returnPressed();
     void on_extrusionWidth_returnPressed();
+    void on_materialResolution_returnPressed();
     void on_shapeWidth_returnPressed();
     void on_shapeLength_returnPressed();
     void on_shapeHeight_returnPressed();
@@ -71,10 +72,19 @@ private slots:
     void set_color_A(QColor color);
     void set_color_B(QColor color);
     void set_default_colors();
-
     void on_topWidth_returnPressed();
-
     void on_infillAngle_returnPressed();
+    void on_layerRetraction_returnPressed();
+    void on_materialSwitchRetraction_returnPressed();
+    void on_layerJump_returnPressed();
+    void on_syringeDiameter_returnPressed();
+    void on_printSpeed_returnPressed();
+    void on_travelSpeed_returnPressed();
+    void on_applySettingsButton_clicked();
+    void on_resetSettingsButton_clicked();
+    void set_default_settings();
+    void reset_settings_labels();
+
 
 signals:
 
@@ -82,11 +92,13 @@ private:
     Ui::MainWindowForm *mMainWindowUI;
     OSGWidget *mOSGWidget{nullptr};
     Shape  *mShape{nullptr};
+    Gcode  *mGcode{nullptr};
     double mNeedleDiameter{0.26};
     double mExtrusionMultiplier{1.0};
     double mInfillPercentage{100};
     double mInfillAngle{0};
     double mExtrusionWidth{0.26};
+    double mMaterialResolution{1};
     float  mLayerHeight{0.26f};
     float  mShapeWidth{10};
     float  mTopWidth{10};
@@ -94,6 +106,12 @@ private:
     float  mShapeLength{10};
     QColor mColorA{238, 244, 66, 255};
     QColor mColorB{51, 33, 209, 255};
+    double mLayerRetractionDistance{0};
+    double mMaterialSwitchRetractionDistance{0};
+    double mLayerJumpDistance{0};
+    double mPrintSpeed{720};
+    double mTravelSpeed{720};
+    double mSyringeDiameter{14.9};
 
 };
 
