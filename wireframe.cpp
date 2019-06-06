@@ -45,20 +45,9 @@ osg::Node* Wireframe::create_wireframe(osg::Vec4 &color, float height, float wid
     osg::Geode* geode = new osg::Geode;
     geode->addDrawable(geom);
 
-//    osg::StateSet* stateSet = geode->getOrCreateStateSet();
-//    stateSet->setRenderingHint(osg::StateSet::TRANSPARENT_BIN);
-//    stateSet->setAttributeAndModes(new osg::BlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA), osg::StateAttribute::ON);
-//    osg::Material* material = new osg::Material;
-//    material->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
-//    stateSet->setAttributeAndModes( material, osg::StateAttribute::ON );
-//    stateSet->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
-//    geode->getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED );
-//    geode->getOrCreateStateSet()->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
-
     geode->getOrCreateStateSet()->setMode( GL_LIGHTING, osg::StateAttribute::OFF | osg::StateAttribute::PROTECTED );
     geode->getOrCreateStateSet()->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
     osg::PositionAttitudeTransform* transform = new osg::PositionAttitudeTransform;
-//    transform->setScale(scaleFactor);
     transform->setPosition(osg::Vec3d(0,0,0));
 
     transform->addChild(geode);

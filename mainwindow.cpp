@@ -94,6 +94,29 @@ void MainWindow::view_print_path()
     mOSGWidget->redraw();
 }
 
+void MainWindow::on_tabWidget_tabBarClicked(int index)
+{
+    int printParameters{0};
+    int printPath{1};
+    bool unchecked{0};
+    bool checked{1};
+    if (index == printParameters)
+    {
+        mMainWindowUI->actionView_Print_Path->setChecked(checked);
+        mMainWindowUI->actionView_Cylinders->setChecked(unchecked);
+    }
+    if (index == printPath)
+    {
+        mMainWindowUI->actionView_Print_Path->setChecked(checked);
+        mMainWindowUI->actionView_Cylinders->setChecked(unchecked);
+    }
+    view_cylinders();
+    view_print_path();
+    redraw_and_refresh_information();
+}
+
+
+//--------------------------------------------------------------------
 void MainWindow::on_needleGauge_valueChanged(int arg1)
 {    
     int needleGauge{arg1};
@@ -150,53 +173,6 @@ void MainWindow::set_needle_diameter_label()
     mMainWindowUI->needleDiameterDisplay->setText(needleDiameterText);
 }
 
-void MainWindow::on_objectSizeButton_clicked()
-{
-    double shapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
-    double topWidth    = mMainWindowUI->topWidth->text().toDouble();
-    double shapeLength = mMainWindowUI->shapeLength->text().toDouble();
-    double shapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
-    mShape->set_width(shapeWidth);
-    mShape->set_top_width(topWidth);
-    mShape->set_length(shapeLength);
-    mShape->reset_height(shapeHeight);
-    redraw_and_refresh_information();
-}
-
-void MainWindow::on_applyParametersButton_clicked()
-{ 
-    double layerHeight = mMainWindowUI->layerHeight->text().toDouble();
-    double extrusionMultiplier = mMainWindowUI->extrusionMultiplier->text().toDouble();
-    double infillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
-    double infillAngle = mMainWindowUI->infillAngle->text().toDouble();
-    double extrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
-    double materialResolution = mMainWindowUI->materialResolution->text().toDouble();
-    mShape->reset_layer_height(layerHeight);
-    mShape->set_extrusion_multiplier(extrusionMultiplier);
-    mShape->set_infill_percentage(infillPercentage);
-    mShape->set_infill_angle(infillAngle);
-    mShape->set_extrusion_width(extrusionWidth); // change this to have auto adjust in the set function
-    mShape->set_resolution(materialResolution);
-    on_objectSizeButton_clicked();
-    redraw_and_refresh_information();
-}
-
-void MainWindow::on_clearButton_clicked()
-{
-    mOSGWidget->clear_window();
-}
-
-void MainWindow::on_redrawButton_clicked()
-{
-    redraw_and_refresh_information();
-    redraw_and_refresh_information();
-    view_axes();
-    view_wireframe();
-    view_cylinders();
-    view_print_path();
-    mOSGWidget->redraw();
-}
-
 void MainWindow::on_layerHeight_returnPressed()
 {
     double layerHeight = mMainWindowUI->layerHeight->text().toDouble();
@@ -238,6 +214,79 @@ void MainWindow::on_materialResolution_returnPressed()
     mShape->set_resolution(materialResolution);
 }
 
+void MainWindow::on_resetParametersButton_clicked()
+{
+    mShape = new Shape();
+    mOSGWidget->reset_shape(mShape);
+    set_default_print_parameters();
+    on_objectSizeButton_clicked();
+    redraw_and_refresh_information();
+    reset_print_parameter_labels();
+}
+
+void MainWindow::on_applyParametersButton_clicked()
+{
+    double layerHeight = mMainWindowUI->layerHeight->text().toDouble();
+    double extrusionMultiplier = mMainWindowUI->extrusionMultiplier->text().toDouble();
+    double infillPercentage = mMainWindowUI->infillPercentage->text().toDouble();
+    double infillAngle = mMainWindowUI->infillAngle->text().toDouble();
+    double extrusionWidth = mMainWindowUI->extrusionWidth->text().toDouble();
+    double materialResolution = mMainWindowUI->materialResolution->text().toDouble();
+    mShape->reset_layer_height(layerHeight);
+    mShape->set_extrusion_multiplier(extrusionMultiplier);
+    mShape->set_infill_percentage(infillPercentage);
+    mShape->set_infill_angle(infillAngle);
+    mShape->set_extrusion_width(extrusionWidth); // change this to have auto adjust in the set function
+    mShape->set_resolution(materialResolution);
+    on_objectSizeButton_clicked();
+    redraw_and_refresh_information();
+}
+
+void MainWindow::set_default_print_parameters()
+{
+    mNeedleDiameter = 0.26;
+    mLayerHeight = 0.26;
+    mExtrusionMultiplier = 0.785;
+    mInfillPercentage = 100;
+    mInfillAngle = 0;
+    mExtrusionWidth = 0.26;
+    mMaterialResolution = 1;
+}
+
+void MainWindow::reset_print_parameter_labels()
+{
+    mMainWindowUI->needleDiameterDisplay->setText(QString::number(mNeedleDiameter));
+    mMainWindowUI->needleGauge->setValue(25);
+    mMainWindowUI->layerHeight->setText(QString::number(mLayerHeight));
+    mMainWindowUI->extrusionMultiplier->setText(QString::number(mExtrusionMultiplier));
+    mMainWindowUI->infillPercentage->setText(QString::number(mInfillPercentage));
+    mMainWindowUI->infillAngle->setText(QString::number(mInfillAngle));
+    mMainWindowUI->extrusionWidth->setText(QString::number(mExtrusionWidth));
+    mMainWindowUI->materialResolution->setText(QString::number(mMaterialResolution));
+}
+
+void MainWindow::set_layer_height_label()
+{
+    double trueLayerHeight = mShape->get_layer_height();
+    mMainWindowUI->adjustedLayerHeightDisplay->setText(QString::number(trueLayerHeight));
+}
+
+void MainWindow::set_extrusion_width_label()
+{
+//    double trueExtrusionWidth = mShape->get_layer(1)->get_extrusion_width();
+    //    mMainWindowUI->adjustedExtrusionWidthDisplay->setText(QString::number(trueExtrusionWidth));
+}
+
+void MainWindow::on_autoAdjustLayersButton_clicked(bool checked)
+{
+    mShape->set_auto_adjust_layer(checked);
+    on_applyParametersButton_clicked();
+    redraw_and_refresh_information();
+}
+
+
+//--------------------------------------------------------------------
+
 void MainWindow::on_shapeWidth_returnPressed()
 {
     double shapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
@@ -266,12 +315,41 @@ void MainWindow::on_shapeHeight_returnPressed()
     redraw_and_refresh_information();
 }
 
-void MainWindow::redraw_and_refresh_information()
+void MainWindow::on_objectSizeButton_clicked()
 {
-    mOSGWidget->redraw();
-    set_volume_label();
-    set_layer_height_label();
-    set_extrusion_width_label();
+    double shapeWidth  = mMainWindowUI->shapeWidth->text().toDouble();
+    double topWidth    = mMainWindowUI->topWidth->text().toDouble();
+    double shapeLength = mMainWindowUI->shapeLength->text().toDouble();
+    double shapeHeight = mMainWindowUI->shapeHeight->text().toDouble();
+    mShape->set_width(shapeWidth);
+    mShape->set_top_width(topWidth);
+    mShape->set_length(shapeLength);
+    mShape->reset_height(shapeHeight);
+    redraw_and_refresh_information();
+}
+
+void MainWindow::on_resetObjectSizeButton_clicked()
+{
+    set_default_object_size();
+    on_objectSizeButton_clicked();
+    //    redraw_and_refresh_information();
+    reset_object_size_labels();
+}
+
+void MainWindow::set_default_object_size()
+{
+    mShapeWidth = 10;
+    mTopWidth = 10;
+    mShapeLength = 10;
+    mShapeHeight = 10;
+}
+
+void MainWindow::reset_object_size_labels()
+{
+    mMainWindowUI->shapeWidth->setText(QString::number(mShapeWidth));
+    mMainWindowUI->topWidth->setText(QString::number(mTopWidth));
+    mMainWindowUI->shapeLength->setText(QString::number(mShapeLength));
+    mMainWindowUI->shapeHeight->setText(QString::number(mShapeHeight));
 }
 
 void MainWindow::set_volume_label()
@@ -291,88 +369,36 @@ void MainWindow::set_volume_label()
     mMainWindowUI->extrudedVolume->setText(extrudedVolumeText);
 }
 
-void MainWindow::set_layer_height_label()
+
+
+//--------------------------------------------------------------------
+
+void MainWindow::redraw_and_refresh_information()
 {
-    double trueLayerHeight = mShape->get_layer_height();
-    mMainWindowUI->adjustedLayerHeightDisplay->setText(QString::number(trueLayerHeight));
+    mOSGWidget->redraw();
+    set_volume_label();
+    set_layer_height_label();
+    set_extrusion_width_label();
 }
 
-void MainWindow::set_extrusion_width_label()
+void MainWindow::on_clearButton_clicked()
 {
-//    double trueExtrusionWidth = mShape->get_layer(1)->get_extrusion_width();
-    //    mMainWindowUI->adjustedExtrusionWidthDisplay->setText(QString::number(trueExtrusionWidth));
+    mOSGWidget->clear_window();
 }
 
-void MainWindow::on_resetParametersButton_clicked()
+void MainWindow::on_redrawButton_clicked()
 {
-    mShape = new Shape();
-    mOSGWidget->reset_shape(mShape);
-    set_default_print_parameters();
-    on_objectSizeButton_clicked();
     redraw_and_refresh_information();
-    reset_print_parameter_labels();
-}
-
-void MainWindow::on_resetObjectSizeButton_clicked()
-{
-    set_default_object_size();
-    on_objectSizeButton_clicked();
-    //    redraw_and_refresh_information();
-    reset_object_size_labels();
-}
-
-void MainWindow::set_default_print_parameters()
-{
-    mNeedleDiameter = 0.26;
-    mLayerHeight = 0.26;
-    mExtrusionMultiplier = 0.785;
-    mInfillPercentage = 100;
-    mInfillAngle = 0;
-    mExtrusionWidth = 0.26;
-    mMaterialResolution = 1;
-}
-
-void MainWindow::set_default_object_size()
-{
-    mShapeWidth = 10;
-    mTopWidth = 10;
-    mShapeLength = 10;
-    mShapeHeight = 10;
-}
-
-void MainWindow::reset_print_parameter_labels()
-{
-    mMainWindowUI->needleDiameterDisplay->setText(QString::number(mNeedleDiameter));
-    mMainWindowUI->needleGauge->setValue(25);
-    mMainWindowUI->layerHeight->setText(QString::number(mLayerHeight));
-    mMainWindowUI->extrusionMultiplier->setText(QString::number(mExtrusionMultiplier));
-    mMainWindowUI->infillPercentage->setText(QString::number(mInfillPercentage));
-    mMainWindowUI->infillAngle->setText(QString::number(mInfillAngle));
-    mMainWindowUI->extrusionWidth->setText(QString::number(mExtrusionWidth));
-    mMainWindowUI->materialResolution->setText(QString::number(mMaterialResolution));
-}
-
-void MainWindow::reset_object_size_labels()
-{
-    mMainWindowUI->shapeWidth->setText(QString::number(mShapeWidth));
-    mMainWindowUI->topWidth->setText(QString::number(mTopWidth));
-    mMainWindowUI->shapeLength->setText(QString::number(mShapeLength));
-    mMainWindowUI->shapeHeight->setText(QString::number(mShapeHeight));
-}
-
-void MainWindow::on_autoAdjustLayersButton_clicked(bool checked)
-{
-    mShape->set_auto_adjust_layer(checked);
-    on_applyParametersButton_clicked();
     redraw_and_refresh_information();
+    view_axes();
+    view_wireframe();
+    view_cylinders();
+    view_print_path();
+    mOSGWidget->redraw();
 }
 
-//void MainWindow::on_autoAdjustWidthButton_clicked(bool checked)
-//{
-//    mShape->set_auto_adjust_path(checked);
-//    on_applyParametersButton_clicked();
-//    redraw_and_refresh_information();
-//}
+
+//--------------------------------------------------------------------
 
 void MainWindow::on_actionExport_G_code_triggered()
 {
@@ -397,26 +423,8 @@ void MainWindow::on_animateButton_toggled(bool checked)
     MainWindow::mOSGWidget->toggle_start(checked);
 }
 
-void MainWindow::on_tabWidget_tabBarClicked(int index)
-{
-    int printParameters{0};
-    int printPath{1};
-    bool unchecked{0};
-    bool checked{1};
-    if (index == printParameters)
-    {
-        mMainWindowUI->actionView_Print_Path->setChecked(checked);
-        mMainWindowUI->actionView_Cylinders->setChecked(unchecked);
-    }
-    if (index == printPath)
-    {
-        mMainWindowUI->actionView_Print_Path->setChecked(checked);
-        mMainWindowUI->actionView_Cylinders->setChecked(unchecked);
-    }
-    view_cylinders();
-    view_print_path();
-    redraw_and_refresh_information();
-}
+
+//--------------------------------------------------------------------
 
 void MainWindow::on_colorButtonA_clicked()
 {
@@ -452,6 +460,9 @@ void MainWindow::set_default_colors()
     set_color_B(mColorB);
 }
 
+
+//--------------------------------------------------------------------
+
 void MainWindow::on_layerRetraction_returnPressed()
 {
     double layerRetractionDistance = mMainWindowUI->layerRetraction->text().toDouble();
@@ -473,7 +484,7 @@ void MainWindow::on_syringeDiameter_returnPressed()
 void MainWindow::on_layerJump_returnPressed()
 {
     double layerJumpDistance = mMainWindowUI->layerJump->text().toDouble();
-    mGcode->set_print_speed(layerJumpDistance);
+    mGcode->set_layer_jump(layerJumpDistance);
 }
 
 void MainWindow::on_printSpeed_returnPressed()
