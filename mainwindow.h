@@ -71,7 +71,7 @@ private slots:
     void on_redrawButton_clicked();
 
     void on_actionExport_G_code_triggered();
-    void on_animationSlider_sliderMoved(int position);
+    void on_animationSliderVertical_sliderMoved(int position);
     void on_animateButton_toggled(bool checked);
 
     void on_colorButtonA_clicked();
@@ -90,7 +90,7 @@ private slots:
     void on_resetSettingsButton_clicked();
     void set_default_settings();
     void reset_settings_labels();
-
+    void on_animationSliderVertical_valueChanged(int value);
 
 signals:
 

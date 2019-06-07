@@ -409,16 +409,16 @@ void MainWindow::on_actionExport_G_code_triggered()
     mGcode->generate_file(exportShape,exportFileName);
 }
 
-void MainWindow::on_animationSlider_sliderMoved(int position)
+void MainWindow::on_animationSliderVertical_sliderMoved(int position)
 {
     double doublePosition = static_cast<double>(position);
-    double scaledPosition = doublePosition/100;
+    double scaledPosition = doublePosition/100000;
     unsigned int numberOfPoints = static_cast<unsigned int>(mShape->get_point_list().size());
     if (mOSGWidget->get_simplify_point_list())
     {
         numberOfPoints = static_cast<unsigned int>(mShape->get_simplified_point_list().size());
     }
-    int    animationCount = floor(scaledPosition*numberOfPoints);
+    unsigned int animationCount = static_cast<unsigned int>(floor(scaledPosition*numberOfPoints));
     mOSGWidget->set_animation_count(animationCount);
     mOSGWidget->redraw();
 }
@@ -545,3 +545,9 @@ void MainWindow::on_simplifyResolution_clicked(bool checked)
     mGcode->set_simplify_point_list(checked);
     mOSGWidget->set_simplify_point_list(checked);
 }
+
+void MainWindow::on_animationSliderVertical_valueChanged(int value)
+{
+    on_animationSliderVertical_sliderMoved(value);
+}
+
