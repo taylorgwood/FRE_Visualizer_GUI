@@ -375,6 +375,7 @@ void MainWindow::set_volume_label()
 
 void MainWindow::redraw_and_refresh_information()
 {
+    mShape->refresh();
     mOSGWidget->redraw();
     set_volume_label();
     set_layer_height_label();
@@ -412,7 +413,11 @@ void MainWindow::on_animationSlider_sliderMoved(int position)
 {
     double doublePosition = static_cast<double>(position);
     double scaledPosition = doublePosition/100;
-    size_t numberOfPoints = mShape->get_points().size();
+    unsigned int numberOfPoints = static_cast<unsigned int>(mShape->get_point_list().size());
+    if (mOSGWidget->get_simplify_point_list())
+    {
+        numberOfPoints = static_cast<unsigned int>(mShape->get_simplified_point_list().size());
+    }
     int    animationCount = floor(scaledPosition*numberOfPoints);
     mOSGWidget->set_animation_count(animationCount);
     mOSGWidget->redraw();
@@ -466,7 +471,7 @@ void MainWindow::set_default_colors()
 void MainWindow::on_layerRetraction_returnPressed()
 {
     double layerRetractionDistance = mMainWindowUI->layerRetraction->text().toDouble();
-    mGcode->set_layer_retraction_distance(layerRetractionDistance);
+    mGcode->set_travel_retraction_distance(layerRetractionDistance);
 }
 
 void MainWindow::on_materialSwitchRetraction_returnPressed()
@@ -481,10 +486,10 @@ void MainWindow::on_syringeDiameter_returnPressed()
     mGcode->set_syringe_diameter(syringeDiameter);
 }
 
-void MainWindow::on_layerJump_returnPressed()
+void MainWindow::on_travelJump_returnPressed()
 {
-    double layerJumpDistance = mMainWindowUI->layerJump->text().toDouble();
-    mGcode->set_layer_jump(layerJumpDistance);
+    double travelJumpDistance = mMainWindowUI->travelJump->text().toDouble();
+    mGcode->set_travel_jump(travelJumpDistance);
 }
 
 void MainWindow::on_printSpeed_returnPressed()
@@ -496,14 +501,14 @@ void MainWindow::on_printSpeed_returnPressed()
 void MainWindow::on_travelSpeed_returnPressed()
 {
     double travelSpeed = mMainWindowUI->travelSpeed->text().toDouble();
-    mGcode->set_translation_speed(travelSpeed);
+    mGcode->set_travel_speed(travelSpeed);
 }
 
 void MainWindow::on_applySettingsButton_clicked()
 {
     on_layerRetraction_returnPressed();
     on_materialSwitchRetraction_returnPressed();
-    on_layerJump_returnPressed();
+    on_travelJump_returnPressed();
     on_syringeDiameter_returnPressed();
     on_printSpeed_returnPressed();
     on_travelSpeed_returnPressed();
@@ -519,7 +524,7 @@ void MainWindow::set_default_settings()
 {
     mLayerRetractionDistance = 0;
     mMaterialSwitchRetractionDistance = 0;
-    mLayerJumpDistance = 0;
+    mTravelJumpDistance = 0;
     mSyringeDiameter = 14.9;
     mPrintSpeed = 720;
     mTravelSpeed = 720;
@@ -529,8 +534,14 @@ void MainWindow::reset_settings_labels()
 {
     mMainWindowUI->layerRetraction->setText(QString::number(mLayerRetractionDistance));
     mMainWindowUI->materialSwitchRetraction->setText(QString::number(mMaterialSwitchRetractionDistance));
-    mMainWindowUI->layerJump->setText(QString::number(mLayerJumpDistance));
+    mMainWindowUI->travelJump->setText(QString::number(mTravelJumpDistance));
     mMainWindowUI->syringeDiameter->setText(QString::number(mSyringeDiameter));
     mMainWindowUI->printSpeed->setText(QString::number(mPrintSpeed));
     mMainWindowUI->travelSpeed->setText(QString::number(mTravelSpeed));
+}
+
+void MainWindow::on_simplifyResolution_clicked(bool checked)
+{
+    mGcode->set_simplify_point_list(checked);
+    mOSGWidget->set_simplify_point_list(checked);
 }

@@ -176,7 +176,11 @@ QColor OSGWidget::get_color_B()
 
 void OSGWidget::set_animation_count(unsigned int animationCount)
 {
-    unsigned int numberOfPoints = static_cast<unsigned int>(mShape->get_points().size());
+    unsigned int numberOfPoints = static_cast<unsigned int>(mShape->get_point_list().size());
+    if (get_simplify_point_list())
+    {
+        numberOfPoints = static_cast<unsigned int>(mShape->get_simplified_point_list().size());
+    }
     if (animationCount > numberOfPoints)
     {
         animationCount = 0;
@@ -190,7 +194,11 @@ void OSGWidget::draw_print_path()
     Wireframe newWireframe;
     osg::Vec4Array* colorArray = get_color_data_array(mShape);
     osg::Vec3Array* vertexData = get_vertex_data_array(mShape);
-    unsigned int numberOfPoints = static_cast<unsigned int>(mShape->get_points().size());
+    unsigned int numberOfPoints = static_cast<unsigned int>(mShape->get_point_list().size());
+    if (get_simplify_point_list())
+    {
+        numberOfPoints = static_cast<unsigned int>(mShape->get_simplified_point_list().size());
+    }
     if (mAnimationCount > numberOfPoints)
     {
         mAnimationCount = 0;
@@ -331,13 +339,27 @@ void OSGWidget::create_axes()
     update();
 }
 
+void OSGWidget::set_simplify_point_list(bool const isTrue)
+{
+    mSimplifyPointList = isTrue;
+}
+
+bool OSGWidget::get_simplify_point_list() const
+{
+    return mSimplifyPointList;
+}
+
 osg::Vec3Array* OSGWidget::get_vertex_data_array(Shape* shape)
 {
     double shapeHeight = shape->get_height();
     double shapeWidth  = shape->get_width();
     double shapeLength = shape->get_length();
 
-    std::vector<Point> shapePointList = shape->get_points();
+    std::vector<Point> shapePointList = shape->get_point_list();
+    if (get_simplify_point_list())
+    {
+        shapePointList = shape->get_simplified_point_list();
+    }
     unsigned int numberOfPoints = static_cast<unsigned int>(shapePointList.size());
     osg::Vec3Array* vertexData = new osg::Vec3Array{numberOfPoints};
     for (unsigned int i{0}; i<numberOfPoints; i++)
@@ -354,7 +376,11 @@ osg::Vec3Array* OSGWidget::get_vertex_data_array(Shape* shape)
 
 osg::Vec4Array* OSGWidget::get_color_data_array(Shape* shape)
 {
-    std::vector<Point> shapePointList = shape->get_points();
+    std::vector<Point> shapePointList = shape->get_point_list();
+    if (get_simplify_point_list())
+    {
+        shapePointList = shape->get_simplified_point_list();
+    }
     unsigned int numberOfPoints = static_cast<unsigned int>(shapePointList.size());
     osg::Vec4Array* color = new osg::Vec4Array{numberOfPoints};
     QColor colorA = get_color_A();
@@ -539,7 +565,12 @@ void OSGWidget::timerEvent(QTimerEvent *)
         update();
         redraw();
         mAnimationCount++;
-        int numberOfPoints = static_cast<int>(mShape->get_points().size());
+
+        unsigned int numberOfPoints = static_cast<unsigned int>(mShape->get_point_list().size());
+        if (get_simplify_point_list())
+        {
+            numberOfPoints = static_cast<unsigned int>(mShape->get_simplified_point_list().size());
+        }
         if (mAnimationCount > numberOfPoints)
         {
             mAnimationCount = 0;

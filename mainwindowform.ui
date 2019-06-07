@@ -109,8 +109,8 @@
         <rect>
          <x>20</x>
          <y>20</y>
-         <width>252</width>
-         <height>281</height>
+         <width>251</width>
+         <height>302</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -179,13 +179,6 @@
              <widget class="QLabel" name="label_10">
               <property name="text">
                <string>Extrusion Width (mm)</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_27">
-              <property name="text">
-               <string>Material Resolution (mm)</string>
               </property>
              </widget>
             </item>
@@ -284,6 +277,22 @@
          </layout>
         </item>
         <item>
+         <widget class="QRadioButton" name="simplifyResolution">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="text">
+           <string>SimplifyResolution</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="autoExclusive">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="QPushButton" name="applyParametersButton">
@@ -307,7 +316,7 @@
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>320</y>
+         <y>350</y>
          <width>251</width>
          <height>209</height>
         </rect>
@@ -349,7 +358,7 @@
             <item>
              <widget class="QLabel" name="label_26">
               <property name="text">
-               <string>Layer Travel Jump Distance: (mm)</string>
+               <string>Travel Jump Distance: (mm)</string>
               </property>
              </widget>
             </item>
@@ -393,7 +402,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="layerJump">
+             <widget class="QLineEdit" name="travelJump">
               <property name="text">
                <string>0</string>
               </property>

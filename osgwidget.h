@@ -30,11 +30,14 @@ public:
     void draw_cylinders();
     osg::Vec3Array* get_vertex_data_array(Shape *shape);
     osg::Vec4Array* get_color_data_array(Shape *shape);
-    void reset_shape(Shape* newShape);
-    void set_color_A(QColor color);
+    void   reset_shape(Shape* newShape);
+    void   set_color_A(QColor color);
     QColor get_color_A();
-    void set_color_B(QColor color);
+    void   set_color_B(QColor color);
     QColor get_color_B();
+    void   set_simplify_point_list(bool const isTrue);
+    bool   get_simplify_point_list() const;
+
 
 protected:
     virtual void paintEvent(QPaintEvent* paintEvent);
@@ -90,6 +93,7 @@ private:
     double const pi{3.14159};
     QColor mColorA{1,0,0,1};
     QColor mColorB{0,1,0,1};
+    bool   mSimplifyPointList{false};
 
 };
 

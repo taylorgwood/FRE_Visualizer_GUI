@@ -47,6 +47,7 @@ private slots:
     void on_infillAngle_returnPressed();
     void on_extrusionWidth_returnPressed();
     void on_materialResolution_returnPressed();
+    void on_simplifyResolution_clicked(bool checked);
     void on_resetParametersButton_clicked();
     void on_applyParametersButton_clicked();
     void set_default_print_parameters();
@@ -81,7 +82,7 @@ private slots:
 
     void on_layerRetraction_returnPressed();
     void on_materialSwitchRetraction_returnPressed();
-    void on_layerJump_returnPressed();
+    void on_travelJump_returnPressed();
     void on_syringeDiameter_returnPressed();
     void on_printSpeed_returnPressed();
     void on_travelSpeed_returnPressed();
@@ -113,7 +114,7 @@ private:
     QColor mColorB{51, 33, 209, 255};
     double mLayerRetractionDistance{0};
     double mMaterialSwitchRetractionDistance{0};
-    double mLayerJumpDistance{0};
+    double mTravelJumpDistance{0};
     double mPrintSpeed{720};
     double mTravelSpeed{720};
     double mSyringeDiameter{14.9};
