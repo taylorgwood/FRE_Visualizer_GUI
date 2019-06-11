@@ -182,6 +182,13 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QLabel" name="label_27">
+              <property name="text">
+               <string>Resolution Distance (mm)</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
           <item>
@@ -304,7 +311,7 @@
           <item>
            <widget class="QPushButton" name="resetParametersButton">
             <property name="text">
-             <string>Reset</string>
+             <string>Apply Default Settings</string>
             </property>
            </widget>
           </item>
@@ -445,7 +452,7 @@
           <item>
            <widget class="QPushButton" name="resetSettingsButton">
             <property name="text">
-             <string>Reset</string>
+             <string>Apply Default Settings</string>
             </property>
            </widget>
           </item>
@@ -766,55 +773,6 @@
       <attribute name="title">
        <string>PrintPath</string>
       </attribute>
-      <widget class="QWidget" name="layoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>240</y>
-         <width>301</width>
-         <height>66</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_13">
-        <item>
-         <widget class="Line" name="line_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_8">
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_11"/>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_12">
-            <item>
-             <widget class="QSlider" name="animationSlider">
-              <property name="maximum">
-               <number>99</number>
-              </property>
-              <property name="sliderPosition">
-               <number>99</number>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="invertedAppearance">
-               <bool>false</bool>
-              </property>
-              <property name="invertedControls">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
       <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>

@@ -219,6 +219,7 @@ void MainWindow::on_resetParametersButton_clicked()
     mShape = new Shape();
     mOSGWidget->reset_shape(mShape);
     set_default_print_parameters();
+    on_applyParametersButton_clicked();
     on_objectSizeButton_clicked();
     redraw_and_refresh_information();
     reset_print_parameter_labels();
@@ -246,9 +247,9 @@ void MainWindow::set_default_print_parameters()
 {
     mNeedleDiameter = 0.26;
     mLayerHeight = 0.26;
-    mExtrusionMultiplier = 0.785;
-    mInfillPercentage = 100;
-    mInfillAngle = 0;
+    mExtrusionMultiplier = 1.0;
+    mInfillPercentage = 80;
+    mInfillAngle = 45;
     mExtrusionWidth = 0.26;
     mMaterialResolution = 1;
 }
@@ -518,6 +519,7 @@ void MainWindow::on_resetSettingsButton_clicked()
 {
     set_default_settings();
     reset_settings_labels();
+    on_applySettingsButton_clicked();
 }
 
 void MainWindow::set_default_settings()

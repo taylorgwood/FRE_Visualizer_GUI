@@ -110,8 +110,8 @@ private:
     float  mTopWidth{10};
     float  mShapeHeight{10};
     float  mShapeLength{10};
-    QColor mColorA{238, 244, 66, 255};
-    QColor mColorB{51, 33, 209, 255};
+    QColor mColorA{238, 244, 66, 50};
+    QColor mColorB{51, 33, 209, 50};
     double mLayerRetractionDistance{0};
     double mMaterialSwitchRetractionDistance{0};
     double mTravelJumpDistance{0};

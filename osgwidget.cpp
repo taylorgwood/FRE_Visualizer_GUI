@@ -210,7 +210,7 @@ void OSGWidget::draw_print_path()
 
     for (unsigned int i{mAnimationCount}; i<numberOfPoints; i++)
     {
-        float A{0.1f};
+        float A{0.05f};
         colorArray->at(i).a() = A;
     }
     double shapeWidth = mShape->get_width();
@@ -394,7 +394,7 @@ osg::Vec4Array* OSGWidget::get_color_data_array(Shape* shape)
         float R = colorA.red()*multiplierColorA + colorB.red()*multiplierColorB;
         float G = colorA.green()*multiplierColorA + colorB.green()*multiplierColorB;
         float B = colorA.blue()*multiplierColorA + colorB.blue()*multiplierColorB;
-        float A = 0.9f;
+        float A = 0.5f;
         osg::Vec4 currentColor{R,G,B,A};
         color->at(i) = (currentColor);
     }
