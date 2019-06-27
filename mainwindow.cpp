@@ -410,6 +410,12 @@ void MainWindow::on_actionExport_G_code_triggered()
     mGcode->generate_file(exportShape,exportFileName);
 }
 
+void MainWindow::on_actionExport_G_code_2_triggered()
+{
+    on_actionExport_G_code_triggered();
+}
+
+
 void MainWindow::on_animationSliderVertical_sliderMoved(int position)
 {
     double doublePosition = static_cast<double>(position);
@@ -469,10 +475,16 @@ void MainWindow::set_default_colors()
 
 //--------------------------------------------------------------------
 
-void MainWindow::on_layerRetraction_returnPressed()
+void MainWindow::on_layerRetractionA_returnPressed()
 {
-    double layerRetractionDistance = mMainWindowUI->layerRetraction->text().toDouble();
-    mGcode->set_travel_retraction_distance(layerRetractionDistance);
+    double layerRetractionADistance = mMainWindowUI->layerRetractionA->text().toDouble();
+    mGcode->set_travel_A_retraction_distance(layerRetractionADistance);
+}
+
+void MainWindow::on_layerRetractionB_returnPressed()
+{
+    double layerRetractionBDistance = mMainWindowUI->layerRetractionB->text().toDouble();
+    mGcode->set_travel_B_retraction_distance(layerRetractionBDistance);
 }
 
 void MainWindow::on_materialSwitchRetraction_returnPressed()
@@ -481,16 +493,28 @@ void MainWindow::on_materialSwitchRetraction_returnPressed()
     mGcode->set_material_switch_retraction_distance(materialSwitchRetractionDistance);
 }
 
-void MainWindow::on_syringeDiameter_returnPressed()
-{
-    double syringeDiameter = mMainWindowUI->syringeDiameter->text().toDouble();
-    mGcode->set_syringe_diameter(syringeDiameter);
-}
-
 void MainWindow::on_travelJump_returnPressed()
 {
     double travelJumpDistance = mMainWindowUI->travelJump->text().toDouble();
     mGcode->set_travel_jump(travelJumpDistance);
+}
+
+void MainWindow::on_travelJog_returnPressed()
+{
+    double travelJog = mMainWindowUI->travelJog->text().toDouble();
+    mGcode->set_travel_jog(travelJog);
+}
+
+void MainWindow::on_finishPrintJump_returnPressed()
+{
+    double finishPrintJump = mMainWindowUI->finishPrintJump->text().toDouble();
+    mGcode->set_finish_print_jump_distance(finishPrintJump);
+}
+
+void MainWindow::on_finishPrintJog_returnPressed()
+{
+    double finishPrintJog = mMainWindowUI->finishPrintJog->text().toDouble();
+    mGcode->set_finish_print_jog_distance(finishPrintJog);
 }
 
 void MainWindow::on_printSpeed_returnPressed()
@@ -505,14 +529,24 @@ void MainWindow::on_travelSpeed_returnPressed()
     mGcode->set_travel_speed(travelSpeed);
 }
 
+void MainWindow::on_syringeDiameter_returnPressed()
+{
+    double syringeDiameter = mMainWindowUI->syringeDiameter->text().toDouble();
+    mGcode->set_syringe_diameter(syringeDiameter);
+}
+
 void MainWindow::on_applySettingsButton_clicked()
 {
-    on_layerRetraction_returnPressed();
+    on_layerRetractionA_returnPressed();
+    on_layerRetractionB_returnPressed();
     on_materialSwitchRetraction_returnPressed();
     on_travelJump_returnPressed();
-    on_syringeDiameter_returnPressed();
+    on_travelJog_returnPressed();
+    on_finishPrintJump_returnPressed();
+    on_finishPrintJog_returnPressed();
     on_printSpeed_returnPressed();
     on_travelSpeed_returnPressed();
+    on_syringeDiameter_returnPressed();
 }
 
 void MainWindow::on_resetSettingsButton_clicked()
@@ -524,19 +558,27 @@ void MainWindow::on_resetSettingsButton_clicked()
 
 void MainWindow::set_default_settings()
 {
-    mLayerRetractionDistance = 0;
+    mLayerRetractionDistance.at(0) = 0;
+    mLayerRetractionDistance.at(1) = 0;
     mMaterialSwitchRetractionDistance = 0;
     mTravelJumpDistance = 0;
+    mTravelJogDistance = 0;
+    mFinishJumpDistance = 50;
+    mFinishJogDistance  = 50;
+    mPrintSpeed = 12;
+    mTravelSpeed = 12;
     mSyringeDiameter = 14.9;
-    mPrintSpeed = 720;
-    mTravelSpeed = 720;
 }
 
 void MainWindow::reset_settings_labels()
 {
-    mMainWindowUI->layerRetraction->setText(QString::number(mLayerRetractionDistance));
+    mMainWindowUI->layerRetractionA->setText(QString::number(mLayerRetractionDistance.at(0)));
+    mMainWindowUI->layerRetractionB->setText(QString::number(mLayerRetractionDistance.at(1)));
     mMainWindowUI->materialSwitchRetraction->setText(QString::number(mMaterialSwitchRetractionDistance));
     mMainWindowUI->travelJump->setText(QString::number(mTravelJumpDistance));
+    mMainWindowUI->travelJog->setText(QString::number(mTravelJogDistance));
+    mMainWindowUI->finishPrintJump->setText(QString::number(mFinishJumpDistance));
+    mMainWindowUI->finishPrintJog->setText(QString::number(mFinishJogDistance));
     mMainWindowUI->syringeDiameter->setText(QString::number(mSyringeDiameter));
     mMainWindowUI->printSpeed->setText(QString::number(mPrintSpeed));
     mMainWindowUI->travelSpeed->setText(QString::number(mTravelSpeed));
@@ -552,4 +594,3 @@ void MainWindow::on_animationSliderVertical_valueChanged(int value)
 {
     on_animationSliderVertical_sliderMoved(value);
 }
-

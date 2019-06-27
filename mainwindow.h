@@ -71,6 +71,7 @@ private slots:
     void on_redrawButton_clicked();
 
     void on_actionExport_G_code_triggered();
+    void on_actionExport_G_code_2_triggered();
     void on_animationSliderVertical_sliderMoved(int position);
     void on_animateButton_toggled(bool checked);
 
@@ -80,17 +81,22 @@ private slots:
     void set_color_B(QColor color);
     void set_default_colors();
 
-    void on_layerRetraction_returnPressed();
+    void on_layerRetractionA_returnPressed();
+    void on_layerRetractionB_returnPressed();
     void on_materialSwitchRetraction_returnPressed();
     void on_travelJump_returnPressed();
-    void on_syringeDiameter_returnPressed();
+    void on_travelJog_returnPressed();
+    void on_finishPrintJump_returnPressed();
+    void on_finishPrintJog_returnPressed();
     void on_printSpeed_returnPressed();
     void on_travelSpeed_returnPressed();
+    void on_syringeDiameter_returnPressed();
     void on_applySettingsButton_clicked();
     void on_resetSettingsButton_clicked();
     void set_default_settings();
     void reset_settings_labels();
     void on_animationSliderVertical_valueChanged(int value);
+
 
 signals:
 
@@ -112,11 +118,14 @@ private:
     float  mShapeLength{10};
     QColor mColorA{238, 244, 66, 50};
     QColor mColorB{51, 33, 209, 50};
-    double mLayerRetractionDistance{0};
+    std::vector <double> mLayerRetractionDistance{0,0};
     double mMaterialSwitchRetractionDistance{0};
     double mTravelJumpDistance{0};
-    double mPrintSpeed{720};
-    double mTravelSpeed{720};
+    double mTravelJogDistance{0};
+    double mFinishJumpDistance{50};
+    double mFinishJogDistance{50};
+    double mPrintSpeed{12};
+    double mTravelSpeed{12};
     double mSyringeDiameter{14.9};
 
 };

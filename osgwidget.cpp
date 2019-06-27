@@ -83,8 +83,8 @@ osgViewer::View *OSGWidget::create_scene(float aspectRatio, int pixelRatio)
     osgViewer::View *view = new osgViewer::View;
     view->setCamera(camera);
     view->setSceneData(mRoot.get());
-    view->addEventHandler(new osgViewer::StatsHandler);
-    view->getEventQueue()->keyPress('s');
+//    view->addEventHandler(new osgViewer::StatsHandler);
+//    view->getEventQueue()->keyPress('s');
     return view;
 }
 
