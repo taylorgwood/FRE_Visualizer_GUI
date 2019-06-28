@@ -47,11 +47,11 @@ target_link_libraries(${PROJECT_NAME}
 #install(TARGETS ${MY_LIBRARY}
 #  ARCHIVE
 #  DESTINATION lib)
-install(TARGETS ${PROJECT_NAME}
-  RUNTIME
-  DESTINATION bin)
-install(FILES ${MYSOURCE}
-  DESTINATION include)
+#install(TARGETS ${PROJECT_NAME}
+#  RUNTIME
+#  DESTINATION bin)
+#install(FILES ${MYSOURCE}
+#  DESTINATION include)
 
 
 
@@ -134,16 +134,16 @@ install(FILES ${MYSOURCE}
 #--------------------------------------------------------------------------------
 # Set the CPACK Generator.  This depends on what generator you want to use
 # and which platform you are on.  NSIS works on windows.
-SET(CPACK_GENERATOR "NSIS") # this needs NSIS installed, and available
+#SET(CPACK_GENERATOR "NSIS") # this needs NSIS installed, and available
 
 
-SET(CPACK_PACKAGE_NAME                      "FRE_INSTALL")
-SET(CPACK_PACKAGE_VENDOR                    "Taylor Greenwood")
-#SET(CPACK_PACKAGE_DIRECTORY                 "C:/MultiMaterial")
-SET(CPACK_PACKAGE_VERSION                   "1.0.0")
-SET(CPACK_PACKAGE_VERSION_MAJOR             "1")
-SET(CPACK_PACKAGE_VERSION_MINOR             "0")
-SET(CPACK_PACKAGE_VERSION_PATCH             "0")
+#SET(CPACK_PACKAGE_NAME                      "FRE_INSTALL")
+#SET(CPACK_PACKAGE_VENDOR                    "Taylor Greenwood")
+##SET(CPACK_PACKAGE_DIRECTORY                 "C:/MultiMaterial")
+#SET(CPACK_PACKAGE_VERSION                   "1.0.0")
+#SET(CPACK_PACKAGE_VERSION_MAJOR             "1")
+#SET(CPACK_PACKAGE_VERSION_MINOR             "0")
+#SET(CPACK_PACKAGE_VERSION_PATCH             "0")
 #SET(CPACK_PACKAGE_DESCRIPTION_FILE)
 #SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY       "FRE Visualizer")
 #SET(CPACK_PACKAGE_HOMEPAGE_URL)
@@ -182,4 +182,4 @@ SET(CPACK_PACKAGE_VERSION_PATCH             "0")
 
 #--------------------------------------------------------------------------------
 # This must be included last.  This does all the work.
-INCLUDE(CPack)
+#INCLUDE(CPack)

@@ -85,8 +85,8 @@ private:
     bool   mSimulationOn{false};
     Shape *mShape{nullptr};
     int    mRedrawCount{0};
-    bool   mViewAxes{1};
-    bool   mViewWireframe{1};
+    bool   mViewAxes{0};
+    bool   mViewWireframe{0};
     bool   mViewCylinders{0};
     bool   mViewPrintPath{1};
     unsigned int mAnimationCount{100000};

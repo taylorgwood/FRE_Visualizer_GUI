@@ -404,7 +404,7 @@ void MainWindow::on_redrawButton_clicked()
 
 void MainWindow::on_actionExport_G_code_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr(""));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr("Text files (*.txt)"));
     Shape exportShape = *mShape;
     std::string exportFileName = fileName.toStdString();
     mGcode->generate_file(exportShape,exportFileName);

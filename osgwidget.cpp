@@ -42,7 +42,7 @@ osg::Camera *OSGWidget::create_camera(float aspectRatio, int pixelRatio)
     int viewportOriginX{0};
     int viewportOriginY{0};
     camera->setViewport(viewportOriginX, viewportOriginY, this->width() * pixelRatio, this->height() * pixelRatio);
-    osg::Vec4 clearColorRGBA{0.00f,0.00f,0.15f,0.1f};
+    osg::Vec4 clearColorRGBA{0.00f,0.00f,0.00f,0.1f};
     camera->setClearColor(clearColorRGBA);
 
     float viewingAngle{45};
