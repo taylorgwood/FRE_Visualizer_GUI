@@ -96,7 +96,11 @@ private slots:
     void set_default_settings();
     void reset_settings_labels();
     void on_animationSliderVertical_valueChanged(int value);
+    void on_singleMaterial_clicked(bool checked);
+    void on_extruderAEnabled_clicked(bool checked);
+    void on_extruderBEnabled_clicked(bool checked);
 
+    void on_startPrintPlunge_returnPressed();
 
 signals:
 
@@ -122,11 +126,15 @@ private:
     double mMaterialSwitchRetractionDistance{0};
     double mTravelJumpDistance{0};
     double mTravelJogDistance{0};
+    double mStartPlungeDistance{15};
     double mFinishJumpDistance{50};
     double mFinishJogDistance{50};
     double mPrintSpeed{12};
     double mTravelSpeed{12};
     double mSyringeDiameter{14.9};
+    bool   mSingleMaterial{true};
+    bool   mExtruderAEnabled{true};
+    bool   mExtruderBEnabled{false};
 
 };
 

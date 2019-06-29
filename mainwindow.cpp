@@ -19,8 +19,23 @@ MainWindow::MainWindow(QWidget *parent) :
     mOSGWidget = new OSGWidget{mShape, this};
 
     this->setCentralWidget(mOSGWidget);
+
     set_volume_label();
     set_default_colors();
+    set_default_settings();
+    on_simplifyResolution_clicked(true);
+    set_default_object_size();
+    set_default_print_parameters();
+
+    on_resetSettingsButton_clicked();
+    on_resetObjectSizeButton_clicked();
+    on_resetParametersButton_clicked();
+    redraw_and_refresh_information();
+    on_resetSettingsButton_clicked();
+    on_resetObjectSizeButton_clicked();
+    on_resetParametersButton_clicked();
+    unsigned int numberOfPoints = static_cast<unsigned int> (mShape->get_simplified_point_list().size());
+    mOSGWidget->set_animation_count(numberOfPoints-1);
     redraw_and_refresh_information();
 }
 
@@ -505,6 +520,12 @@ void MainWindow::on_travelJog_returnPressed()
     mGcode->set_travel_jog(travelJog);
 }
 
+void MainWindow::on_startPrintPlunge_returnPressed()
+{
+    double startPrintPlunge = mMainWindowUI->startPrintPlunge->text().toDouble();
+    mGcode->set_start_print_plunge_distance(startPrintPlunge);
+}
+
 void MainWindow::on_finishPrintJump_returnPressed()
 {
     double finishPrintJump = mMainWindowUI->finishPrintJump->text().toDouble();
@@ -542,6 +563,7 @@ void MainWindow::on_applySettingsButton_clicked()
     on_materialSwitchRetraction_returnPressed();
     on_travelJump_returnPressed();
     on_travelJog_returnPressed();
+    on_startPrintPlunge_returnPressed();
     on_finishPrintJump_returnPressed();
     on_finishPrintJog_returnPressed();
     on_printSpeed_returnPressed();
@@ -563,6 +585,7 @@ void MainWindow::set_default_settings()
     mMaterialSwitchRetractionDistance = 0;
     mTravelJumpDistance = 0;
     mTravelJogDistance = 0;
+    mStartPlungeDistance = 15;
     mFinishJumpDistance = 50;
     mFinishJogDistance  = 50;
     mPrintSpeed = 12;
@@ -577,6 +600,7 @@ void MainWindow::reset_settings_labels()
     mMainWindowUI->materialSwitchRetraction->setText(QString::number(mMaterialSwitchRetractionDistance));
     mMainWindowUI->travelJump->setText(QString::number(mTravelJumpDistance));
     mMainWindowUI->travelJog->setText(QString::number(mTravelJogDistance));
+    mMainWindowUI->startPrintPlunge->setText(QString::number(mStartPlungeDistance));
     mMainWindowUI->finishPrintJump->setText(QString::number(mFinishJumpDistance));
     mMainWindowUI->finishPrintJog->setText(QString::number(mFinishJogDistance));
     mMainWindowUI->syringeDiameter->setText(QString::number(mSyringeDiameter));
@@ -594,3 +618,28 @@ void MainWindow::on_animationSliderVertical_valueChanged(int value)
 {
     on_animationSliderVertical_sliderMoved(value);
 }
+
+void MainWindow::on_singleMaterial_clicked(bool checked)
+{
+    mSingleMaterial = checked;
+    mMainWindowUI->extruderAEnabled->setEnabled(checked);
+    mMainWindowUI->extruderBEnabled->setEnabled(checked);
+    mGcode->set_single_material(checked);
+}
+
+void MainWindow::on_extruderAEnabled_clicked(bool checked)
+{
+    mExtruderAEnabled = checked;
+    std::vector<bool> extruderChoice = mGcode->get_extruder_choice();
+    extruderChoice.at(0) = checked;
+    mGcode->set_extruder_choice(extruderChoice);
+}
+
+void MainWindow::on_extruderBEnabled_clicked(bool checked)
+{
+    mExtruderBEnabled = checked;
+    std::vector<bool> extruderChoice = mGcode->get_extruder_choice();
+    extruderChoice.at(1) = checked;
+    mGcode->set_extruder_choice(extruderChoice);
+}
+
