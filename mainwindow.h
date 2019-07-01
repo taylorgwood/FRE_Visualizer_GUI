@@ -132,7 +132,7 @@ private:
     double mPrintSpeed{12};
     double mTravelSpeed{12};
     double mSyringeDiameter{14.9};
-    bool   mSingleMaterial{false};
+    bool   mSingleMaterial{true};
     bool   mExtruderAEnabled{true};
     bool   mExtruderBEnabled{false};
 
