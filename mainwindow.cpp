@@ -631,6 +631,11 @@ void MainWindow::on_extruderAEnabled_clicked(bool checked)
 {
     mExtruderAEnabled = checked;
     std::vector<bool> extruderChoice = mGcode->get_extruder_choice();
+//    if (mMainWindowUI->extruderBEnabled->isChecked())
+//    {
+//        on_extruderBEnabled_clicked(true);
+//        extruderChoice.at(1) = true;
+//    }
     extruderChoice.at(0) = checked;
     mGcode->set_extruder_choice(extruderChoice);
 }
@@ -639,6 +644,11 @@ void MainWindow::on_extruderBEnabled_clicked(bool checked)
 {
     mExtruderBEnabled = checked;
     std::vector<bool> extruderChoice = mGcode->get_extruder_choice();
+//    if (mMainWindowUI->extruderAEnabled->isChecked())
+//    {
+//        on_extruderAEnabled_clicked(true);
+//        extruderChoice.at(0) = true;
+//    }
     extruderChoice.at(1) = checked;
     mGcode->set_extruder_choice(extruderChoice);
 }

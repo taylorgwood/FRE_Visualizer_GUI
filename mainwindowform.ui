@@ -323,12 +323,15 @@
            <string>Single Material</string>
           </property>
           <property name="checked">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QRadioButton" name="extruderAEnabled">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>Extruder A</string>
           </property>
@@ -342,6 +345,9 @@
         </item>
         <item>
          <widget class="QRadioButton" name="extruderBEnabled">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>Extruder B</string>
           </property>
