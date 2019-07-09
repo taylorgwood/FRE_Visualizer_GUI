@@ -369,7 +369,7 @@
          <x>10</x>
          <y>20</y>
          <width>252</width>
-         <height>313</height>
+         <height>339</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_12">
@@ -392,6 +392,13 @@
          <layout class="QHBoxLayout" name="horizontalLayout_8">
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_8">
+            <item>
+             <widget class="QLineEdit" name="syringeDiameter">
+              <property name="text">
+               <string>14.9</string>
+              </property>
+             </widget>
+            </item>
             <item>
              <widget class="QLineEdit" name="layerRetractionA">
               <property name="text">
@@ -466,6 +473,13 @@
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_11">
+            <item>
+             <widget class="QLabel" name="label_23">
+              <property name="text">
+               <string>Syringe Diameter: (mm)</string>
+              </property>
+             </widget>
+            </item>
             <item>
              <widget class="QLabel" name="label_31">
               <property name="text">
@@ -705,130 +719,92 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="layoutWidget_3">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>50</x>
-         <y>190</y>
-         <width>176</width>
-         <height>62</height>
+         <y>192</y>
+         <width>174</width>
+         <height>91</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_10">
+       <layout class="QVBoxLayout" name="verticalLayout_9">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_9">
+         <widget class="QLabel" name="label_15">
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>Extrusion Estimation: (mm^3)</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
-           <widget class="QLabel" name="label_15">
-            <property name="font">
-             <font>
-              <pointsize>10</pointsize>
-             </font>
-            </property>
+           <widget class="QLabel" name="label_11">
             <property name="text">
-             <string>Extrusion Estimation: (mm^3)</string>
+             <string>Object volume:</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignCenter</set>
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_6">
-            <item>
-             <widget class="QLabel" name="label_11">
-              <property name="text">
-               <string>Object volume:</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="objectVolume">
-              <property name="text">
-               <string>100</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QLabel" name="objectVolume">
+            <property name="text">
+             <string>100</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>Extruded volume:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_7">
-            <item>
-             <widget class="QLabel" name="label_7">
-              <property name="text">
-               <string>Extruded volume:</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="extrudedVolume">
-              <property name="text">
-               <string>100</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QLabel" name="extrudedVolume">
+            <property name="text">
+             <string>100</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QPushButton" name="redrawButton">
+            <property name="text">
+             <string>Redraw</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="clearButton">
+            <property name="text">
+             <string>Clear</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
        </layout>
-      </widget>
-      <widget class="QWidget" name="layoutWidget_4">
-       <property name="geometry">
-        <rect>
-         <x>50</x>
-         <y>290</y>
-         <width>158</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QPushButton" name="redrawButton">
-          <property name="text">
-           <string>Redraw</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="clearButton">
-          <property name="text">
-           <string>Clear</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QLabel" name="label_23">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>340</y>
-         <width>113</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Syringe Diameter: (mm)</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="syringeDiameter">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>340</y>
-         <width>122</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>14.9</string>
-       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="tabPrintPath">
@@ -840,8 +816,8 @@
         <rect>
          <x>11</x>
          <y>96</y>
-         <width>211</width>
-         <height>81</height>
+         <width>251</width>
+         <height>121</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_10">

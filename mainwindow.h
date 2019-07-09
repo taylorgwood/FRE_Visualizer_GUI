@@ -120,7 +120,7 @@ private:
     float  mTopWidth{10};
     float  mShapeHeight{10};
     float  mShapeLength{10};
-    QColor mColorA{120, 168, 245, 50};
+    QColor mColorA{255, 191, 237, 50};
     QColor mColorB{245, 207, 120, 50};
     std::vector <double> mLayerRetractionDistance{0,0};
     double mMaterialSwitchRetractionDistance{0};
