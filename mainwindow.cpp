@@ -419,9 +419,9 @@ void MainWindow::on_redrawButton_clicked()
 
 void MainWindow::on_actionExport_G_code_triggered()
 {
-    on_resetSettingsButton_clicked();
-    on_resetObjectSizeButton_clicked();
-    on_resetParametersButton_clicked();
+    on_applySettingsButton_clicked();
+    on_objectSizeButton_clicked();
+    on_applyParametersButton_clicked();
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"),"",tr(""));
     Shape exportShape = *mShape;
     std::string exportFileName = fileName.toStdString();
