@@ -226,7 +226,7 @@ void MainWindow::on_extrusionWidth_returnPressed()
 void MainWindow::on_materialResolution_returnPressed()
 {
     double materialResolution = mMainWindowUI->materialResolution->text().toDouble();
-    mShape->set_resolution(materialResolution);
+    mShape->set_resolution_length(materialResolution);
 }
 
 void MainWindow::on_resetParametersButton_clicked()
@@ -253,7 +253,7 @@ void MainWindow::on_applyParametersButton_clicked()
     mShape->set_infill_percentage(infillPercentage);
     mShape->set_infill_angle(infillAngle);
     mShape->set_extrusion_width(extrusionWidth); // change this to have auto adjust in the set function
-    mShape->set_resolution(materialResolution);
+    mShape->set_resolution_length(materialResolution);
     on_objectSizeButton_clicked();
     redraw_and_refresh_information();
 }
@@ -443,7 +443,8 @@ void MainWindow::on_animationSliderVertical_sliderMoved(int position)
     {
         numberOfPoints = static_cast<unsigned int>(mShape->get_simplified_point_list().size());
     }
-    unsigned int animationCount = static_cast<unsigned int>(floor(scaledPosition*numberOfPoints));
+    unsigned int doubleNumberOfPoints = numberOfPoints*2;
+    unsigned int animationCount = static_cast<unsigned int>(floor(scaledPosition*doubleNumberOfPoints));
     mOSGWidget->set_animation_count(animationCount);
     mOSGWidget->redraw();
 }

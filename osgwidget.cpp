@@ -181,7 +181,8 @@ void OSGWidget::set_animation_count(unsigned int animationCount)
     {
         numberOfPoints = static_cast<unsigned int>(mShape->get_simplified_point_list().size());
     }
-    if (animationCount > numberOfPoints)
+    unsigned int doubleNumberOfPoints = numberOfPoints*2;
+    if (animationCount > doubleNumberOfPoints)
     {
         animationCount = 0;
     }
@@ -199,7 +200,8 @@ void OSGWidget::draw_print_path()
     {
         numberOfPoints = static_cast<unsigned int>(mShape->get_simplified_point_list().size());
     }
-    if (mAnimationCount > numberOfPoints)
+    unsigned int doubleNumberOfPoints = numberOfPoints*2;
+    if (mAnimationCount > doubleNumberOfPoints)
     {
         mAnimationCount = 0;
         if (mSimulationOn == false)
@@ -208,9 +210,9 @@ void OSGWidget::draw_print_path()
         }
     }
 
-    for (unsigned int i{mAnimationCount}; i<numberOfPoints; i++)
+    for (unsigned int i{mAnimationCount}; i<doubleNumberOfPoints; i++)
     {
-        float A{0.05f};
+        float A{0.02f};
         colorArray->at(i).a() = A;
     }
     double shapeWidth = mShape->get_width();
@@ -361,14 +363,18 @@ osg::Vec3Array* OSGWidget::get_vertex_data_array(Shape* shape)
         shapePointList = shape->get_simplified_point_list();
     }
     unsigned int numberOfPoints = static_cast<unsigned int>(shapePointList.size());
-    osg::Vec3Array* vertexData = new osg::Vec3Array{numberOfPoints};
+    unsigned int doubleNumberOfPoints = numberOfPoints*2;
+    osg::Vec3Array* vertexData = new osg::Vec3Array{doubleNumberOfPoints};
+    unsigned int j{0};
     for (unsigned int i{0}; i<numberOfPoints; i++)
     {
+        j = i*2;
         Point point = shapePointList.at(i);
-        float xLocation = static_cast<float>(point.get_x()-shapeLength/2);
-        float yLocation = static_cast<float>(point.get_y()-shapeWidth/2);
+        float xLocation = static_cast<float>(point.get_x()-shapeWidth/2);
+        float yLocation = static_cast<float>(point.get_y()-shapeLength/2);
         float zLocation = static_cast<float>(point.get_z()-shapeHeight/2);
-        vertexData->at(i) = (osg::Vec3(xLocation,yLocation,zLocation));
+        vertexData->at(j) = (osg::Vec3(xLocation,yLocation,zLocation));
+        vertexData->at(j+1) = (osg::Vec3(xLocation,yLocation,zLocation));
     }
     return vertexData;
 
@@ -382,11 +388,14 @@ osg::Vec4Array* OSGWidget::get_color_data_array(Shape* shape)
         shapePointList = shape->get_simplified_point_list();
     }
     unsigned int numberOfPoints = static_cast<unsigned int>(shapePointList.size());
-    osg::Vec4Array* color = new osg::Vec4Array{numberOfPoints};
+    unsigned int doubleNumberOfPoints = numberOfPoints*2;
+    osg::Vec4Array* color = new osg::Vec4Array{doubleNumberOfPoints};
     QColor colorA = get_color_A();
     QColor colorB = get_color_B();
+    unsigned int j{0};
     for (unsigned int i{0}; i< numberOfPoints; i++)
     {
+        j = i*2;
         Point point = shapePointList[i];
         float material = static_cast<float>(point.get_material());
         float multiplierColorA = material/255;
@@ -396,7 +405,26 @@ osg::Vec4Array* OSGWidget::get_color_data_array(Shape* shape)
         float B = colorA.blue()*multiplierColorA + colorB.blue()*multiplierColorB;
         float A = 0.5f;
         osg::Vec4 currentColor{R,G,B,A};
-        color->at(i) = (currentColor);
+        color->at(j) = (currentColor);
+
+        Point nextPoint;
+        if (i>numberOfPoints-3)
+        {
+            nextPoint = shapePointList.at(i);
+        }
+        else
+        {
+            nextPoint = shapePointList.at(i+1);
+        }
+        float nextMaterial = static_cast<float>(nextPoint.get_material());
+        float nextMultiplierColorA = nextMaterial/255;
+        float nextMultiplierColorB = (1-nextMaterial)/255;
+        float nR = colorA.red()*nextMultiplierColorA + colorB.red()*nextMultiplierColorB;
+        float nG = colorA.green()*nextMultiplierColorA + colorB.green()*nextMultiplierColorB;
+        float nB = colorA.blue()*nextMultiplierColorA + colorB.blue()*nextMultiplierColorB;
+        float nA = 0.5f;
+        osg::Vec4 nextColor{nR,nG,nB,nA};
+        color->at(j+1) = nextColor;
     }
     return color;
 }
@@ -571,7 +599,8 @@ void OSGWidget::timerEvent(QTimerEvent *)
         {
             numberOfPoints = static_cast<unsigned int>(mShape->get_simplified_point_list().size());
         }
-        if (mAnimationCount > numberOfPoints)
+        unsigned int doubleNumberOfPoints = numberOfPoints*2;
+        if (mAnimationCount > doubleNumberOfPoints)
         {
             mAnimationCount = 0;
         }
